@@ -1,0 +1,220 @@
+import { createMoney, consolidateMoney, convertMoney } from './money.js';
+import { setDisplayCurrency } from './state.js';
+
+export class PositionError extends Error {
+  constructor(code, detail = code) { super(detail); this.name = 'PositionError'; this.code = code; }
+}
+const fail = (code, detail) => { throw new PositionError(code, detail); };
+const requireValue = (condition, code) => { if (!condition) fail(code); };
+const text = value => typeof value === 'string' && value.trim().length > 0;
+const finite = value => typeof value === 'number' && Number.isFinite(value);
+function timestamp(value) {
+  requireValue(typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)
+    && Number.isFinite(Date.parse(value)), 'INVALID_TIMESTAMP');
+  const date = value.slice(0, 10);
+  requireValue(new Date(`${date}T00:00:00Z`).toISOString().slice(0, 10) === date, 'INVALID_TIMESTAMP');
+}
+function freeze(value) {
+  if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
+  return value;
+}
+function canonical(value) {
+  if (Array.isArray(value)) return value.map(canonical);
+  if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map(k => [k, canonical(value[k])]));
+  return value;
+}
+const fingerprint = value => JSON.stringify(canonical(value));
+function money(row) {
+  const amount = row.amount_original === undefined ? row.monto_original : row.amount_original;
+  const currency = row.currency_original === undefined ? row.moneda_original : row.currency_original;
+  if (row.monto_original !== undefined && row.amount_original !== undefined) requireValue(row.monto_original === row.amount_original, 'CONFLICTING_ORIGINALS');
+  if (row.moneda_original !== undefined && row.currency_original !== undefined) requireValue(row.moneda_original === row.currency_original, 'CONFLICTING_ORIGINALS');
+  return createMoney(amount, currency);
+}
+function trace(row, identity) {
+  requireValue(text(row.origen), 'INVALID_ORIGIN');
+  timestamp(row.fecha_hora_evento);
+  if (row.usuario !== undefined) requireValue(text(row.usuario), 'INVALID_USER');
+  return { origen: row.origen, fecha_hora_evento: row.fecha_hora_evento,
+    ...(row.usuario === undefined ? {} : { usuario: row.usuario }), ...identity };
+}
+function entity(state, empresa, banco) {
+  requireValue(state.catalogue.empresas.includes(empresa), 'INVALID_COMPANY');
+  if (banco !== undefined && banco !== null && banco !== '') requireValue(state.catalogue.bancos.includes(banco), 'INVALID_BANK');
+}
+export function createPositionState({ empresas, bancos, cuentas }) {
+  for (const list of [empresas, bancos]) {
+    requireValue(Array.isArray(list) && list.every(text) && new Set(list).size === list.length, 'INVALID_CATALOGUE');
+  }
+  requireValue(Array.isArray(cuentas), 'INVALID_CATALOGUE');
+  const ids = new Set();
+  for (const account of cuentas) {
+    requireValue(text(account.cuenta) && !ids.has(account.cuenta), 'INVALID_ACCOUNT'); ids.add(account.cuenta);
+    requireValue(empresas.includes(account.empresa) && bancos.includes(account.banco), 'INVALID_ACCOUNT_OWNER');
+    requireValue(Array.isArray(account.monedas) && account.monedas.length > 0 && new Set(account.monedas).size === account.monedas.length, 'INVALID_ACCOUNT_CURRENCIES');
+    account.monedas.forEach(code => createMoney(0, code));
+  }
+  return freeze(structuredClone({ catalogue: { empresas, bancos, cuentas }, balances: [], affectations: [], receipts: [], events: [] }));
+}
+function balance(state, row, identity) {
+  entity(state, row.empresa, row.banco);
+  requireValue(text(row.banco) && state.catalogue.bancos.includes(row.banco), 'INVALID_BANK');
+  const account = state.catalogue.cuentas.find(a => a.cuenta === row.cuenta);
+  requireValue(account, 'INVALID_ACCOUNT');
+  requireValue(account.empresa === row.empresa && account.banco === row.banco, 'ACCOUNT_OWNER_MISMATCH');
+  const original = money(row);
+  requireValue(account.monedas.includes(original.currency_original), 'ACCOUNT_CURRENCY_MISMATCH');
+  timestamp(row.fecha_hora_saldo);
+  return { empresa: row.empresa, banco: row.banco, cuenta: row.cuenta, ...original,
+    fecha_hora_saldo: row.fecha_hora_saldo, ...trace(row, identity) };
+}
+const stockKey = row => fingerprint([row.empresa, row.banco, row.cuenta, row.currency_original]);
+function applyBalances(state, rows, identity) {
+  const seen = new Map();
+  for (const row of rows) {
+    const next = balance(state, row, identity); const key = stockKey(next);
+    if (seen.has(key)) {
+      requireValue(fingerprint(seen.get(key)) === fingerprint(next), 'CONFLICTING_BATCH_DUPLICATE');
+      continue;
+    }
+    seen.set(key, next);
+    const index = state.balances.findIndex(b => stockKey(b) === key);
+    if (index >= 0) {
+      const old = state.balances[index];
+      if (Date.parse(next.fecha_hora_saldo) < Date.parse(old.fecha_hora_saldo)) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'No se define el tratamiento de observaciones de saldo anteriores a la vigente.');
+      if (Date.parse(next.fecha_hora_saldo) === Date.parse(old.fecha_hora_saldo)) requireValue(next.amount_original === old.amount_original, 'CONFLICTING_STOCK_TIMESTAMP');
+      state.balances[index] = next;
+    } else state.balances.push(next);
+    state.events.push({ kind: 'SALDO', ...next });
+  }
+}
+function applyAffectations(state, rows, identity) {
+  const seen = new Set();
+  for (const row of rows) {
+    requireValue(text(row.affectation_id), 'INVALID_AFFECTATION_ID');
+    requireValue(row.observacion === undefined || typeof row.observacion === 'string', 'INVALID_OBSERVATION');
+    requireValue(!seen.has(row.affectation_id), 'CONFLICTING_BATCH_DUPLICATE'); seen.add(row.affectation_id);
+    requireValue(['ALTA', 'AJUSTE', 'ANULACION'].includes(row.operacion), 'UNSUPPORTED_OPERATION');
+    const provenance = trace(row, identity);
+    const index = state.affectations.findIndex(a => a.affectation_id === row.affectation_id);
+    let next;
+    if (row.operacion === 'ALTA') {
+      requireValue(index < 0, 'AFFECTATION_ALREADY_EXISTS');
+      entity(state, row.empresa, row.banco_asignado);
+      requireValue(text(row.tipo_partida), 'INVALID_ITEM_TYPE');
+      requireValue(['COMPROMISO', 'RESERVA'].includes(row.naturaleza_afectacion), 'INVALID_AFFECTATION_NATURE');
+      const original = money(row);
+      requireValue(original.amount_original > 0, 'INVALID_INITIAL_AMOUNT');
+      requireValue(row.estado === undefined || row.estado === 'ACTIVA', 'INVALID_AFFECTATION_STATUS');
+      next = { affectation_id: row.affectation_id, empresa: row.empresa, tipo_partida: row.tipo_partida,
+        naturaleza_afectacion: row.naturaleza_afectacion, ...original,
+        monto_vigente: row.monto_vigente === undefined ? original.amount_original : row.monto_vigente,
+        monto_reflejado_confirmado: row.monto_reflejado_confirmado === undefined ? 0 : row.monto_reflejado_confirmado,
+        estado: 'ACTIVA', banco_asignado: row.banco_asignado || null };
+    } else {
+      requireValue(index >= 0, 'UNKNOWN_AFFECTATION_REFERENCE');
+      const old = state.affectations[index];
+      requireValue(old.estado === 'ACTIVA', 'AFFECTATION_NOT_ACTIVE');
+      for (const key of ['empresa', 'tipo_partida', 'naturaleza_afectacion', 'amount_original', 'currency_original', 'banco_asignado']) {
+        if (row[key] !== undefined) requireValue(row[key] === old[key], 'IMMUTABLE_AFFECTATION_FIELD');
+      }
+      if (row.monto_original !== undefined) requireValue(row.monto_original === old.amount_original, 'IMMUTABLE_AFFECTATION_FIELD');
+      if (row.moneda_original !== undefined) requireValue(row.moneda_original === old.currency_original, 'IMMUTABLE_AFFECTATION_FIELD');
+      if (Date.parse(row.fecha_hora_evento) < Date.parse(old.fecha_hora_evento)) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'No se define el tratamiento de cambios retroactivos de afectaciones.');
+      next = { ...old };
+      if (row.operacion === 'AJUSTE') {
+        requireValue(row.monto_vigente !== undefined || row.monto_reflejado_confirmado !== undefined, 'EMPTY_ADJUSTMENT');
+        if (row.monto_vigente !== undefined) next.monto_vigente = row.monto_vigente;
+        if (row.monto_reflejado_confirmado !== undefined) {
+          if (row.monto_reflejado_confirmado < old.monto_reflejado_confirmado) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'La reversión de una confirmación reflejada no está definida.');
+          next.monto_reflejado_confirmado = row.monto_reflejado_confirmado;
+        }
+      } else {
+        const pending = old.naturaleza_afectacion === 'COMPROMISO' ? old.monto_vigente - old.monto_reflejado_confirmado : old.monto_vigente;
+        requireValue(finite(row.monto_anulado) && row.monto_anulado > 0 && row.monto_anulado <= pending, 'EXCESSIVE_OR_INVALID_CANCELLATION');
+        if (row.monto_anulado < pending) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'Anulación parcial pendiente de regla funcional.');
+        next.monto_vigente -= row.monto_anulado;
+        next.estado = 'ANULADA';
+      }
+      if (row.estado !== undefined) requireValue(row.estado === next.estado, 'INVALID_AFFECTATION_STATUS');
+    }
+    requireValue(finite(next.monto_vigente) && next.monto_vigente >= 0, 'INVALID_CURRENT_AMOUNT');
+    requireValue(finite(next.monto_reflejado_confirmado) && next.monto_reflejado_confirmado >= 0
+      && next.monto_reflejado_confirmado <= next.monto_vigente, 'INVALID_CONFIRMED_AMOUNT');
+    next = { ...next, operacion: row.operacion, ...provenance,
+      ...(row.observacion === undefined ? {} : { observacion: row.observacion }) };
+    if (index < 0) state.affectations.push(next); else state.affectations[index] = next;
+    state.events.push({ kind: 'AFECTACION', input: structuredClone(row), result: structuredClone(next), ...provenance });
+  }
+}
+function prepare(state, rows, identity, kind) {
+  requireValue(Array.isArray(rows) && rows.length > 0, 'INVALID_BATCH');
+  requireValue(identity && ((text(identity.batch_id) && identity.request_id === undefined)
+    || (text(identity.request_id) && identity.batch_id === undefined)), 'INVALID_IDEMPOTENCY_KEY');
+  if (identity.request_id !== undefined) requireValue(rows.length === 1, 'INVALID_MANUAL_REQUEST');
+  const id = identity.batch_id ?? identity.request_id;
+  const scope = identity.batch_id === undefined ? 'request_id' : 'batch_id';
+  const payload = fingerprint({ kind, rows });
+  const receipt = state.receipts.find(r => r.scope === scope && r.id === id);
+  if (receipt) { requireValue(receipt.payload === payload, 'IDEMPOTENCY_CONFLICT'); return state; }
+  const next = structuredClone(state);
+  const provenance = { [scope]: id };
+  (kind === 'SALDOS' ? applyBalances : applyAffectations)(next, rows, provenance);
+  next.receipts.push({ scope, id, payload });
+  return freeze(next);
+}
+function preview(state, rows, identity, kind) {
+  try { const next = prepare(state, rows, identity, kind); return { status: 'VALID', errors: [], idempotent: next === state }; }
+  catch (error) { return { status: 'ERROR', errors: [{ code: error.code ?? 'INVALID_INPUT', detail: error.message }] }; }
+}
+export const previewBalances = (state, rows, identity) => preview(state, rows, identity, 'SALDOS');
+export const previewAffectations = (state, rows, identity) => preview(state, rows, identity, 'AFECTACIONES');
+export const applyBalanceBatch = (state, rows, batch_id) => prepare(state, rows, { batch_id }, 'SALDOS');
+export const registerBalance = (state, row, request_id) => prepare(state, [row], { request_id }, 'SALDOS');
+export const applyAffectationBatch = (state, rows, batch_id) => prepare(state, rows, { batch_id }, 'AFECTACIONES');
+export const registerAffectation = (state, row, request_id) => prepare(state, [row], { request_id }, 'AFECTACIONES');
+
+const companyFields = ['saldo_bancario', 'compromisos_por_ejecutar', 'reservas_bloqueadas', 'saldo_disponible_gestion', 'deficit'];
+const bankFields = ['saldo_bancario', 'compromisos_por_ejecutar', 'reservas_bloqueadas', 'disponibilidad_localizada_preliminar'];
+function calculate(state, empresa, banco, monetaryState) {
+  entity(state, empresa, banco);
+  const fields = banco === undefined ? companyFields : bankFields;
+  const base = { empresa, ...(banco === undefined ? {} : { banco }), currency: 'VES' };
+  const active = state.affectations.filter(a => a.empresa === empresa && a.estado === 'ACTIVA');
+  const localizations = active.map(a => ({ affectation_id: a.affectation_id, banco_asignado: a.banco_asignado,
+    localizacion: a.banco_asignado === null ? 'NO LOCALIZADO' : 'LOCALIZADO' }));
+  try {
+    const canonicalState = setDisplayCurrency(monetaryState, 'VES');
+    const sum = rows => consolidateMoney(rows, 'VES', canonicalState).amount;
+    const assigned = active.filter(a => banco === undefined || a.banco_asignado === banco);
+    const saldo_bancario = sum(state.balances.filter(b => b.empresa === empresa && (banco === undefined || b.banco === banco)));
+    const compromisos_por_ejecutar = sum(assigned.filter(a => a.naturaleza_afectacion === 'COMPROMISO')
+      .map(a => createMoney(a.monto_vigente - a.monto_reflejado_confirmado, a.currency_original)));
+    const reservas_bloqueadas = sum(assigned.filter(a => a.naturaleza_afectacion === 'RESERVA')
+      .map(a => createMoney(a.monto_vigente, a.currency_original)));
+    const available = saldo_bancario - compromisos_por_ejecutar - reservas_bloqueadas;
+    createMoney(available, 'VES'); // Reject numeric overflow, without changing monetary policy.
+    return freeze({ ...base, publicable: true, errors: [], saldo_bancario, compromisos_por_ejecutar, reservas_bloqueadas,
+      ...(banco === undefined ? { saldo_disponible_gestion: available, deficit: Math.max(0, -available), localizaciones: localizations }
+        : { disponibilidad_localizada_preliminar: available }) });
+  } catch (error) {
+    return freeze({ ...base, publicable: false, ...Object.fromEntries(fields.map(key => [key, null])),
+      errors: [{ code: error.code ?? 'INVALID_INPUT', detail: error.message }] });
+  }
+}
+export const calculateCompanyPosition = (state, empresa, monetaryState) => calculate(state, empresa, undefined, monetaryState);
+export function calculateBankPosition(state, empresa, banco, monetaryState) {
+  requireValue(state.catalogue.bancos.includes(banco), 'INVALID_BANK');
+  return calculate(state, empresa, banco, monetaryState);
+}
+export function displayPosition(position, monetaryState) {
+  if (!position.publicable) return position;
+  const fields = position.banco === undefined ? companyFields : bankFields;
+  try {
+    const values = Object.fromEntries(fields.map(key => [key, convertMoney(createMoney(position[key], position.currency), monetaryState.displayCurrency, monetaryState).amount]));
+    return freeze({ ...position, ...values, currency: monetaryState.displayCurrency });
+  } catch (error) {
+    return freeze({ ...position, currency: monetaryState.displayCurrency, publicable: false,
+      ...Object.fromEntries(fields.map(key => [key, null])), errors: [{ code: error.code ?? 'INVALID_INPUT', detail: error.message }] });
+  }
+}
