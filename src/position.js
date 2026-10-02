@@ -97,10 +97,11 @@ function applyAffectations(state, rows, identity) {
     requireValue(text(row.affectation_id), 'INVALID_AFFECTATION_ID');
     requireValue(row.observacion === undefined || typeof row.observacion === 'string', 'INVALID_OBSERVATION');
     requireValue(!seen.has(row.affectation_id), 'CONFLICTING_BATCH_DUPLICATE'); seen.add(row.affectation_id);
-    requireValue(['ALTA', 'AJUSTE', 'ANULACION'].includes(row.operacion), 'UNSUPPORTED_OPERATION');
+    requireValue(['ALTA', 'AJUSTE', 'ANULACION', 'RECLASIFICACION'].includes(row.operacion), 'UNSUPPORTED_OPERATION');
     const provenance = trace(row, identity);
     const index = state.affectations.findIndex(a => a.affectation_id === row.affectation_id);
     let next;
+    const previous = index < 0 ? null : structuredClone(state.affectations[index]);
     if (row.operacion === 'ALTA') {
       requireValue(index < 0, 'AFFECTATION_ALREADY_EXISTS');
       entity(state, row.empresa, row.banco_asignado);
@@ -123,9 +124,25 @@ function applyAffectations(state, rows, identity) {
       }
       if (row.monto_original !== undefined) requireValue(row.monto_original === old.amount_original, 'IMMUTABLE_AFFECTATION_FIELD');
       if (row.moneda_original !== undefined) requireValue(row.moneda_original === old.currency_original, 'IMMUTABLE_AFFECTATION_FIELD');
-      if (Date.parse(row.fecha_hora_evento) < Date.parse(old.fecha_hora_evento)) fail('RETROACTIVE_AFFECTATION_EVENT');
+      const reclassifying = row.operacion === 'RECLASIFICACION';
+      const linkedNeeds = (state.needs ?? []).filter(n => n.affectation_id === old.affectation_id);
+      if (Date.parse(row.fecha_hora_evento) < Date.parse(old.fecha_hora_evento)
+        || (reclassifying && linkedNeeds.some(n => Date.parse(row.fecha_hora_evento) < Date.parse(n.fecha_hora_evento)))) {
+        fail(reclassifying ? 'RETROACTIVE_NEED_EVENT' : 'RETROACTIVE_AFFECTATION_EVENT');
+      }
       next = { ...old };
-      if (row.operacion === 'AJUSTE') {
+      if (reclassifying) {
+        requireValue(text(row.motivo_reclasificacion), 'RECLASSIFICATION_REASON_REQUIRED');
+        requireValue(['COMPROMISO', 'RESERVA'].includes(row.naturaleza_destino)
+          && row.naturaleza_destino !== old.naturaleza_afectacion, 'INVALID_RECLASSIFICATION_TARGET');
+        for (const key of ['monto_vigente', 'monto_reflejado_confirmado']) {
+          if (row[key] !== undefined) requireValue(row[key] === old[key], 'IMMUTABLE_RECLASSIFICATION_AMOUNT');
+        }
+        if (old.naturaleza_afectacion === 'COMPROMISO' && old.monto_reflejado_confirmado > 0) fail('RECLASSIFICATION_AFTER_CONFIRMED_EXECUTION_NOT_ALLOWED');
+        next.naturaleza_afectacion = row.naturaleza_destino;
+        next.monto_reflejado_confirmado = 0;
+        next.motivo_reclasificacion = row.motivo_reclasificacion;
+      } else if (row.operacion === 'AJUSTE') {
         requireValue(row.monto_vigente !== undefined || row.monto_reflejado_confirmado !== undefined, 'EMPTY_ADJUSTMENT');
         if (row.monto_vigente !== undefined) next.monto_vigente = row.monto_vigente;
         if (row.monto_reflejado_confirmado !== undefined) {
@@ -149,6 +166,18 @@ function applyAffectations(state, rows, identity) {
       ...(row.observacion === undefined ? {} : { observacion: row.observacion }) };
     if (index < 0) state.affectations.push(next); else state.affectations[index] = next;
     state.events.push({ kind: 'AFECTACION', input: structuredClone(row), result: structuredClone(next), ...provenance });
+    if (row.operacion === 'RECLASIFICACION') {
+      const linked = (state.needs ?? []).filter(n => n.affectation_id === next.affectation_id && n.estado === 'ACTIVA');
+      const before = structuredClone(linked);
+      for (const need of linked) Object.assign(need, {
+        naturaleza: next.naturaleza_afectacion, monto_vigente: next.monto_vigente,
+        motivo_reclasificacion: row.motivo_reclasificacion, ...provenance
+      });
+      state.events.push({ kind: 'NEED', operacion: 'RECLASIFICACION', need_id: linked[0]?.need_id ?? null,
+        affectation_id: next.affectation_id, anteriores: { affectation: previous, needs: before },
+        posteriores: { affectation: structuredClone(next), needs: structuredClone(linked) },
+        motivo: row.motivo_reclasificacion, ...provenance });
+    }
   }
 }
 function prepare(state, rows, identity, kind) {
@@ -178,6 +207,13 @@ export const registerBalance = (state, row, request_id) => prepare(state, [row],
 export const applyAffectationBatch = (state, rows, batch_id) => prepare(state, rows, { batch_id }, 'AFECTACIONES');
 export const registerAffectation = (state, row, request_id) => prepare(state, [row], { request_id }, 'AFECTACIONES');
 
+// Shared economic amount for position and the decision layer; originals are untouched.
+export function getAffectationPending(affectation) {
+  if (affectation.estado !== 'ACTIVA') return 0;
+  return affectation.naturaleza_afectacion === 'COMPROMISO'
+    ? affectation.monto_vigente - affectation.monto_reflejado_confirmado : affectation.monto_vigente;
+}
+
 const companyFields = ['saldo_bancario', 'compromisos_por_ejecutar', 'reservas_bloqueadas', 'saldo_disponible_gestion', 'deficit'];
 const bankFields = ['saldo_bancario', 'compromisos_por_ejecutar', 'reservas_bloqueadas', 'disponibilidad_localizada_preliminar'];
 function calculate(state, empresa, banco, monetaryState) {
@@ -193,9 +229,9 @@ function calculate(state, empresa, banco, monetaryState) {
     const assigned = active.filter(a => banco === undefined || a.banco_asignado === banco);
     const saldo_bancario = sum(state.balances.filter(b => b.empresa === empresa && (banco === undefined || b.banco === banco)));
     const compromisos_por_ejecutar = sum(assigned.filter(a => a.naturaleza_afectacion === 'COMPROMISO')
-      .map(a => createMoney(a.monto_vigente - a.monto_reflejado_confirmado, a.currency_original)));
+      .map(a => createMoney(getAffectationPending(a), a.currency_original)));
     const reservas_bloqueadas = sum(assigned.filter(a => a.naturaleza_afectacion === 'RESERVA')
-      .map(a => createMoney(a.monto_vigente, a.currency_original)));
+      .map(a => createMoney(getAffectationPending(a), a.currency_original)));
     const available = saldo_bancario - compromisos_por_ejecutar - reservas_bloqueadas;
     createMoney(available, 'VES'); // Reject numeric overflow, without changing monetary policy.
     return freeze({ ...base, publicable: true, errors: [], saldo_bancario, compromisos_por_ejecutar, reservas_bloqueadas,
