@@ -81,7 +81,10 @@ function applyBalances(state, rows, identity) {
     const index = state.balances.findIndex(b => stockKey(b) === key);
     if (index >= 0) {
       const old = state.balances[index];
-      if (Date.parse(next.fecha_hora_saldo) < Date.parse(old.fecha_hora_saldo)) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'No se define el tratamiento de observaciones de saldo anteriores a la vigente.');
+      if (Date.parse(next.fecha_hora_saldo) < Date.parse(old.fecha_hora_saldo)) {
+        state.events.push({ kind: 'SALDO', ...next, treatment: 'HISTORICAL_ONLY' });
+        continue;
+      }
       if (Date.parse(next.fecha_hora_saldo) === Date.parse(old.fecha_hora_saldo)) requireValue(next.amount_original === old.amount_original, 'CONFLICTING_STOCK_TIMESTAMP');
       state.balances[index] = next;
     } else state.balances.push(next);
@@ -120,21 +123,22 @@ function applyAffectations(state, rows, identity) {
       }
       if (row.monto_original !== undefined) requireValue(row.monto_original === old.amount_original, 'IMMUTABLE_AFFECTATION_FIELD');
       if (row.moneda_original !== undefined) requireValue(row.moneda_original === old.currency_original, 'IMMUTABLE_AFFECTATION_FIELD');
-      if (Date.parse(row.fecha_hora_evento) < Date.parse(old.fecha_hora_evento)) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'No se define el tratamiento de cambios retroactivos de afectaciones.');
+      if (Date.parse(row.fecha_hora_evento) < Date.parse(old.fecha_hora_evento)) fail('RETROACTIVE_AFFECTATION_EVENT');
       next = { ...old };
       if (row.operacion === 'AJUSTE') {
         requireValue(row.monto_vigente !== undefined || row.monto_reflejado_confirmado !== undefined, 'EMPTY_ADJUSTMENT');
         if (row.monto_vigente !== undefined) next.monto_vigente = row.monto_vigente;
         if (row.monto_reflejado_confirmado !== undefined) {
-          if (row.monto_reflejado_confirmado < old.monto_reflejado_confirmado) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'La reversión de una confirmación reflejada no está definida.');
+          if (row.monto_reflejado_confirmado < old.monto_reflejado_confirmado) fail('CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED');
           next.monto_reflejado_confirmado = row.monto_reflejado_confirmado;
         }
       } else {
         const pending = old.naturaleza_afectacion === 'COMPROMISO' ? old.monto_vigente - old.monto_reflejado_confirmado : old.monto_vigente;
         requireValue(finite(row.monto_anulado) && row.monto_anulado > 0 && row.monto_anulado <= pending, 'EXCESSIVE_OR_INVALID_CANCELLATION');
-        if (row.monto_anulado < pending) fail('BLOCKED_BY_FUNCTIONAL_RULE', 'Anulación parcial pendiente de regla funcional.');
         next.monto_vigente -= row.monto_anulado;
-        next.estado = 'ANULADA';
+        const remaining = next.naturaleza_afectacion === 'COMPROMISO'
+          ? next.monto_vigente - next.monto_reflejado_confirmado : next.monto_vigente;
+        next.estado = remaining > 0 ? 'ACTIVA' : 'ANULADA';
       }
       if (row.estado !== undefined) requireValue(row.estado === next.estado, 'INVALID_AFFECTATION_STATUS');
     }

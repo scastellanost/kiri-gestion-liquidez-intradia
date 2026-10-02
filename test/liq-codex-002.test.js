@@ -38,7 +38,9 @@ test('QA-P01 — Stock reemplazable: 100 → 90, no 190', () => {
   const preview = previewBalances(before, [stock(80), stock(70)], { batch_id: 'conflict' });
   assert.equal(preview.status, 'ERROR'); assert.equal(preview.errors[0].code, 'CONFLICTING_STOCK_TIMESTAMP');
   assert.equal(previewBalances(initial(), [stock(80), stock(70)], { batch_id: 'conflict' }).errors[0].code, 'CONFLICTING_BATCH_DUPLICATE');
-  code(() => registerBalance(next, stock(80, 8), 'retroactive'), 'BLOCKED_BY_FUNCTIONAL_RULE');
+  const historical = registerBalance(next, stock(80, 8), 'retroactive');
+  assert.equal(position(historical).saldo_bancario, 90);
+  assert.equal(historical.events.at(-1).treatment, 'HISTORICAL_ONLY');
 });
 test('QA-P02 — Compromiso 20 reduce saldo 100 a disponible 80', () => {
   const result = position(committed());
@@ -146,8 +148,10 @@ test('QA-P14 — Banco opcional inválido ERROR; ausente válido y NO LOCALIZADO
 });
 test('QA-P15 — No anular más del pendiente o del vigente de reserva', () => {
   const confirmed = registerAffectation(committed(), change('AJUSTE', { monto_reflejado_confirmado: 10 }), 'confirmed');
-  code(() => registerAffectation(confirmed, change('AJUSTE', { monto_reflejado_confirmado: 5 }), 'reverse-confirmation'), 'BLOCKED_BY_FUNCTIONAL_RULE');
-  code(() => registerAffectation(confirmed, change('ANULACION', { monto_anulado: 5 }), 'partial-cancellation'), 'BLOCKED_BY_FUNCTIONAL_RULE');
+  code(() => registerAffectation(confirmed, change('AJUSTE', { monto_reflejado_confirmado: 5 }), 'reverse-confirmation'), 'CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED');
+  const partial = registerAffectation(confirmed, change('ANULACION', { monto_anulado: 5 }), 'partial-cancellation');
+  assert.equal(partial.affectations[0].estado, 'ACTIVA');
+  assert.equal(position(partial).compromisos_por_ejecutar, 5);
   const preview = previewAffectations(confirmed, [change('ANULACION', { monto_anulado: 11 })], { request_id: 'too-much' });
   assert.equal(preview.status, 'ERROR'); assert.equal(preview.errors[0].code, 'EXCESSIVE_OR_INVALID_CANCELLATION');
   code(() => registerAffectation(confirmed, change('ANULACION', { monto_anulado: 11 }), 'too-much'), 'EXCESSIVE_OR_INVALID_CANCELLATION');
