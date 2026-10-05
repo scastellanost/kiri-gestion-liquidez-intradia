@@ -29,13 +29,18 @@ La ventana operativa válida es:
 Reglas:
 - entre 22:00 y 23:59:59... => dentro de ventana;
 - entre 00:00 y 02:00 inclusive => dentro de la continuación de la ventana iniciada el día anterior;
-- entre 02:00 y 21:59:59... => fuera de ventana;
+- entre 02:00 y 21:59:59... => INTERVALO_ENTRE_VENTANAS;
 - cutoff sigue siendo inclusivo en el instante exacto;
-- para T0, después del cutoff efectivo => BLOQUEADA;
-- antes del inicio efectivo => VIABLE_CON_RESTRICCION con acción ESPERAR_APERTURA;
-- el día hábil aplicable a una ventana nocturna es el día de inicio de la ventana, no el día calendario posterior de la continuación.
+- en INTERVALO_ENTRE_VENTANAS no existe una hora arbitraria de cambio de decisión;
+- si la próxima apertura todavía permite cumplir fecha_hora_objetivo/deadline, el resultado es VIABLE_CON_RESTRICCION con acción ESPERAR_APERTURA;
+- si la próxima apertura, más minutos_acreditacion cuando aplique, supera fecha_hora_objetivo/deadline, el resultado es BLOQUEADA por incumplimiento temporal;
+- si no existe deadline, el intervalo entre ventanas no se considera bloqueo definitivo: queda VIABLE_CON_RESTRICCION / ESPERAR_APERTURA;
+- la ETA durante el intervalo se calcula desde la siguiente apertura efectiva;
+- el día hábil aplicable a la continuación 00:00–02:00 es el día de inicio de la ventana anterior;
+- para una evaluación en INTERVALO_ENTRE_VENTANAS que espera la próxima apertura, la jornada operativa aplicable pasa a ser el día de esa próxima apertura.
 
-No dividir una misma ventana nocturna en dos jornadas de uso diario.
+No dividir una misma ventana nocturna activa en dos jornadas de uso diario.
+Las propuestas evaluadas durante INTERVALO_ENTRE_VENTANAS para la próxima apertura consumen, a efectos de max_diario/max_operaciones, la jornada operativa de esa próxima apertura.
 
 ## Decisión funcional 2 — DST: hora local inexistente
 Si una hora local configurada no existe por salto de horario de verano:
@@ -108,9 +113,14 @@ Evaluación 21:00.
 02:00 exacto.
 => todavía válido.
 
-### QA-5A06 — Después de cutoff nocturno
-02:01 T0.
-=> BLOQUEADA.
+### QA-5A06 — Después de cutoff nocturno, sin deadline imposible
+02:01 T0, próxima apertura 22:00, sin deadline anterior a esa apertura.
+=> VIABLE_CON_RESTRICCION / ESPERAR_APERTURA.
+La ETA parte de 22:00.
+
+### QA-5A06B — Después de cutoff con deadline imposible
+02:01 T0, próxima apertura 22:00, deadline 12:00 del mismo día.
+=> BLOQUEADA por incumplimiento temporal.
 
 ### QA-5A07 — Día hábil de ventana nocturna
 Viernes 22:00–02:00 sábado.
@@ -154,14 +164,14 @@ Conservar íntegramente:
 - CODEX-005 40
 
 Nuevo:
-- CODEX-005A 15
+- CODEX-005A 16
 
 Total esperado:
-157/157 PASS
+158/158 PASS
 
 ## Criterio de cierre
 PASS si:
-- 157/157;
+- 158/158;
 - no quedan los dos BLOCKED_BY_FUNCTIONAL_RULE temporales;
 - ventanas nocturnas son determinísticas;
 - DST ambiguo/inexistente es determinístico y explicable;
