@@ -48,7 +48,6 @@ function validateRules(state, rules) {
   if (rules.max_operaciones_dia !== undefined) check(Number.isSafeInteger(rules.max_operaciones_dia) && rules.max_operaciones_dia >= 0, 'INVALID_OPERATION_COUNT');
   for (const key of bools) if (rules[key] !== undefined) check(typeof rules[key] === 'boolean', 'INVALID_RESTRICTION_BOOLEAN');
   for (const key of ['hora_inicio', 'cutoff']) if (rules[key] !== undefined) check(typeof rules[key] === 'string' && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(rules[key]), 'INVALID_BANK_TIME');
-  if (rules.hora_inicio !== undefined && rules.cutoff !== undefined) check(rules.hora_inicio <= rules.cutoff, 'BLOCKED_BY_FUNCTIONAL_RULE');
   if (rules.settlement !== undefined) check(['T0', 'T1', 'BOTH'].includes(rules.settlement), 'INVALID_SETTLEMENT');
   for (const key of arrays) if (rules[key] !== undefined) check(Array.isArray(rules[key]) && new Set(rules[key]).size === rules[key].length, 'INVALID_RESTRICTION_LIST');
   for (const currency of rules.monedas_permitidas ?? []) createMoney(0, currency);
@@ -155,20 +154,56 @@ function localParts(epoch, zone) {
   const p = Object.fromEntries(parts.map(p => [p.type, p.value]));
   return { day: `${p.year}-${p.month}-${p.day}`, time: `${p.hour}:${p.minute}:${p.second}` };
 }
-function localInstant(day, time, zone) {
-  const target = Date.parse(`${day}T${time}Z`); let guess = target;
-  for (let i = 0; i < 5; i++) {
-    const actual = localParts(guess, zone); const delta = target - Date.parse(`${actual.day}T${actual.time}Z`);
-    if (delta === 0) {
-      for (const offset of [-7200000, -3600000, -1800000, 1800000, 3600000, 7200000]) {
-        const alternative = localParts(guess + offset, zone);
-        check(alternative.day !== day || alternative.time !== time, 'BLOCKED_BY_FUNCTIONAL_RULE');
-      }
-      return guess;
-    }
-    guess += delta;
+function localInstant(day, time, zone, dimension) {
+  const target = Date.parse(`${day}T${time}Z`);
+  const offsetAt = epoch => {
+    const local = localParts(epoch, zone);
+    return Date.parse(`${local.day}T${local.time}Z`) - Math.floor(epoch / 1000) * 1000;
+  };
+  // Discover the zone's actual offsets around this date, including non-hour changes.
+  const samples = [];
+  for (let hour = -48; hour <= 48; hour++) {
+    const epoch = target + hour * 3600000;
+    samples.push({ epoch, offset: offsetAt(epoch) });
   }
-  throw new BankRestrictionError('BLOCKED_BY_FUNCTIONAL_RULE');
+  const candidates = [...new Set(samples.map(s => s.offset))].map(offset => target - offset)
+    .filter(epoch => epoch + offsetAt(epoch) === target).sort((a, b) => a - b);
+  const adjusted = (epoch, rule_id, impact, action) => ({ epoch, adjustment: {
+    rule_id, dimension, configured: { fecha: day, hora: time, zona_horaria: zone },
+    observed: new Date(epoch).toISOString(), impact, action
+  } });
+  if (candidates.length > 0) return candidates.length === 1 ? { epoch: candidates[0] }
+    : adjusted(candidates[0], 'DST_AMBIGUOUS_LOCAL_TIME_FIRST_OCCURRENCE', 'INFO');
+  for (let i = 1; i < samples.length; i++) {
+    const before = samples[i - 1]; const after = samples[i];
+    if (after.offset <= before.offset) continue;
+    let low = before.epoch; let high = after.epoch;
+    while (high - low > 1) {
+      const middle = Math.floor((low + high) / 2);
+      if (offsetAt(middle) === before.offset) low = middle; else high = middle;
+    }
+    if (target >= high + before.offset && target < high + after.offset) {
+      return adjusted(high, 'DST_NONEXISTENT_LOCAL_TIME_SHIFTED', 'RESTRICCION', 'USAR_PRIMER_INSTANTE_VALIDO');
+    }
+  }
+  throw new BankRestrictionError('LOCAL_TIME_RESOLUTION_FAILED');
+}
+const shiftDay = (day, days) => new Date(Date.parse(`${day}T00:00:00Z`) + days * 86400000).toISOString().slice(0, 10);
+const overnight = rules => rules.hora_inicio && rules.cutoff && rules.hora_inicio.value > rules.cutoff.value;
+function windowForDay(day, rules, zone) {
+  const opening = rules.hora_inicio ? localInstant(day, `${rules.hora_inicio.value}:00`, zone, 'hora_inicio') : { epoch: -Infinity };
+  const closing = rules.cutoff ? localInstant(overnight(rules) ? shiftDay(day, 1) : day, `${rules.cutoff.value}:00`, zone, 'cutoff') : { epoch: Infinity };
+  return { day, opening: opening.epoch, closing: closing.epoch,
+    adjustments: [opening.adjustment, closing.adjustment].filter(Boolean) };
+}
+function operatingWindow(epoch, rules, zone) {
+  const day = localParts(epoch, zone).day;
+  const current = windowForDay(day, rules, zone);
+  if (overnight(rules) && epoch < current.opening) {
+    const previous = windowForDay(shiftDay(day, -1), rules, zone);
+    if (epoch >= previous.opening && epoch <= previous.closing) return previous;
+  }
+  return current;
 }
 function businessDay(day, rules) {
   const weekday = new Date(`${day}T00:00:00Z`).getUTCDay() || 7;
@@ -205,6 +240,12 @@ function evaluate(state, assignment, context, monetaryState, proposed) {
     valor_configurado: configured, valor_observado: observed, resultado: impact === 'BLOQUEO' ? 'BLOQUEADA' : impact === 'RESTRICCION' ? 'VIABLE_CON_RESTRICCION' : 'VIABLE',
     impacto: impact, ...(action ? { accion_requerida: action } : {}) });
   const epoch = Date.parse(context.fecha_hora_evaluacion); const local = localParts(epoch, context.zona_horaria);
+  const window = operatingWindow(epoch, rules, context.zona_horaria);
+  const explainAdjustment = adjustment => {
+    if (adjustment) add(adjustment.rule_id, adjustment.dimension, adjustment.configured,
+      adjustment.observed, adjustment.impact, adjustment.action);
+  };
+  window.adjustments.forEach(explainAdjustment);
   let ops = 1; let split = [{ monto, operaciones: 1 }];
   if (rules.max_por_operacion) {
     const max = rules.max_por_operacion.value;
@@ -221,7 +262,7 @@ function evaluate(state, assignment, context, monetaryState, proposed) {
     ['max_diario', 'monto_usado_dia', 'monto_reservado_por_aprobadas', 'monto', monto],
     ['max_operaciones_dia', 'operaciones_usadas_dia', 'operaciones_reservadas', 'operaciones', ops]
   ]) if (rules[key]) {
-    const query = { ...rules[key].selectors, moneda: route.moneda, fecha: local.day };
+    const query = { ...rules[key].selectors, moneda: route.moneda, fecha: window.day };
     const usage = getBankUsage(state, query);
     const pending = proposed.filter(r => r.banco === query.banco && r.moneda === query.moneda && r.fecha === query.fecha
       && (query.empresa === undefined || r.empresa === query.empresa) && (query.cuenta === undefined || r.cuenta === query.cuenta))
@@ -233,11 +274,8 @@ function evaluate(state, assignment, context, monetaryState, proposed) {
   }
   const milliseconds = new Date(epoch).getUTCMilliseconds();
   const time = `${local.time}.${String(milliseconds).padStart(3, '0')}`;
-  if (rules.hora_inicio && rules.cutoff && rules.hora_inicio.value > rules.cutoff.value) {
-    add('BLOCKED_BY_FUNCTIONAL_RULE', 'ventana_nocturna', { inicio: rules.hora_inicio.value, cutoff: rules.cutoff.value }, time, 'BLOQUEO');
-  }
-  if (rules.hora_inicio && time < `${rules.hora_inicio.value}:00.000`) add('BEFORE_OPENING', 'hora_inicio', rules.hora_inicio.value, time, 'RESTRICCION', 'ESPERAR_APERTURA');
-  if (rules.cutoff && time > `${rules.cutoff.value}:00.000` && context.settlement === 'T0') add('AFTER_CUTOFF', 'cutoff', rules.cutoff.value, time, 'BLOQUEO');
+  if (epoch < window.opening) add(overnight(rules) ? 'INTERVALO_ENTRE_VENTANAS' : 'BEFORE_OPENING',
+    'hora_inicio', rules.hora_inicio.value, time, 'RESTRICCION', 'ESPERAR_APERTURA');
   const typeKey = context.tipo_ruta === 'INTRABANCO' ? 'permite_intrabanco' : 'permite_interbanco';
   if (rules[typeKey]) add('ROUTE_TYPE', typeKey, rules[typeKey].value, context.tipo_ruta, rules[typeKey].value ? 'INFO' : 'BLOQUEO');
   if (rules.settlement) add('SETTLEMENT', 'settlement', rules.settlement.value, context.settlement,
@@ -246,24 +284,26 @@ function evaluate(state, assignment, context, monetaryState, proposed) {
     if (rules[key]) add('ALLOWED_' + key.toUpperCase(), key, rules[key].value, observed, rules[key].value.includes(observed) ? 'INFO' : 'BLOQUEO');
   }
   if (rules.requiere_aprobacion_adicional?.value) add('ADDITIONAL_APPROVAL', 'requiere_aprobacion_adicional', true, false, 'RESTRICCION', 'APROBACION_ADICIONAL');
-  if (!businessDay(local.day, rules)) add('NON_BUSINESS_DAY', 'calendario', {
+  if (!businessDay(window.day, rules)) add('NON_BUSINESS_DAY', 'calendario', {
     dias_habiles_semana: rules.dias_habiles_semana?.value ?? null, feriados: rules.feriados?.value ?? []
-  }, local.day, context.settlement === 'T0' ? 'BLOQUEO' : 'RESTRICCION', context.settlement === 'T1' ? 'ESPERAR_SIGUIENTE_HABIL' : undefined);
-  let settlementTime = epoch; let eta = null;
+  }, window.day, context.settlement === 'T0' ? 'BLOQUEO' : 'RESTRICCION', context.settlement === 'T1' ? 'ESPERAR_SIGUIENTE_HABIL' : undefined);
+  let settlementTime = Math.max(epoch, window.opening); let eta = null;
+  let settlementWindow = window; let shiftedSettlement = false;
   if (context.settlement === 'T1') {
     try {
-      const next = nextBusinessDay(local.day, rules);
-      settlementTime = localInstant(next, local.time, context.zona_horaria) + milliseconds;
+      const next = nextBusinessDay(window.day, rules);
+      const continuation = overnight(rules) && local.day !== window.day;
+      const resolved = localInstant(continuation ? shiftDay(next, 1) : next, time, context.zona_horaria, 'settlement');
+      explainAdjustment(resolved.adjustment);
+      shiftedSettlement = resolved.adjustment?.rule_id === 'DST_NONEXISTENT_LOCAL_TIME_SHIFTED';
+      settlementWindow = windowForDay(next, rules, context.zona_horaria);
+      settlementWindow.adjustments.forEach(explainAdjustment);
+      settlementTime = Math.max(resolved.epoch, settlementWindow.opening);
       add('T1_NEXT_BUSINESS_DAY', 'settlement', 'T1', next, 'RESTRICCION', 'ESPERAR_LIQUIDACION_T1');
     } catch (error) { add(error.code, 'settlement', 'T1', local.day, 'BLOQUEO'); settlementTime = null; }
   }
-  if (rules.hora_inicio && settlementTime !== null) {
-    const start = localParts(settlementTime, context.zona_horaria);
-    if (start.time < `${rules.hora_inicio.value}:00`) {
-      try { settlementTime = localInstant(start.day, `${rules.hora_inicio.value}:00`, context.zona_horaria); }
-      catch (error) { add(error.code, 'hora_inicio', rules.hora_inicio.value, start.day, 'BLOQUEO'); settlementTime = null; }
-    }
-  }
+  if (settlementTime !== null && settlementTime > settlementWindow.closing && (context.settlement === 'T0' || shiftedSettlement))
+    add('AFTER_CUTOFF', 'cutoff', rules.cutoff.value, new Date(settlementTime).toISOString(), 'BLOQUEO');
   if (rules.minutos_acreditacion && settlementTime !== null) {
     const etaEpoch = settlementTime + rules.minutos_acreditacion.value * 60000;
     check(Number.isFinite(etaEpoch) && Number.isFinite(new Date(etaEpoch).getTime()), 'INVALID_ETA');
@@ -273,13 +313,13 @@ function evaluate(state, assignment, context, monetaryState, proposed) {
   } else if (!rules.minutos_acreditacion && context.fecha_hora_objetivo) {
     add('ACCREDITATION_TIME_REQUIRED', 'minutos_acreditacion', null, context.fecha_hora_objetivo, 'BLOQUEO');
   }
-  const result = { ...route, monto_propuesto: monto, fecha: local.day, fecha_hora_evaluacion: context.fecha_hora_evaluacion,
+  const result = { ...route, monto_propuesto: monto, fecha: window.day, fecha_hora_evaluacion: context.fecha_hora_evaluacion,
     zona_horaria: context.zona_horaria, tipo_ruta: context.tipo_ruta, settlement: context.settlement,
     resultado: outcome(explanations), operaciones_requeridas: ops, tramos: split, eta,
     reglas_efectivas: structuredClone(rules), explicaciones: explanations,
     alertas: explanations.map(r => ({ ...r, severidad: r.impacto })),
     acciones_requeridas: [...new Set(explanations.flatMap(r => r.accion_requerida ? [r.accion_requerida] : []))] };
-  proposed.push({ ...route, fecha: local.day, monto, operaciones: ops });
+  proposed.push({ ...route, fecha: window.day, monto, operaciones: ops });
   return result;
 }
 export function evaluateAssignmentRoute(state, assignment, context, monetaryState) {

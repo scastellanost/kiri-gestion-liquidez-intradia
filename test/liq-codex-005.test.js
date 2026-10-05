@@ -99,7 +99,9 @@ test('QA-R13 — Solo T1 ante necesidad T0 bloquea; T1 explícito calcula siguie
   const ambiguous = evaluate(configured({ minutos_acreditacion: 0 }), 25, {
     settlement: 'T1', zona_horaria: 'America/New_York', fecha_hora_evaluacion: '2026-10-31T01:30:00-04:00'
   });
-  assert.equal(ambiguous.resultado, 'BLOQUEADA'); assert.ok(has(ambiguous, 'BLOCKED_BY_FUNCTIONAL_RULE'));
+  assert.equal(ambiguous.resultado, 'VIABLE_CON_RESTRICCION');
+  assert.equal(ambiguous.eta, '2026-11-01T05:30:00.000Z');
+  assert.equal(has(ambiguous, 'DST_AMBIGUOUS_LOCAL_TIME_FIRST_OCCURRENCE').impacto, 'INFO');
 });
 test('QA-R14 — Moneda no permitida: BLOQUEADA', () => {
   assert.equal(evaluate(configured({ monedas_permitidas: ['USD'] })).resultado, 'BLOQUEADA');
@@ -232,7 +234,7 @@ test('QA-R37 — Timestamp explícito obligatorio, sin reloj del sistema', () =>
 test('QA-R38 — Cutoff inválido rechazado', () => {
   const state = initial();
   for (const cutoff of ['25:00', '17:60', '17', null]) immutableError(state, () => configure(state, { cutoff }), 'INVALID_BANK_TIME');
-  immutableError(state, () => configure(state, { hora_inicio: '23:00', cutoff: '06:00' }), 'BLOCKED_BY_FUNCTIONAL_RULE');
+  assert.doesNotThrow(() => configure(state, { hora_inicio: '23:00', cutoff: '06:00' }));
 });
 test('QA-R39 — Feriados inválidos rechazados', () => {
   const state = initial();
