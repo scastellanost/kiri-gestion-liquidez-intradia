@@ -129,8 +129,8 @@ function consumeBankCapacity(sim, evaluation) {
     moneda: evaluation.moneda, fecha: evaluation.fecha, monto: evaluation.monto_propuesto,
     operaciones: evaluation.operaciones_requeridas, estado: 'ACTIVA' });
 }
-function recordProposal(sim, company, account, amount, evaluation) {
-  company.available -= amount;
+function recordProposal(sim, company, account, amount, evaluation, intercompany) {
+  if (intercompany) company.available -= amount;
   account.capacidad_restante_postura -= amount;
   consumeBankCapacity(sim, evaluation);
 }
@@ -173,6 +173,7 @@ function plan(state, affectation_id, context, monetaryState, sim) {
   const discard = (company, account, motivo, detail = {}) => base.fuentes_descartadas.push({ empresa_fuente: company.empresa,
     ...(account ? { banco_fuente: account.banco, cuenta_fuente: account.cuenta } : {}), motivo, ...detail });
   for (let level = 1; level <= 4 && remaining > 0; level++) {
+    const intercompany = level >= 3;
     const companies = sim.companies.filter(c => (c.empresa === owner.empresa) === (level <= 2))
       .sort((a, b) => capacity(b) - capacity(a) || compare(a.empresa, b.empresa));
     for (const company of companies) {
@@ -180,7 +181,7 @@ function plan(state, affectation_id, context, monetaryState, sim) {
       if (!company.position.publicable) {
         discard(company, null, company.position.errors[0]?.code ?? 'POSITION_NOT_PUBLISHABLE'); continue;
       }
-      if (capacity(company) <= 0) { discard(company, null, 'NO_CEDIBLE_CAPACITY'); continue; }
+      if (intercompany && capacity(company) <= 0) { discard(company, null, 'NO_CEDIBLE_CAPACITY'); continue; }
       if (!company.config) { discard(company, null, 'NO_POSTURE_CONFIG'); continue; }
       const sameBank = level === 1 || level === 3;
       const banks = sameBank ? [bank] : company.config.orden_bancos.filter(b => b !== bank);
@@ -188,7 +189,7 @@ function plan(state, affectation_id, context, monetaryState, sim) {
         const ids = company.config.orden_cuentas_por_banco[sourceBank] ?? [];
         if (!ids.length) discard(company, null, 'NO_CONFIGURED_ACCOUNT_ORDER', { banco_fuente: sourceBank });
         for (const id of ids) {
-          if (remaining <= 0 || capacity(company) <= 0) break;
+          if (remaining <= 0 || (intercompany && capacity(company) <= 0)) break;
           const account = company.accounts.get(id);
           if (id === context.cuenta_destino) {
             discard(company, account, 'SAME_ACCOUNT_REQUIRES_LOCALIZATION', { capacidad_localizable_ves: account.capacidad_restante_postura }); continue;
@@ -196,7 +197,8 @@ function plan(state, affectation_id, context, monetaryState, sim) {
           if (!account.publicable || !account.elegible || account.capacidad_restante_postura <= 0) {
             discard(company, account, account.motivo_no_elegible ?? 'PHYSICAL_CAPACITY_EXHAUSTED'); continue;
           }
-          const requested = Math.min(remaining, capacity(company), account.capacidad_restante_postura);
+          const requested = Math.min(remaining, account.capacidad_restante_postura,
+            intercompany ? capacity(company) : Infinity);
           let evaluated;
           try {
             const ctx = bankingContext(state, account, context, bank, deadline);
@@ -206,8 +208,8 @@ function plan(state, affectation_id, context, monetaryState, sim) {
             discard(company, account, 'BANK_ROUTE_BLOCKED', { evaluacion: evaluated.result }); continue;
           }
           const amount = evaluated.amount; const before = company.available; const physical = account.capacidad_restante_postura;
-          requireValue(before - amount >= company.buffer, 'SOURCE_BUFFER_VIOLATION');
-          recordProposal(sim, company, account, amount, evaluated.result);
+          if (intercompany) requireValue(before - amount >= company.buffer, 'SOURCE_BUFFER_VIOLATION');
+          recordProposal(sim, company, account, amount, evaluated.result, intercompany);
           remaining -= amount;
           base.tramos.push({ nivel_cobertura: level, empresa_fuente: company.empresa, banco_fuente: sourceBank,
             cuenta_fuente: id, empresa_destino: owner.empresa, banco_destino: bank,
