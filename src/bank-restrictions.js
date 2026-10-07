@@ -217,6 +217,16 @@ function nextBusinessDay(day, rules) {
   for (let i = 0; i < limit; i++) { epoch += 86400000; const candidate = new Date(epoch).toISOString().slice(0, 10); if (businessDay(candidate, rules)) return candidate; }
   throw new BankRestrictionError('NO_BUSINESS_DAY_AVAILABLE');
 }
+// Shared calendar for obligations whose value date belongs to the negotiating bank.
+export function getBankValueDate(state, selectors, negotiatedAt, zone) {
+  timestamp(negotiatedAt); check(text(zone), 'TIME_ZONE_REQUIRED');
+  try { localParts(Date.parse(negotiatedAt), zone); } catch { throw new BankRestrictionError('INVALID_TIME_ZONE'); }
+  const rules = resolveRules(state, scope(state, selectors));
+  const window = operatingWindow(Date.parse(negotiatedAt), rules, zone);
+  return freeze({ fecha_valor: nextBusinessDay(window.day, rules), jornada_negociacion: window.day,
+    settlement_permitido: !rules.settlement || ['T1', 'BOTH'].includes(rules.settlement.value),
+    reglas_efectivas: rules, ajustes_temporales: window.adjustments });
+}
 function validateContext(context) {
   timestamp(context.fecha_hora_evaluacion); check(text(context.zona_horaria), 'TIME_ZONE_REQUIRED');
   try { localParts(Date.parse(context.fecha_hora_evaluacion), context.zona_horaria); } catch { throw new BankRestrictionError('INVALID_TIME_ZONE'); }

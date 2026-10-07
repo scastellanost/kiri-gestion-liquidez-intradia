@@ -1,5 +1,5 @@
 import { createMoney, convertMoney } from './money.js';
-import { calculateCompanyPosition } from './position.js';
+import { calculateCompanyPosition, getAffectationPending } from './position.js';
 import { buildPosture } from './posture.js';
 import { evaluateAssignmentRoute, evaluateAffectationRoute } from './bank-restrictions.js';
 
@@ -134,12 +134,13 @@ function recordProposal(sim, company, account, amount, evaluation, intercompany)
   account.capacidad_restante_postura -= amount;
   consumeBankCapacity(sim, evaluation);
 }
-function plan(state, affectation_id, context, monetaryState, sim) {
+function plan(state, affectation_id, context, monetaryState, sim, request) {
   validateContext(context);
   const affectation = state.affectations.find(a => a.affectation_id === affectation_id);
   requireValue(affectation, 'UNKNOWN_AFFECTATION_REFERENCE');
   const owner = sim.companies.find(c => c.empresa === affectation.empresa);
-  const localized = owner.posture.afectaciones.find(a => a.affectation_id === affectation_id);
+  const localized = request ? { affectation_id, empresa: affectation.empresa, asignaciones: [],
+    monto_no_localizado: request.monto_ves, errors: [] } : owner.posture.afectaciones.find(a => a.affectation_id === affectation_id);
   const base = { affectation_id, empresa_destino: affectation.empresa, moneda: 'VES',
     monto_necesario: 0, monto_cubierto: 0, residual_no_cubierto: 0, estado: 'SIN_NECESIDAD_DE_COBERTURA',
     tramos: [], fuentes_descartadas: [], explicacion_jerarquia: hierarchy.map((motivo, i) => ({ nivel: i + 1, motivo })), errors: [] };
@@ -148,10 +149,10 @@ function plan(state, affectation_id, context, monetaryState, sim) {
     return { ...base, monto_necesario: null, residual_no_cubierto: null, estado: 'SIN_COBERTURA', publicable: false,
       errors: [...owner.position.errors, ...localized.errors] };
   }
-  const bank = destination(state, affectation, context);
+  const bank = destination(state, request ? { ...affectation, banco_asignado: request.banco_destino } : affectation, context);
   base.banco_destino = bank;
   const linked = (state.needs ?? []).find(n => n.affectation_id === affectation_id && n.estado === 'ACTIVA');
-  const deadline = linked?.fecha_hora_objetivo ?? context.fecha_hora_objetivo;
+  const deadline = request ? context.fecha_hora_objetivo : linked?.fecha_hora_objetivo ?? context.fecha_hora_objetivo;
   let blockedAmount = 0;
   const perAccount = {};
   for (const assignment of localized.asignaciones) {
@@ -191,7 +192,7 @@ function plan(state, affectation_id, context, monetaryState, sim) {
         for (const id of ids) {
           if (remaining <= 0 || (intercompany && capacity(company) <= 0)) break;
           const account = company.accounts.get(id);
-          if (id === context.cuenta_destino) {
+          if (id === context.cuenta_destino && !request?.permitir_localizacion_destino) {
             discard(company, account, 'SAME_ACCOUNT_REQUIRES_LOCALIZATION', { capacidad_localizable_ves: account.capacidad_restante_postura }); continue;
           }
           if (!account.publicable || !account.elegible || account.capacidad_restante_postura <= 0) {
@@ -220,6 +221,7 @@ function plan(state, affectation_id, context, monetaryState, sim) {
             acciones_requeridas: evaluated.result.acciones_requeridas, operaciones_requeridas: evaluated.result.operaciones_requeridas,
             operaciones_bancarias: evaluated.result.tramos, moneda_operacion: evaluated.result.moneda,
             monto_operacion: evaluated.result.monto_propuesto, eta: evaluated.result.eta, motivo_seleccion: hierarchy[level - 1] });
+          if (request && id === context.cuenta_destino) base.tramos.at(-1).tipo_tramo = 'LOCALIZACION_SIN_TRANSFERENCIA';
           if (amount < requested) discard(company, account, 'BANK_CAPACITY_PARTIALLY_AVAILABLE', { monto_no_utilizable_ves: requested - amount, evaluacion: evaluated.result });
         }
       }
@@ -245,4 +247,32 @@ export function buildCoverageReport(state, empresa, context, monetaryState) {
     monto_cubierto: plans.reduce((sum, p) => sum + p.monto_cubierto, 0),
     residual_no_cubierto: plans.some(p => p.residual_no_cubierto === null) ? null : plans.reduce((sum, p) => sum + p.residual_no_cubierto, 0),
     criterios_orden: owner.posture.criterios_orden });
+}
+
+// Explicit, private-to-the-caller simulation shared by dependent planning modules.
+export const createCoverageSimulation = (state, monetaryState) => simulation(state, monetaryState);
+export function releaseCoverageAllocation(sim, affectation_id, amount = Infinity) {
+  requireValue((Number.isFinite(amount) || amount === Infinity) && amount >= 0, 'INVALID_RELEASE_AMOUNT');
+  sim.releasedAllocations ??= {};
+  let released = 0;
+  for (const company of sim.companies) {
+    const localized = company.posture.afectaciones.find(a => a.affectation_id === affectation_id);
+    if (!localized) continue;
+    for (const assignment of localized.asignaciones) {
+      const key = JSON.stringify([affectation_id, assignment.cuenta]);
+      const previous = sim.releasedAllocations[key] ?? 0;
+      const value = Math.min(amount - released, assignment.monto_asignado - previous);
+      if (value <= 0) continue;
+      company.accounts.get(assignment.cuenta).capacidad_restante_postura += value;
+      sim.releasedAllocations[key] = previous + value; released += value;
+    }
+  }
+  return released;
+}
+export function buildCoverageRequest(state, request, context, monetaryState, sim) {
+  const affectation = state.affectations.find(a => a.affectation_id === request.affectation_id);
+  requireValue(affectation, 'UNKNOWN_AFFECTATION_REFERENCE');
+  const pending = convertMoney(createMoney(getAffectationPending(affectation), affectation.currency_original), 'VES', monetaryState).amount;
+  requireValue(Number.isFinite(request.monto_ves) && request.monto_ves > 0 && request.monto_ves <= pending, 'INVALID_COVERAGE_REQUEST_AMOUNT');
+  return freeze(plan(state, request.affectation_id, context, monetaryState, sim, request));
 }
