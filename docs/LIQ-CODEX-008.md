@@ -50,18 +50,34 @@ Debe conservar:
 - bloqueado vigente;
 - liberado acumulado;
 - reasignado acumulado;
+- anulado acumulado;
 - estado;
 - trazabilidad.
+
+Los montos liberados, reasignados y anulados son conceptos distintos y no deben netearse silenciosamente entre sí.
 
 ## Regla 2 — Estados mínimos
 - ACTIVA
 - PARCIALMENTE_LIBERADA
 - LIBERADA
 - REASIGNADA
+- PARCIALMENTE_ANULADA
 - CONVERTIDA_A_COMPROMISO
 - ANULADA
 
 No inferir EJECUTADA.
+
+### Precedencia de estado
+Para evitar estados ambiguos:
+1. CONVERTIDA_A_COMPROMISO es terminal para la vida activa de la reserva.
+2. ANULADA es terminal cuando monto_bloqueado vigente = 0 por anulación y no existe conversión.
+3. PARCIALMENTE_ANULADA aplica cuando existe monto_anulado_acumulado > 0 y aún queda monto_bloqueado vigente > 0.
+4. LIBERADA aplica cuando monto_bloqueado vigente = 0 exclusivamente por liberación y no existe anulación/conversión.
+5. PARCIALMENTE_LIBERADA aplica cuando existe liberación disponible o histórica y aún queda monto_bloqueado vigente > 0, sin anulación parcial vigente como estado predominante.
+6. REASIGNADA aplica tras una reasignación/reactivación válida cuando no aplica un estado terminal o de anulación.
+7. ACTIVA aplica cuando la reserva permanece íntegramente bloqueada sin liberaciones/anulaciones previas relevantes para el estado actual.
+
+La historia completa siempre conserva los acumulados aunque el estado visible tenga una sola etiqueta.
 
 ## Regla 3 — Liberación
 Liberar reserva:
@@ -88,6 +104,9 @@ Un monto previamente liberado puede reasignarse a la misma reserva:
 
 No puede reasignarse más de lo liberado acumulado disponible.
 
+Solo puede reactivarse monto previamente LIBERADO y todavía disponible para reasignación.
+El monto ANULADO nunca es reactivable bajo la misma reserva.
+
 ## Regla 7 — Convertir reserva a compromiso
 Usar la misma afectación económica:
 - naturaleza pasa RESERVA→COMPROMISO;
@@ -96,6 +115,21 @@ Usar la misma afectación económica:
 - confirmed/reflejado debe ser 0;
 - usa la lógica de reclasificación aprobada en CODEX-003.
 
+### Decisión funcional 7A — Conversión y monto previamente liberado
+La conversión RESERVA→COMPROMISO aplica únicamente sobre el monto bloqueado vigente de la reserva.
+
+Una vez convertida:
+- la reserva queda en estado terminal CONVERTIDA_A_COMPROMISO;
+- el monto liberado previamente permanece como historia de la reserva;
+- ese monto liberado ya no puede reactivarse dentro de la misma reserva, porque la naturaleza económica activa dejó de ser RESERVA;
+- no debe sumarse automáticamente al compromiso convertido;
+- si posteriormente se desea comprometer ese monto libre, deberá existir una decisión/operación funcional posterior sobre el compromiso conforme al contrato que corresponda; CODEX-008 no debe inferirla.
+
+Error estable sugerido ante intento de reactivar después de conversión:
+`RESERVE_ALREADY_CONVERTED_TO_COMMITMENT`.
+
+Esto evita recombinar silenciosamente monto liberado con el compromiso y evita doble efecto económico.
+
 ## Regla 8 — Compromiso a reserva
 Fuera de este módulo salvo la reclasificación ya permitida por CODEX-003.
 No duplicar lógica.
@@ -103,6 +137,29 @@ No duplicar lógica.
 ## Regla 9 — Anulación
 Solo sobre monto bloqueado vigente no confirmado.
 Anulación reduce afectación según reglas existentes y conserva historia.
+
+### Decisión funcional 9A — Tratamiento del monto anulado
+El monto anulado:
+- reduce monto_bloqueado vigente;
+- aumenta `monto_anulado_acumulado`;
+- reduce el monto económico vigente de la afectación según las reglas existentes;
+- aumenta `saldo_disponible_gestion` en el importe anulado;
+- NO aumenta `monto_liberado`;
+- NO queda disponible para reasignación/reactivación dentro de la misma reserva;
+- permanece visible en la historia.
+
+Liberación y anulación no son equivalentes:
+- LIBERAR = mantener el importe existente como libre y potencialmente reasignable mientras la reserva siga viva;
+- ANULAR = extinguir definitivamente ese importe dentro de esa reserva.
+
+### Decisión funcional 9B — Estado tras anulación
+- anulación parcial con monto_bloqueado restante > 0 => PARCIALMENTE_ANULADA;
+- anulación total del monto bloqueado restante => ANULADA;
+- una reserva ANULADA no puede reactivarse;
+- un intento de reactivar después de anulación total debe rechazarse con un error estable, sugerido:
+  `RESERVE_ALREADY_CANCELLED`.
+
+Si antes hubo liberaciones, esos importes liberados permanecen en la historia, pero la anulación total del bloqueado cierra la reserva y no permite reutilizar esos liberados bajo la misma reserva.
 
 ## Regla 10 — What If
 Un escenario debe operar sobre una copia privada del estado.
@@ -203,10 +260,10 @@ QA-RSV11 — No reasignar más de liberado.
 QA-RSV12 — Saldo gestión baja al reasignar.
 QA-RSV13 — Reserva→compromiso misma afectación.
 QA-RSV14 — Conversión no cambia saldo gestión.
-QA-RSV15 — Conversión con confirmado >0 rechazada.
-QA-RSV16 — Anulación parcial.
-QA-RSV17 — Anulación total.
-QA-RSV18 — Estado correcto tras cada acción.
+QA-RSV15 — Conversión con confirmado >0 rechazada y monto liberado previo no puede reactivarse después de conversión.
+QA-RSV16 — Anulación parcial: aumenta anulado acumulado, no liberado, y estado PARCIALMENTE_ANULADA.
+QA-RSV17 — Anulación total: estado ANULADA y no reactivable.
+QA-RSV18 — Estado correcto tras cada acción y precedencia de estados.
 QA-RSV19 — Idempotencia release.
 QA-RSV20 — Conflicto idempotencia.
 QA-RSV21 — What If no muta estado.
@@ -257,6 +314,23 @@ PASS si:
 7. deuda técnica;
 8. commit en liq-codex-008;
 9. sin merge a main.
+
+## Decisiones funcionales resueltas antes del cierre
+Quedan cerrados los dos BLOCKED_BY_FUNCTIONAL_RULE reportados por Codex:
+
+1. Conversión RESERVA→COMPROMISO:
+   - convierte únicamente el monto bloqueado vigente;
+   - es terminal para la vida activa de la reserva;
+   - el monto previamente liberado permanece histórico y no puede reactivarse bajo esa reserva.
+
+2. Anulación:
+   - se registra separadamente como monto_anulado_acumulado;
+   - no se considera liberación;
+   - anulación parcial => PARCIALMENTE_ANULADA;
+   - anulación total => ANULADA;
+   - monto anulado y reserva anulada no son reactivables.
+
+No quedan pendientes estas dos decisiones.
 
 ## Estado
 LISTA PARA EJECUCIÓN.
