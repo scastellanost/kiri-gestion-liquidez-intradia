@@ -73,6 +73,14 @@ La afectación debe existir y pertenecer a una empresa válida.
 No crear otra afectación para “COMPRA_FX”.
 No descontar el monto FX nuevamente en Posición.
 
+### Decisión funcional 1A — Unicidad FX por afectación
+Se permite **un solo registro FX ACTIVO por affectation_id**.
+
+- Una misma afectación no puede tener dos FX activos simultáneos.
+- Si se necesita modificar monto, banco, fecha o atributos del FX, se actualiza el mismo registro lógico o se reemplaza de forma trazable; no se crea un segundo FX activo.
+- Si existe otro FX activo para la misma afectación: `DUPLICATE_ACTIVE_FX_FOR_AFFECTATION`.
+- Tramos parciales de negociación o cobertura pertenecen al plan/rutas del mismo FX; no crean nuevas obligaciones FX económicas.
+
 ## Regla 2 — Importe FX
 Registrar:
 - moneda_objetivo
@@ -83,6 +91,18 @@ El equivalente_ves debe derivarse del motor monetario aprobado.
 No aceptar equivalentes manuales contradictorios.
 
 Originales se preservan.
+
+### Decisión funcional 1B — Correspondencia con pendiente económico
+El FX representa **el pendiente económico completo de la afectación en ese momento**.
+
+Por tanto:
+- `equivalente_ves` derivado de `monto_divisa` debe coincidir con el pendiente económico vigente de la afectación expresado en VES;
+- no se permite que el registro FX represente un importe mayor o menor que ese pendiente;
+- si no coincide: `FX_AMOUNT_PENDING_MISMATCH`;
+- una cobertura parcial es válida como resultado del plan FX, pero no convierte al registro FX en una obligación parcial distinta;
+- si el pendiente de la afectación cambia posteriormente, el FX debe actualizarse/revalidarse antes de publicarse como vigente.
+
+No se introduce una nueva política de redondeo; se usa la representación monetaria ya aprobada por CODEX-001.
 
 ## Regla 3 — Banco negociador
 Campo obligatorio:
@@ -101,6 +121,26 @@ Campos:
 T+1 significa que la liquidación/valor ocurre en la siguiente jornada hábil aplicable al contrato de restricción/calendario.
 
 No interpretar T+1 como “mañana calendario” si es inhábil.
+
+### Decisión funcional 2 — Calendario aplicable a T+1
+La fecha valor se calcula con el **calendario efectivo del banco negociador**.
+
+Precedencia:
+1. regla específica de cuenta destino FX, si `cuenta_destino_fx` fue informada;
+2. regla empresa+banco;
+3. regla banco;
+4. ausencia de calendario configurado = no existen exclusiones adicionales conocidas; el siguiente día calendario es el siguiente día aplicable.
+
+Se reutiliza la precedencia por campo de CODEX-005/005A.
+
+La evaluación debe usar:
+- zona horaria explícita;
+- `dias_habiles_semana`;
+- `feriados`;
+- ventanas nocturnas/DST ya resueltos;
+- settlement T1 efectivo del banco negociador.
+
+La `fecha_valor` suministrada debe coincidir con la fecha calculada por estas reglas. Si contradice el calendario efectivo: `FX_VALUE_DATE_MISMATCH`.
 
 ## Regla 5 — Hora crítica
 Campo:
@@ -181,6 +221,34 @@ Si para cubrir FX se usa capacidad que estaba potencialmente disponible para otr
 - si no existe recomposición viable, no declarar la excepción aceptable.
 
 No crear movimientos reales.
+
+### Decisión funcional 3 — Datos y validación del plan de recomposición
+Por cada necesidad desplazada, la excepción temporal debe registrar como mínimo:
+- `need_id_desplazada`;
+- `monto_desplazado_ves`;
+- `fecha_hora_limite_recomposicion`.
+
+Reglas:
+- si la necesidad desplazada ya tiene `fecha_hora_objetivo`, esa fecha es el límite máximo y no puede ser ampliada por el FX;
+- si no tiene fecha objetivo, `fecha_hora_limite_recomposicion` debe venir explícita; el motor no la inventa;
+- el `monto_desplazado_ves` no puede exceder el pendiente económico de la necesidad desplazada;
+- el “cómo” se obtiene ejecutando una **simulación de cobertura CODEX-006/006A sobre la capacidad remanente después de reservar conceptualmente la capacidad usada por FX**;
+- la recomposición es `VIABLE` únicamente si esa simulación cubre el 100% del monto desplazado, respeta restricciones bancarias, llega antes o en el límite de recomposición y no crea déficit ni desplaza otra necesidad;
+- una recomposición parcial, bloqueada, sin ruta o que dependa de otra excepción no resuelta se considera `NO_VIABLE`;
+- la excepción FX solo puede quedar en `PENDIENTE_APROBACION_EXCEPCION` si la recomposición es viable;
+- sin recomposición viable, el estado debe permanecer bloqueado/no aceptable y no presentarse como excepción lista para aprobación.
+
+La salida de recomposición debe incluir:
+- need_id_desplazada;
+- monto_desplazado_ves;
+- fecha_hora_limite_recomposicion;
+- estado_recomposicion;
+- monto_recompuesto;
+- residual_recomposicion;
+- rutas_recomposicion;
+- restricciones;
+- ETA máxima;
+- explicación.
 
 ## Regla 13 — Estado FX
 Estados mínimos:
@@ -298,6 +366,10 @@ Codex puede renombrar si preserva contrato.
 ### QA-FX01 — Vínculo obligatorio
 FX sin affectation_id => ERROR.
 
+Validación complementaria obligatoria:
+- segundo FX activo para la misma afectación => DUPLICATE_ACTIVE_FX_FOR_AFFECTATION;
+- equivalente_ves distinto del pendiente económico => FX_AMOUNT_PENDING_MISMATCH.
+
 ### QA-FX02 — Afectación inexistente
 => ERROR.
 
@@ -317,7 +389,10 @@ No publicable / MISSING_EXCHANGE_RATE.
 Banco inexistente => ERROR.
 
 ### QA-FX08 — T+1 hábil
-Negociación lunes, siguiente hábil martes.
+Negociación lunes, siguiente hábil martes según calendario efectivo del banco negociador.
+
+Validación complementaria:
+- fecha_valor manual contradictoria => FX_VALUE_DATE_MISMATCH.
 
 ### QA-FX09 — T+1 con feriado
 Salta feriado correctamente.
@@ -386,10 +461,10 @@ La prioridad económica original permanece intacta.
 Expone need_id y monto desplazado.
 
 ### QA-FX31 — Recomposición obligatoria
-Si no existe plan de recomposición, excepción no queda aceptable.
+Si no existe plan de recomposición validado sobre capacidad remanente, excepción no queda aceptable.
 
 ### QA-FX32 — Recomposición viable
-Expone fecha/ruta/monto de recomposición.
+Debe cubrir 100% del monto desplazado, respetar deadline/restricciones, no crear otro desplazamiento y exponer fecha/ruta/monto de recomposición.
 
 ### QA-FX33 — No ejecución
 No modifica balances, afectaciones, postura ni reservas oficiales.
@@ -458,6 +533,14 @@ PASS si:
 7. deuda técnica;
 8. commit en liq-codex-007;
 9. sin merge a main.
+
+## Decisiones funcionales resueltas antes de implementación
+Quedan cerrados los tres BLOCKED_BY_FUNCTIONAL_RULE reportados por Codex:
+1. un solo FX activo por afectación y correspondencia exacta con el pendiente económico completo;
+2. fecha valor T+1 según calendario efectivo del banco negociador con precedencia de cuenta/empresa+banco/banco;
+3. recomposición validada por CODEX-006/006A sobre capacidad remanente y por el 100% del monto desplazado.
+
+No quedan pendientes estas tres decisiones.
 
 ## Estado
 LISTA PARA EJECUCIÓN.
