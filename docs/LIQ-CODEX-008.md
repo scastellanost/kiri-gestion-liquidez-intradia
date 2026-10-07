@@ -70,12 +70,14 @@ No inferir EJECUTADA.
 ### Precedencia de estado
 Para evitar estados ambiguos:
 1. CONVERTIDA_A_COMPROMISO es terminal para la vida activa de la reserva.
-2. ANULADA es terminal cuando monto_bloqueado vigente = 0 por anulación y no existe conversión.
+2. ANULADA es terminal únicamente cuando el monto bloqueado vigente llega a 0 porque el remanente bloqueado fue ANULADO, no simplemente porque exista anulación histórica.
 3. PARCIALMENTE_ANULADA aplica cuando existe monto_anulado_acumulado > 0 y aún queda monto_bloqueado vigente > 0.
-4. LIBERADA aplica cuando monto_bloqueado vigente = 0 exclusivamente por liberación y no existe anulación/conversión.
+4. LIBERADA aplica cuando monto_bloqueado vigente = 0 por liberación del remanente, incluso si existe una anulación parcial histórica previa.
 5. PARCIALMENTE_LIBERADA aplica cuando existe liberación disponible o histórica y aún queda monto_bloqueado vigente > 0, sin anulación parcial vigente como estado predominante.
 6. REASIGNADA aplica tras una reasignación/reactivación válida cuando no aplica un estado terminal o de anulación.
 7. ACTIVA aplica cuando la reserva permanece íntegramente bloqueada sin liberaciones/anulaciones previas relevantes para el estado actual.
+
+En el recorrido mixto, la causa de extinción del último monto bloqueado determina si el estado final es LIBERADA o ANULADA.
 
 La historia completa siempre conserva los acumulados aunque el estado visible tenga una sola etiqueta.
 
@@ -160,6 +162,28 @@ Liberación y anulación no son equivalentes:
   `RESERVE_ALREADY_CANCELLED`.
 
 Si antes hubo liberaciones, esos importes liberados permanecen en la historia, pero la anulación total del bloqueado cierra la reserva y no permite reutilizar esos liberados bajo la misma reserva.
+
+### Decisión funcional 9C — Recorrido mixto anulación parcial → liberación total del remanente
+Ejemplo:
+- reserva original = 20;
+- anulación parcial = 5;
+- bloqueado remanente = 15;
+- liberación posterior = 15.
+
+Resultado:
+- `monto_anulado_acumulado = 5`;
+- `monto_liberado = 15`;
+- `monto_bloqueado = 0`;
+- estado visible = `LIBERADA`;
+- `monto_liberado_disponible = 15`;
+- solo esos 15 liberados pueden reactivarse;
+- los 5 anulados nunca pueden reactivarse.
+
+Si luego se reasignan/reactivan parte o todo de esos 15:
+- vuelve a existir monto_bloqueado > 0;
+- como persiste `monto_anulado_acumulado > 0`, el estado visible pasa a `PARCIALMENTE_ANULADA`.
+
+Esta regla evita crear un nuevo estado y conserva la diferencia económica entre liberar y anular.
 
 ## Regla 10 — What If
 Un escenario debe operar sobre una copia privada del estado.
@@ -263,7 +287,7 @@ QA-RSV14 — Conversión no cambia saldo gestión.
 QA-RSV15 — Conversión con confirmado >0 rechazada y monto liberado previo no puede reactivarse después de conversión.
 QA-RSV16 — Anulación parcial: aumenta anulado acumulado, no liberado, y estado PARCIALMENTE_ANULADA.
 QA-RSV17 — Anulación total: estado ANULADA y no reactivable.
-QA-RSV18 — Estado correcto tras cada acción y precedencia de estados.
+QA-RSV18 — Estado correcto tras cada acción y precedencia de estados, incluyendo anulación parcial→liberación total→reactivación del monto liberado.
 QA-RSV19 — Idempotencia release.
 QA-RSV20 — Conflicto idempotencia.
 QA-RSV21 — What If no muta estado.
@@ -314,6 +338,15 @@ PASS si:
 7. deuda técnica;
 8. commit en liq-codex-008;
 9. sin merge a main.
+
+## Decisión funcional adicional resuelta
+Recorrido mixto RESERVA 20 → ANULAR 5 → LIBERAR 15:
+- estado final LIBERADA;
+- 5 permanecen anulados definitivamente;
+- 15 quedan liberados y reactivables;
+- si se reactiva alguno de esos 15, el estado vuelve a PARCIALMENTE_ANULADA mientras exista monto bloqueado.
+
+No se crea un estado nuevo.
 
 ## Decisiones funcionales resueltas antes del cierre
 Quedan cerrados los dos BLOCKED_BY_FUNCTIONAL_RULE reportados por Codex:
