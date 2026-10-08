@@ -276,3 +276,54 @@ export function buildCoverageRequest(state, request, context, monetaryState, sim
   requireValue(Number.isFinite(request.monto_ves) && request.monto_ves > 0 && request.monto_ves <= pending, 'INVALID_COVERAGE_REQUEST_AMOUNT');
   return freeze(plan(state, request.affectation_id, context, monetaryState, sim, request));
 }
+
+// Validate explicit instructions without selecting substitute accounts or moving money.
+export function validateCoverageInstructions(state, affectation_id, instructions, context, monetaryState, reservations = [], displaced = []) {
+  validateContext(context);
+  const affectation = state.affectations.find(a => a.affectation_id === affectation_id);
+  requireValue(affectation, 'UNKNOWN_AFFECTATION_REFERENCE');
+  const sim = simulation(state, monetaryState);
+  releaseCoverageAllocation(sim, affectation_id);
+  for (const item of displaced) releaseCoverageAllocation(sim, item.affectation_id, item.monto_desplazado_ves);
+  const held = new Map();
+  for (const r of reservations) {
+    const key = JSON.stringify([r.affectation_id, r.cuenta_fuente]);
+    const previous = held.get(key);
+    held.set(key, { ...r, monto_ves: (previous?.monto_ves ?? 0) + r.monto_ves });
+    const source = sim.companies.find(c => c.empresa === r.empresa_fuente);
+    requireValue(source, 'INVALID_COMPANY');
+    if (r.empresa_fuente !== r.empresa_destino) source.available -= r.monto_ves;
+  }
+  for (const r of held.values()) {
+    const source = sim.companies.find(c => c.empresa === r.empresa_fuente);
+    const account = source.accounts.get(r.cuenta_fuente);
+    requireValue(account, 'INVALID_ACCOUNT');
+    // Another obligation's posture already withholds its own localized support.
+    const overlap = r.affectation_id === affectation_id ? 0 : (source.posture.afectaciones
+      .find(a => a.affectation_id === r.affectation_id)?.asignaciones ?? [])
+      .filter(a => a.cuenta === r.cuenta_fuente).reduce((sum, a) => sum + a.monto_asignado, 0);
+    account.capacidad_restante_postura -= Math.max(0, r.monto_ves - overlap);
+  }
+  return freeze(instructions.map(instruction => {
+    const company = sim.companies.find(c => c.empresa === instruction.empresa_fuente);
+    requireValue(company?.position.publicable, 'POSITION_NOT_PUBLISHABLE');
+    const account = company.accounts.get(instruction.cuenta_fuente);
+    requireValue(account && account.banco === instruction.banco_fuente && account.elegible && account.publicable, 'INVALID_SOURCE_ACCOUNT');
+    requireValue(instruction.empresa_destino === affectation.empresa, 'DESTINATION_COMPANY_MISMATCH');
+    const bank = destination(state, { ...affectation, banco_asignado: instruction.banco_destino }, instruction);
+    const amount = instruction.monto_ves;
+    requireValue(Number.isFinite(amount) && amount > 0, 'INVALID_COVERAGE_REQUEST_AMOUNT');
+    requireValue(account.capacidad_restante_postura >= amount, 'INSUFFICIENT_PHYSICAL_CAPACITY');
+    const intercompany = company.empresa !== affectation.empresa;
+    requireValue(!intercompany || capacity(company) >= amount, 'SOURCE_BUFFER_VIOLATION');
+    const ctx = bankingContext(state, account, { ...context, settlement: instruction.settlement,
+      moneda_operacion: instruction.moneda_operacion }, bank, instruction.fecha_hora_objetivo);
+    const evaluated = evaluateAssignmentRoute(sim.bankState, { banco: account.banco, cuenta: account.cuenta,
+      moneda: 'VES', monto_asignado: amount }, ctx, monetaryState);
+    requireValue(evaluated.resultado !== 'BLOQUEADA', evaluated.explicaciones.find(e => e.impacto === 'BLOQUEO')?.rule_id ?? 'BANK_ROUTE_BLOCKED');
+    requireValue(evaluated.monto_propuesto === instruction.monto_operacion, 'MANDATE_OPERATION_AMOUNT_MISMATCH');
+    recordProposal(sim, company, account, amount, evaluated, intercompany);
+    return { ...structuredClone(instruction), restricciones: evaluated.explicaciones,
+      acciones_requeridas: evaluated.acciones_requeridas, evaluacion: evaluated };
+  }));
+}
