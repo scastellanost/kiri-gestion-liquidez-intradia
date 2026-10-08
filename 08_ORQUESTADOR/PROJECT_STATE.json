@@ -1,0 +1,35 @@
+{
+  "project_id": "KIRI_GESTION_LIQUIDEZ_INTRADIA",
+  "adoption_state": "PILOT",
+  "phase_id": "PILOT-BASELINE",
+  "subphase_id": "F1",
+  "state": "QA_PENDING",
+  "next_action": "RUN_INDEPENDENT_BASELINE_QA",
+  "owner_agent": "CHATGPT_QA",
+  "progress_pct": 35,
+  "baseline": {
+    "source_branch": "liq-codex-009",
+    "archive_branch": "archive/liquidez-baseline-liq-codex-009-20261008",
+    "pilot_branch": "pilot/liquidez-001",
+    "status": "FROZEN_AND_ARCHIVED",
+    "functional_blocks": [
+      "AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED",
+      "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"
+    ]
+  },
+  "human_gate": {
+    "required": false,
+    "status": "NOT_REQUIRED_FOR_BASELINE_QA",
+    "reason": "Inventario, archivo y QA técnico/funcional independiente del baseline son reversibles y no redefinen reglas de negocio."
+  },
+  "qa": {
+    "implementer_report": "333/333 PASS",
+    "independent": "PENDING"
+  },
+  "exceptions": [
+    "AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED",
+    "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"
+  ],
+  "blocked_by": [],
+  "updated_at": "2026-10-08"
+}
