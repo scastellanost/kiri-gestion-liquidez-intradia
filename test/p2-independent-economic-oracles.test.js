@@ -1,0 +1,17 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createState} from '../src/state.js';
+import {createPositionState,registerBalance,registerAffectation,calculateCompanyPosition} from '../src/position.js';
+import {createNeed,buildNeedQueue,reclassifyAffectation} from '../src/needs.js';
+// Oráculos independientes: resultados numéricos escritos a partir de ecuaciones económicas, no copiados del motor.
+const time=h=>'2026-10-02T'+String(h).padStart(2,'0')+':00:00Z';
+const trace=h=>({origen:'QA-INDEPENDIENTE',usuario:'revisor',fecha_hora_evento:time(h)});
+const money=createState({managedDate:'2026-10-02'});
+function start(balance=100){let s=createPositionState({empresas:['E'],bancos:['B'],cuentas:[{cuenta:'C',empresa:'E',banco:'B',monedas:['VES']}]});return registerBalance(s,{empresa:'E',banco:'B',cuenta:'C',amount_original:balance,currency_original:'VES',fecha_hora_saldo:time(8),...trace(8)},'stock');}
+function affect(s,id,amt=20,confirmed=0,nature='COMPROMISO'){return registerAffectation(s,{affectation_id:id,empresa:'E',tipo_partida:'PAGO',naturaleza_afectacion:nature,amount_original:amt,currency_original:'VES',monto_reflejado_confirmado:confirmed,operacion:'ALTA',...trace(9)},'new-'+id);}
+const position=s=>calculateCompanyPosition(s,'E',money);
+test('INDEP-01: 100 saldo, compromiso 20 reflejado 10, reserva 15 => disponible 75',()=>{let s=affect(affect(start(),'A',20,10),'R',15,0,'RESERVA');const p=position(s);assert.equal(p.saldo_bancario,100);assert.equal(p.compromisos_por_ejecutar,10);assert.equal(p.reservas_bloqueadas,15);assert.equal(p.saldo_disponible_gestion,75);});
+test('INDEP-02: 100 saldo, 130 compromiso => deficit 30 sin duplicar necesidad',()=>{let s=affect(start(),'A',130);s=createNeed(s,{need_id:'N',affectation_id:'A',prioridad_economica:'P3_NORMAL',rigidez_temporal:'R4_FLEXIBLE',...trace(10)},'n');const q=buildNeedQueue(s,'E',money);assert.equal(q.deficit,30);assert.equal(q.total_necesidad_vigente,130);assert.equal(q.necesidades_activas.length,1);});
+test('INDEP-03: saldo nuevo 150 reemplaza 100, disponible con compromiso 20 es 130',()=>{let s=affect(start(),'A');s=registerBalance(s,{empresa:'E',banco:'B',cuenta:'C',amount_original:150,currency_original:'VES',fecha_hora_saldo:time(11),...trace(11)},'stock-new');assert.equal(position(s).saldo_bancario,150);assert.equal(position(s).saldo_disponible_gestion,130);});
+test('INDEP-04: anula pendiente 5 de compromiso 20 confirmado 10 => disponible 95',()=>{let s=affect(start(),'A',20,10);s=registerAffectation(s,{affectation_id:'A',operacion:'ANULACION',monto_anulado:5,...trace(12)},'cancel');assert.equal(s.affectations[0].monto_vigente,15);assert.equal(position(s).compromisos_por_ejecutar,5);assert.equal(position(s).saldo_disponible_gestion,95);});
+test('INDEP-05: reclasificar compromiso 20 a reserva conserva disponible 80',()=>{let s=affect(start(),'A');s=reclassifyAffectation(s,{affectation_id:'A',naturaleza_destino:'RESERVA',motivo_reclasificacion:'revisión',...trace(12)},'reclass');const p=position(s);assert.equal(p.compromisos_por_ejecutar,0);assert.equal(p.reservas_bloqueadas,20);assert.equal(p.saldo_disponible_gestion,80);});
