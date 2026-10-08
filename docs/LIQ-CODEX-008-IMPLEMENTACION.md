@@ -1,7 +1,7 @@
 # LIQ-CODEX-008 — Implementación y evidencia
 
-Fecha: 2026-10-07. Rama: liq-codex-008.
-Contrato actualizado: f01320ca3f45811261955b7e90ec7477f50af9d1.
+Fecha de actualización: 2026-10-08. Rama: liq-codex-008.
+Contrato actualizado: b01f420134e028b6c4de55397099531fd6cf1e58.
 
 ## Contrato de construcción
 
@@ -39,17 +39,19 @@ Las decisiones 7A, 9A y 9B del contrato citado resuelven los dos bloqueos anteri
 
 No se conservan aquellos dos BLOCKED_BY_FUNCTIONAL_RULE.
 
-## BLOCKED_BY_FUNCTIONAL_RULE
+## Recorrido mixto resuelto y bloqueos
 
-Una consulta nueva, distinta de las anteriores: reserva 20 → anular 5 → liberar los 15 restantes. Queda bloqueado cero con anulación histórica. La precedencia define ANULADA si llega a cero por anulación y LIBERADA si llega a cero exclusivamente por liberación sin anulación; no define este recorrido mixto. Falta decidir si es terminal ANULADA o LIBERADA con sólo los 15 liberados reactivables.
+La decisión 9C, aprobada por el propietario funcional en el contrato citado y aplicada el 2026-10-08, define reserva 20 → anular 5 → liberar 15 como LIBERADA: anulado acumulado 5, liberado 15, bloqueado 0 y liberado disponible 15. Reactivar parte o todo de esos 15 produce PARCIALMENTE_ANULADA mientras haya bloqueado. Los cinco anulados nunca son reactivables.
 
-Hasta resolución, ese recorrido falla con BLOCKED_BY_FUNCTIONAL_RULE de forma atómica, sin modificar el estado. La comprobación complementaria está en QA-RSV18. No se inventa la transición ni se declara cierre funcional completo.
+Se elimina el rechazo anterior y se reutiliza la selección de estados existente. No hay estados, APIs, dependencias ni migraciones nuevas. La alternativa de tratar la anulación histórica como cierre terminal se descarta por la regla aprobada: determina el cierre la causa que elimina el último bloqueado. QA-RSV18 verifica importes, reactivación parcial/total, rechazo del importe anulado, idempotencia, disponibilidad y aislamiento What If.
+
+BLOCKED_BY_FUNCTIONAL_RULE: ninguno pendiente.
 
 ## Evidencia de QA
 
 Comando: node --test. Node.js v24.21.0.
 Resultado: 293/293 PASS; fail 0; cancelled 0; skipped 0; todo 0.
-Desglose: regresión anterior 253/253 y CODEX-008 40/40. Los 40 casos QA-RSV01 a QA-RSV40 pasan individualmente. Se verifican adicionalmente moneda USD sin alterar originales, retroactividad, entrada nula, ciclos de liberación/reasignación, persistencia terminal y rechazo no mutante del recorrido mixto pendiente.
+Desglose: regresión anterior 253/253 y CODEX-008 40/40. Los 40 casos QA-RSV01 a QA-RSV40 pasan individualmente. Se verifican adicionalmente moneda USD sin alterar originales, retroactividad, entrada nula, ciclos de liberación/reasignación, persistencia terminal y recorrido mixto aprobado en QA-RSV18.
 
 | Orden | Resultado |
 |---|---|
@@ -81,5 +83,5 @@ Desglose: regresión anterior 253/253 y CODEX-008 40/40. Los 40 casos QA-RSV01 a
 
 ## Deuda y publicación
 
-No hay deuda técnica nueva diferida identificada; queda la decisión funcional nueva indicada. La reconstrucción recorre los eventos existentes y no introduce índices persistidos; no se ha validado rendimiento con historiales de escala productiva. Se conserva la política monetaria anterior.
-La publicación se limita a liq-codex-008. No se hace merge a main. El PASS de las pruebas no sustituye la resolución de la transición mixta pendiente ni autoriza avanzar a otro módulo.
+No hay deuda técnica nueva diferida identificada. La reconstrucción recorre los eventos existentes y no introduce índices persistidos; no se ha validado rendimiento con historiales de escala productiva. Se conserva la política monetaria anterior.
+La publicación se limita a liq-codex-008. No se hace merge a main. CODEX-008 queda listo para auditoría funcional; el PASS no autoriza avanzar a Mandatos ni a otro módulo.

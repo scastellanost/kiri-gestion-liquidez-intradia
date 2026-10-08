@@ -122,7 +122,25 @@ test('QA-RSV18 - Estados respetan precedencia historica y terminal', () => {
   state = convertReserveToCommitment(state, row(undefined), 'convert'); assert.equal(view(state).estado, 'CONVERTIDA_A_COMPROMISO');
   assert.equal(view(state).monto_anulado_acumulado, 3); assert.equal(view(state).monto_liberado, 10); assert.equal(view(state).monto_reasignado, 10);
   const mixed = cancelReserve(fixture(), row(5), 'mixed-cancel'); const before = structuredClone(mixed);
-  assert.throws(() => release(mixed, 15), { code: 'BLOCKED_BY_FUNCTIONAL_RULE' }); assert.deepEqual(mixed, before);
+  const freed = release(mixed, 15); const r = view(freed);
+  assert.equal(r.estado, 'LIBERADA'); assert.equal(r.monto_anulado_acumulado, 5);
+  assert.equal(r.monto_liberado, 15); assert.equal(r.monto_bloqueado, 0); assert.equal(r.monto_liberado_disponible, 15);
+  assert.equal(position(freed).saldo_disponible_gestion, 100); assert.deepEqual(mixed, before);
+  assert.strictEqual(release(freed, 15), freed);
+  for (const amount of [1, 7, 15]) {
+    const revived = reassign(freed, amount); const current = view(revived);
+    assert.equal(current.estado, 'PARCIALMENTE_ANULADA'); assert.equal(current.monto_bloqueado, amount);
+    assert.equal(current.monto_liberado_disponible, 15 - amount); assert.equal(current.monto_anulado_acumulado, 5);
+    assert.equal(current.monto_liberado, 15); assert.equal(current.monto_reasignado, amount);
+    assert.equal(position(revived).saldo_disponible_gestion, 100 - amount);
+    assert.throws(() => reassign(revived, 16 - amount, 'excess'), { code: 'EXCESSIVE_RESERVE_REASSIGNMENT' });
+  }
+  assert.throws(() => reassign(freed, 20), { code: 'EXCESSIVE_RESERVE_REASSIGNMENT' });
+  const official = fixture(); const original = structuredClone(official);
+  const simulated = simulate(official, [action('CANCEL_RESERVE', 5), action('RELEASE_RESERVE', 15), action('REASSIGN_RESERVE', 7)]);
+  assert.equal(simulated.estado, 'VALIDO'); assert.equal(simulated.log[1].evento.after.estado, 'LIBERADA');
+  assert.equal(simulated.log[2].evento.after.estado, 'PARCIALMENTE_ANULADA'); assert.equal(simulated.despues.saldo_disponible_gestion, 93);
+  assert.deepEqual(official, original);
 });
 test('QA-RSV19 - Idempotencia release', () => {
   const state = release(fixture()); assert.strictEqual(release(state), state);

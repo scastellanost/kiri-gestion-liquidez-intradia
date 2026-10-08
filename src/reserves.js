@@ -52,7 +52,6 @@ function reserveStatus({ converted, cancelled, blocked, released, reassigned, an
   if (converted) return 'CONVERTIDA_A_COMPROMISO';
   if (cancelled) return 'ANULADA';
   if (annulled > 0 && blocked > 0) return 'PARCIALMENTE_ANULADA';
-  if (blocked === 0 && annulled > 0) throw new ReserveError('BLOCKED_BY_FUNCTIONAL_RULE');
   if (blocked === 0 && released > 0) return 'LIBERADA';
   if (blocked > 0 && released > 0) return 'PARCIALMENTE_LIBERADA';
   if (reassigned > 0) return 'REASIGNADA';
