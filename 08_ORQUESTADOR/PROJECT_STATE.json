@@ -4,9 +4,9 @@
   "phase_id": "PILOT-01",
   "subphase_id": "F1",
   "state": "READY_FOR_EXECUTION",
-  "next_action": "EXECUTE_P1_MONETARY_INTEGRITY",
+  "next_action": "EXECUTE_P2_NEEDS_AFFECTATIONS",
   "owner_agent": "CHATGPT_WORK",
-  "progress_pct": 0,
+  "progress_pct": 10,
   "baseline": {
     "source_branch": "liq-codex-009",
     "archive_branch": "archive/liquidez-baseline-liq-codex-009-20261008",
@@ -25,7 +25,10 @@
   "qa": {
     "implementer_report": "333/333 PASS",
     "independent_baseline": "PASS_CON_EXCEPCIONES",
-    "run_id": 37793543807
+    "run_id": 37793543807,
+    "p1_monetary_integrity": "VALIDATED_FOR_PILOT_WITH_EXCEPTIONS",
+    "p1_run_id": 37801087381,
+    "p1_tests": "348/348 PASS"
   },
   "exceptions": [
     "AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED",
@@ -33,13 +36,17 @@
   ],
   "blocked_by": [],
   "updated_at": "2026-10-08",
-  "last_event": "Baseline archivado y QA independiente PASS; PILOT-01/F1 iniciado.",
+  "last_event": "P1 validado y evidencia integrada con PR #2. P2 listo para ejecución controlada.",
   "evidence_refs": [
     "07_CIERRES/ARCHIVO_BASELINE_LIQ_CODEX_009_20261008.md",
     "04_INVENTARIO/BASELINE_INVENTORY_20261008.md",
     "11_RUNTIME/qa-results/PILOT_BASELINE_F1.result.json",
     "02_ORDENES/activas/PILOT_01_F1.md",
     "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/pull/1",
-    "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/actions/runs/37793543807"
+    "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/actions/runs/37793543807",
+    "11_RUNTIME/qa-results/PILOT_01_F1_P1.result.json",
+    "11_RUNTIME/qa-results/PILOT_01_F1_P1_INDEPENDENT_QA.md",
+    "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/pull/2",
+    "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/actions/runs/37801087381"
   ]
 }
