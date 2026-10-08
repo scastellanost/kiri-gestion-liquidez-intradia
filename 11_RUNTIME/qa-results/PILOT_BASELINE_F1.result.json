@@ -1,0 +1,19 @@
+{
+  "qa_request_id": "QA-LIQ-PILOT-BASELINE-F1-001",
+  "project_id": "KIRI_GESTION_LIQUIDEZ_INTRADIA",
+  "phase_id": "PILOT-BASELINE",
+  "subphase_id": "F1",
+  "status": "PASS_CON_EXCEPCIONES",
+  "run_id": 37793543807,
+  "checks": {
+    "repository_structure": "PASS",
+    "complete_regression": "PASS",
+    "no_production_integration_markers": "PASS"
+  },
+  "inherited_implementer_evidence": "333/333 PASS reported by Codex",
+  "independent_conclusion": "Baseline reproducible and technically fit to enter controlled pilot.",
+  "exceptions": [
+    "AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED",
+    "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"
+  ]
+}

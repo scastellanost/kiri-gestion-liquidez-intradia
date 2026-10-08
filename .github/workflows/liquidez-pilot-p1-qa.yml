@@ -1,0 +1,22 @@
+name: Liquidez PILOT P1 Independent QA
+on:
+  pull_request:
+    branches:
+      - pilot/liquidez-001
+    paths:
+      - 'test/pilot-p1-monetary-integrity.test.js'
+      - '.github/workflows/liquidez-pilot-p1-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-monetary-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run full regression and independent P1 cases
+        run: node --test

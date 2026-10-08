@@ -1,0 +1,45 @@
+name: Liquidez PILOT-BASELINE Independent QA
+
+on:
+  pull_request:
+    branches:
+      - archive/liquidez-baseline-liq-codex-009-20261008
+
+permissions:
+  contents: read
+
+jobs:
+  baseline-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout pilot branch
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify repository structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f package.json
+          test -d src
+          test -d test
+          test -f docs/LIQ-CODEX-009.md
+          test -f docs/LIQ-CODEX-009-IMPLEMENTACION.md
+          test -f docs/PROTOCOLO_CODEX.md
+
+      - name: Run complete regression
+        run: npm test
+
+      - name: Verify no production integrations in baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RniE 'production.?secret|real.?bank.?transfer|execute.?bank|bank.?api.?token' src; then
+            echo "Potential production integration marker found"
+            exit 1
+          fi

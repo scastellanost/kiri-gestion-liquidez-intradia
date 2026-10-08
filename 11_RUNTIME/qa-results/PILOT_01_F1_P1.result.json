@@ -1,0 +1,30 @@
+{
+  "qa_request_id": "QA-LIQ-PILOT-01-F1-P1-001",
+  "phase_id": "PILOT-01",
+  "subphase_id": "F1",
+  "block": "P1_MONETARY_INTEGRITY",
+  "verdict": "PASS_CON_EXCEPCIONES",
+  "disposition": "VALIDATED_FOR_PILOT",
+  "test_counts": {
+    "passed": 348,
+    "failed": 0,
+    "p1": 15,
+    "regression": 333
+  },
+  "run_id": 37801087381,
+  "merged_pr": 2,
+  "merge_sha": "269788909c14da1c5284e2a552977012ed9ca78f",
+  "evidence": [
+    "11_RUNTIME/qa-results/PILOT_01_F1_P1_INDEPENDENT_QA.md",
+    "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/actions/runs/37801087381"
+  ],
+  "scope_limits": [
+    "Tasa 36.50 es prueba sintética y no cotización BCV real",
+    "No se prueba importación de tipo de cambio externo, no perteneciente a P1",
+    "Revisión estática centralización de conversiones en los módulos src inspeccionados"
+  ],
+  "open_functional_blocks": [
+    "AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED",
+    "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"
+  ]
+}
