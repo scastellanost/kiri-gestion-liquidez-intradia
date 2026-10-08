@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createState} from '../src/state.js';
 import {createPositionState,registerBalance,registerAffectation,calculateCompanyPosition} from '../src/position.js';
-import {createNeed,buildNeedQueue,reclassifyAffectation} from '../src/needs.js';
+import {createNeed,buildNeedQueue,reclassifyAffectation,saveNeedState,loadNeedState} from '../src/needs.js';
 // Oráculos independientes: resultados numéricos escritos a partir de ecuaciones económicas, no copiados del motor.
 const time=h=>'2026-10-02T'+String(h).padStart(2,'0')+':00:00Z';
 const trace=h=>({origen:'QA-INDEPENDIENTE',usuario:'revisor',fecha_hora_evento:time(h)});
@@ -22,3 +22,6 @@ test('INDEP-08: reintento de alta idéntico conserva saldo y no duplica obligaci
 
 test('INDEP-09: ajuste retroactivo rechazado, compromiso conserva 20 y disponible 80',()=>{const st=affect(start(),'A');const before=structuredClone(st);assert.throws(()=>registerAffectation(st,{affectation_id:'A',operacion:'AJUSTE',monto_vigente:25,...trace(8)},'retro'),{code:'RETROACTIVE_AFFECTATION_EVENT'});assert.deepEqual(st,before);assert.equal(position(st).saldo_disponible_gestion,80);});
 test('INDEP-10: necesidad duplicada rechazada y saldo disponible sigue 80',()=>{let st=affect(start(),'A');st=createNeed(st,{need_id:'N1',affectation_id:'A',prioridad_economica:'P3_NORMAL',rigidez_temporal:'R4_FLEXIBLE',...trace(10)},'need-1');const before=structuredClone(st);assert.throws(()=>createNeed(st,{need_id:'N2',affectation_id:'A',prioridad_economica:'P3_NORMAL',rigidez_temporal:'R4_FLEXIBLE',...trace(11)},'need-2'),{code:'DUPLICATE_ACTIVE_NEED'});assert.deepEqual(st,before);assert.equal(position(st).saldo_disponible_gestion,80);});
+
+test('INDEP-11: urgencia horaria R1 precede a prioridad económica P1 flexible sin cambiar saldo',()=>{let st=affect(affect(start(),'A',20),'B',15);st=createNeed(st,{need_id:'NA',affectation_id:'A',prioridad_economica:'P1_CRITICA',rigidez_temporal:'R4_FLEXIBLE',...trace(10)},'na');st=createNeed(st,{need_id:'NB',affectation_id:'B',prioridad_economica:'P2_ALTA',rigidez_temporal:'R1_HORA_RIGIDA',fecha_hora_objetivo:time(13),...trace(10)},'nb');assert.deepEqual(buildNeedQueue(st,'E',money).necesidades_activas.map(x=>x.need_id),['NB','NA']);assert.equal(position(st).saldo_disponible_gestion,65);});
+test('INDEP-12: guardar y cargar necesidades mantiene saldo, trazabilidad e identidad de operaciones',()=>{let st=affect(start(),'A',20);st=createNeed(st,{need_id:'NA',affectation_id:'A',prioridad_economica:'P3_NORMAL',rigidez_temporal:'R4_FLEXIBLE',...trace(10)},'na');const data=new Map();const storage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)};saveNeedState(storage,st);const restored=loadNeedState(storage);assert.deepEqual(restored,st);assert.equal(position(restored).saldo_disponible_gestion,80);assert.equal(buildNeedQueue(restored,'E',money).necesidades_activas.length,1);});
