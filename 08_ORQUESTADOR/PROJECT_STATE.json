@@ -1,12 +1,12 @@
 {
   "project_id": "KIRI_GESTION_LIQUIDEZ_INTRADIA",
   "adoption_state": "PILOT",
-  "phase_id": "PILOT-BASELINE",
+  "phase_id": "PILOT-01",
   "subphase_id": "F1",
-  "state": "QA_PENDING",
-  "next_action": "RUN_INDEPENDENT_BASELINE_QA",
-  "owner_agent": "CHATGPT_QA",
-  "progress_pct": 35,
+  "state": "READY_FOR_EXECUTION",
+  "next_action": "EXECUTE_P1_MONETARY_INTEGRITY",
+  "owner_agent": "CHATGPT_WORK",
+  "progress_pct": 0,
   "baseline": {
     "source_branch": "liq-codex-009",
     "archive_branch": "archive/liquidez-baseline-liq-codex-009-20261008",
@@ -19,17 +19,27 @@
   },
   "human_gate": {
     "required": false,
-    "status": "NOT_REQUIRED_FOR_BASELINE_QA",
-    "reason": "Inventario, archivo y QA técnico/funcional independiente del baseline son reversibles y no redefinen reglas de negocio."
+    "status": "AUTHORIZED_BY_USER",
+    "reason": "El Líder Funcional ordenó congelar el baseline, inventariar y arrancar fase piloto. Las pruebas P1-P10 son reversibles; las dos reglas funcionales abiertas no se modificarán sin decisión."
   },
   "qa": {
     "implementer_report": "333/333 PASS",
-    "independent": "PENDING"
+    "independent_baseline": "PASS_CON_EXCEPCIONES",
+    "run_id": 37793543807
   },
   "exceptions": [
     "AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED",
     "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"
   ],
   "blocked_by": [],
-  "updated_at": "2026-10-08"
+  "updated_at": "2026-10-08",
+  "last_event": "Baseline archivado y QA independiente PASS; PILOT-01/F1 iniciado.",
+  "evidence_refs": [
+    "07_CIERRES/ARCHIVO_BASELINE_LIQ_CODEX_009_20261008.md",
+    "04_INVENTARIO/BASELINE_INVENTORY_20261008.md",
+    "11_RUNTIME/qa-results/PILOT_BASELINE_F1.result.json",
+    "02_ORDENES/activas/PILOT_01_F1.md",
+    "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/pull/1",
+    "https://github.com/scastellanost/kiri-gestion-liquidez-intradia/actions/runs/37793543807"
+  ]
 }
