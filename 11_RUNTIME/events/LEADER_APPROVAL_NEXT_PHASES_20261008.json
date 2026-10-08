@@ -1,0 +1,15 @@
+{
+  "event_id": "KIRI_GLOBAL_NEXT_PHASES_APPROVAL_20261008",
+  "date": "2026-10-08",
+  "authority": "LEADER_FUNCTIONAL",
+  "decision": "APPROVE_PROGRESS_TO_NEXT_PHASE_WITH_GOVERNED_GATES",
+  "project": "scastellanost/kiri-gestion-liquidez-intradia",
+  "authorized_scope": "Autoriza continuar certificación funcional P2 y preparar P3 una vez acreditado VALIDATED_FOR_PILOT.",
+  "conditions": [
+    "P2 todavía no tiene cierre independiente exhaustivo.",
+    "Dos reglas funcionales siguen sin definición; no inferir sus parámetros."
+  ],
+  "production_release": "NOT_IMPLICITLY_AUTHORIZED",
+  "preserve_current_data_and_baselines": true,
+  "original_user_statement": "perfecto apruebo para la siguiente fase todos los proyectos."
+}
