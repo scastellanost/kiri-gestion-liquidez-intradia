@@ -1,0 +1,371 @@
+TAP version 13
+# Subtest: S02 decimal sweep: 5008 partial-final cancellations, no ghost or original mutation
+ok 1 - S02 decimal sweep: 5008 partial-final cancellations, no ghost or original mutation
+  ---
+  duration_ms: 676.528082
+  type: 'test'
+  ...
+# Subtest: S02 variable scales, exponents and explicit precision rejection
+ok 2 - S02 variable scales, exponents and explicit precision rejection
+  ---
+  duration_ms: 1.277279
+  type: 'test'
+  ...
+# Subtest: S02/S08 terminal linked commitments/reserves persist with closure and trace
+ok 3 - S02/S08 terminal linked commitments/reserves persist with closure and trace
+  ---
+  duration_ms: 3.424451
+  type: 'test'
+  ...
+# Subtest: S08 corrupt catalogues, stocks, links and identities reject atomically
+ok 4 - S08 corrupt catalogues, stocks, links and identities reject atomically
+  ---
+  duration_ms: 4.149067
+  type: 'test'
+  ...
+# Subtest: S10 all tie breakers and absent targets yield deterministic order
+ok 5 - S10 all tie breakers and absent targets yield deterministic order
+  ---
+  duration_ms: 1.144996
+  type: 'test'
+  ...
+# Subtest: S08 zero pending adjustment persists; explicit follow-up remains active
+ok 6 - S08 zero pending adjustment persists; explicit follow-up remains active
+  ---
+  duration_ms: 1.323602
+  type: 'test'
+  ...
+# Subtest: S09 sweep: 1500 balanced same-currency positions have zero deficit/gap
+ok 7 - S09 sweep: 1500 balanced same-currency positions have zero deficit/gap
+  ---
+  duration_ms: 407.43036
+  type: 'test'
+  ...
+# Subtest: S09 exact real deficits and surplus at small/large scale
+ok 8 - S09 exact real deficits and surplus at small/large scale
+  ---
+  duration_ms: 1.131348
+  type: 'test'
+  ...
+# Subtest: S09/S12 native-currency sums retain scales and explicit precision failures
+ok 9 - S09/S12 native-currency sums retain scales and explicit precision failures
+  ---
+  duration_ms: 0.970323
+  type: 'test'
+  ...
+# Subtest: S12 heterogeneous FX keeps previous conversion and binary aggregation
+ok 10 - S12 heterogeneous FX keeps previous conversion and binary aggregation
+  ---
+  duration_ms: 0.611396
+  type: 'test'
+  ...
+# Subtest: S08 balanced position persists unchanged and derives zero gap after reload
+ok 11 - S08 balanced position persists unchanged and derives zero gap after reload
+  ---
+  duration_ms: 1.073829
+  type: 'test'
+  ...
+# Subtest: S09 balanced VES position has precisely zero available, deficit and queue gap
+ok 12 - S09 balanced VES position has precisely zero available, deficit and queue gap
+  ---
+  duration_ms: 0.747748
+  type: 'test'
+  ...
+# Subtest: S09 real deficit is exactly 0.01 without residue
+ok 13 - S09 real deficit is exactly 0.01 without residue
+  ---
+  duration_ms: 0.659825
+  type: 'test'
+  ...
+# Subtest: S09 reserves do not create a phantom deficit
+ok 14 - S09 reserves do not create a phantom deficit
+  ---
+  duration_ms: 0.628448
+  type: 'test'
+  ...
+# Subtest: same-currency collection sums exactly, originals preserved
+ok 15 - same-currency collection sums exactly, originals preserved
+  ---
+  duration_ms: 0.27927
+  type: 'test'
+  ...
+# Subtest: S12 EXC05 minimal non-publicable and queue-throw reproductions
+ok 16 - S12 EXC05 minimal non-publicable and queue-throw reproductions
+  ---
+  duration_ms: 1.590591
+  type: 'test'
+  ...
+# Subtest: S12 2000 deterministic multimoneda positions retain existing FX numeric path
+ok 17 - S12 2000 deterministic multimoneda positions retain existing FX numeric path
+  ---
+  duration_ms: 886.057158
+  type: 'test'
+  ...
+# Subtest: S09/S12 unrelated FX bank does not disable native precision in selected bank
+ok 18 - S09/S12 unrelated FX bank does not disable native precision in selected bank
+  ---
+  duration_ms: 1.018052
+  type: 'test'
+  ...
+# Subtest: S08/S12 missing rate and native precision failures return controlled queue errors
+ok 19 - S08/S12 missing rate and native precision failures return controlled queue errors
+  ---
+  duration_ms: 1.33634
+  type: 'test'
+  ...
+# Subtest: S09 queue total overflow is controlled after representable native position
+ok 20 - S09 queue total overflow is controlled after representable native position
+  ---
+  duration_ms: 0.702508
+  type: 'test'
+  ...
+# Subtest: EXC06 USD 1000 balanced native positions and converted exact deficit/surplus
+ok 21 - EXC06 USD 1000 balanced native positions and converted exact deficit/surplus
+  ---
+  duration_ms: 759.445186
+  type: 'test'
+  ...
+# Subtest: EXC06 EUR 1000 balanced native positions and converted exact deficit/surplus
+ok 22 - EXC06 EUR 1000 balanced native positions and converted exact deficit/surplus
+  ---
+  duration_ms: 730.387675
+  type: 'test'
+  ...
+# Subtest: EXC06 CAD 1000 balanced native positions and converted exact deficit/surplus
+ok 23 - EXC06 CAD 1000 balanced native positions and converted exact deficit/surplus
+  ---
+  duration_ms: 750.339653
+  type: 'test'
+  ...
+# Subtest: EXC06 heterogeneous zero USD and compensated FX retain previous bits; risk recorded
+ok 24 - EXC06 heterogeneous zero USD and compensated FX retain previous bits; risk recorded
+  ---
+  duration_ms: 362.790173
+  type: 'test'
+  ...
+# {"cases_per_route":1000,"zero_USD_phantom_deficits":0,"compensated_FX_phantom_deficits":422,"status":"PENDING_FUNCTIONAL_PRECISION_DECISION_NOT_ACCEPTED"}
+# Subtest: EXC06 native precision rejection and persistence preserve controlled state
+ok 25 - EXC06 native precision rejection and persistence preserve controlled state
+  ---
+  duration_ms: 1.450782
+  type: 'test'
+  ...
+# Subtest: EXC-P2-06 VES native balance 100.10 minus 33.37 minus 66.73 has no phantom deficit
+ok 26 - EXC-P2-06 VES native balance 100.10 minus 33.37 minus 66.73 has no phantom deficit
+  ---
+  duration_ms: 0.692336
+  type: 'test'
+  ...
+# Subtest: EXC-P2-06 VES native deficit and surplus signs are retained
+ok 27 - EXC-P2-06 VES native deficit and surplus signs are retained
+  ---
+  duration_ms: 0.535223
+  type: 'test'
+  ...
+# Subtest: EXC-P2-06 USD native balance 100.10 minus 33.37 minus 66.73 has no phantom deficit
+ok 28 - EXC-P2-06 USD native balance 100.10 minus 33.37 minus 66.73 has no phantom deficit
+  ---
+  duration_ms: 0.298527
+  type: 'test'
+  ...
+# Subtest: EXC-P2-06 USD native deficit and surplus signs are retained
+ok 29 - EXC-P2-06 USD native deficit and surplus signs are retained
+  ---
+  duration_ms: 0.368665
+  type: 'test'
+  ...
+# Subtest: EXC-P2-06 EUR native balance 100.10 minus 33.37 minus 66.73 has no phantom deficit
+ok 30 - EXC-P2-06 EUR native balance 100.10 minus 33.37 minus 66.73 has no phantom deficit
+  ---
+  duration_ms: 0.364985
+  type: 'test'
+  ...
+# Subtest: EXC-P2-06 EUR native deficit and surplus signs are retained
+ok 31 - EXC-P2-06 EUR native deficit and surplus signs are retained
+  ---
+  duration_ms: 0.315239
+  type: 'test'
+  ...
+# Subtest: INDEP-01: 100 saldo, compromiso 20 reflejado 10, reserva 15 => disponible 75
+ok 32 - INDEP-01: 100 saldo, compromiso 20 reflejado 10, reserva 15 => disponible 75
+  ---
+  duration_ms: 1.092323
+  type: 'test'
+  ...
+# Subtest: INDEP-02: 100 saldo, 130 compromiso => deficit 30 sin duplicar necesidad
+ok 33 - INDEP-02: 100 saldo, 130 compromiso => deficit 30 sin duplicar necesidad
+  ---
+  duration_ms: 0.756033
+  type: 'test'
+  ...
+# Subtest: INDEP-03: saldo nuevo 150 reemplaza 100, disponible con compromiso 20 es 130
+ok 34 - INDEP-03: saldo nuevo 150 reemplaza 100, disponible con compromiso 20 es 130
+  ---
+  duration_ms: 0.356412
+  type: 'test'
+  ...
+# Subtest: INDEP-04: anula pendiente 5 de compromiso 20 confirmado 10 => disponible 95
+ok 35 - INDEP-04: anula pendiente 5 de compromiso 20 confirmado 10 => disponible 95
+  ---
+  duration_ms: 0.516056
+  type: 'test'
+  ...
+# Subtest: INDEP-05: reclasificar compromiso 20 a reserva conserva disponible 80
+ok 36 - INDEP-05: reclasificar compromiso 20 a reserva conserva disponible 80
+  ---
+  duration_ms: 0.394007
+  type: 'test'
+  ...
+# Subtest: INDEP-06: saldo histórico 70 no sustituye saldo vigente 100
+ok 37 - INDEP-06: saldo histórico 70 no sustituye saldo vigente 100
+  ---
+  duration_ms: 0.287112
+  type: 'test'
+  ...
+# Subtest: INDEP-07: rechazo de anulación superior al pendiente conserva estado
+ok 38 - INDEP-07: rechazo de anulación superior al pendiente conserva estado
+  ---
+  duration_ms: 0.474898
+  type: 'test'
+  ...
+# Subtest: INDEP-08: reintento de alta idéntico conserva saldo y no duplica obligaciones
+ok 39 - INDEP-08: reintento de alta idéntico conserva saldo y no duplica obligaciones
+  ---
+  duration_ms: 0.363871
+  type: 'test'
+  ...
+# Subtest: INDEP-09: ajuste retroactivo rechazado, compromiso conserva 20 y disponible 80
+ok 40 - INDEP-09: ajuste retroactivo rechazado, compromiso conserva 20 y disponible 80
+  ---
+  duration_ms: 0.386574
+  type: 'test'
+  ...
+# Subtest: INDEP-10: necesidad duplicada rechazada y saldo disponible sigue 80
+ok 41 - INDEP-10: necesidad duplicada rechazada y saldo disponible sigue 80
+  ---
+  duration_ms: 0.502172
+  type: 'test'
+  ...
+# Subtest: INDEP-11: urgencia horaria R1 precede a prioridad económica P1 flexible sin cambiar saldo
+ok 42 - INDEP-11: urgencia horaria R1 precede a prioridad económica P1 flexible sin cambiar saldo
+  ---
+  duration_ms: 0.606543
+  type: 'test'
+  ...
+# Subtest: INDEP-12: guardar y cargar necesidades mantiene saldo, trazabilidad e identidad de operaciones
+ok 43 - INDEP-12: guardar y cargar necesidades mantiene saldo, trazabilidad e identidad de operaciones
+  ---
+  duration_ms: 1.015002
+  type: 'test'
+  ...
+# Subtest: INDEP-13: dos necesidades simultáneas no duplican exposición ni saldo
+ok 44 - INDEP-13: dos necesidades simultáneas no duplican exposición ni saldo
+  ---
+  duration_ms: 0.599371
+  type: 'test'
+  ...
+# Subtest: INDEP-14: ajuste confirmado de 10 a 15 reduce pendiente de 10 a 5, sin cambiar originales
+ok 45 - INDEP-14: ajuste confirmado de 10 a 15 reduce pendiente de 10 a 5, sin cambiar originales
+  ---
+  duration_ms: 0.351934
+  type: 'test'
+  ...
+# Subtest: INDEP-15: reserva de 15 anulada totalmente devuelve disponible de 85 a 100
+ok 46 - INDEP-15: reserva de 15 anulada totalmente devuelve disponible de 85 a 100
+  ---
+  duration_ms: 0.32514
+  type: 'test'
+  ...
+# Subtest: INDEP-16: 36.5 VES más 1 USD con BCV 36.5 VES/USD equivale a 73 VES
+ok 47 - INDEP-16: 36.5 VES más 1 USD con BCV 36.5 VES/USD equivale a 73 VES
+  ---
+  duration_ms: 0.284314
+  type: 'test'
+  ...
+# Subtest: INDEP-17: mezcla VES USD sin tasa BCV impide consolidado publicable, sin perder originales
+ok 48 - INDEP-17: mezcla VES USD sin tasa BCV impide consolidado publicable, sin perder originales
+  ---
+  duration_ms: 0.300395
+  type: 'test'
+  ...
+# Subtest: INDEP-18: disminuir ejecución confirmada 15 a 10 se rechaza y conserva posición 95
+ok 49 - INDEP-18: disminuir ejecución confirmada 15 a 10 se rechaza y conserva posición 95
+  ---
+  duration_ms: 0.539556
+  type: 'test'
+  ...
+# Subtest: INDEP-19: alta ajuste y cancelación conservan original y derivan saldos 80,75,90
+ok 50 - INDEP-19: alta ajuste y cancelación conservan original y derivan saldos 80,75,90
+  ---
+  duration_ms: 0.456075
+  type: 'test'
+  ...
+# Subtest: INDEP-20: anulación retroactiva rechazada sin cambiar el compromiso
+ok 51 - INDEP-20: anulación retroactiva rechazada sin cambiar el compromiso
+  ---
+  duration_ms: 0.604207
+  type: 'test'
+  ...
+# Subtest: INDEP-21: batch de dos nuevos saldos es idempotente con control de conflicto
+ok 52 - INDEP-21: batch de dos nuevos saldos es idempotente con control de conflicto
+  ---
+  duration_ms: 0.343857
+  type: 'test'
+  ...
+# Subtest: decimal additions/subtractions have no phantom residue
+ok 53 - decimal additions/subtractions have no phantom residue
+  ---
+  duration_ms: 0.088877
+  type: 'test'
+  ...
+# Subtest: partial then final cancellation closes commitment exactly
+ok 54 - partial then final cancellation closes commitment exactly
+  ---
+  duration_ms: 0.416288
+  type: 'test'
+  ...
+# Subtest: multiple small cancellations leave no residue for reserves
+ok 55 - multiple small cancellations leave no residue for reserves
+  ---
+  duration_ms: 0.202779
+  type: 'test'
+  ...
+# Subtest: over-cancellation rejects without mutating state
+ok 56 - over-cancellation rejects without mutating state
+  ---
+  duration_ms: 0.264973
+  type: 'test'
+  ...
+# Subtest: persisted state with duplicate active needs is rejected
+ok 57 - persisted state with duplicate active needs is rejected
+  ---
+  duration_ms: 0.386894
+  type: 'test'
+  ...
+# Subtest: S10 precedence R1 R2 R3 R4 dominates economic priority and target date
+ok 58 - S10 precedence R1 R2 R3 R4 dominates economic priority and target date
+  ---
+  duration_ms: 0.418602
+  type: 'test'
+  ...
+# Subtest: S08 rejects negative balances and invalid reflected amount
+ok 59 - S08 rejects negative balances and invalid reflected amount
+  ---
+  duration_ms: 0.403117
+  type: 'test'
+  ...
+# Subtest: S08 rejects unparseable payload with stable error
+ok 60 - S08 rejects unparseable payload with stable error
+  ---
+  duration_ms: 0.1388
+  type: 'test'
+  ...
+1..60
+# tests 60
+# suites 0
+# pass 60
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4664.947823
