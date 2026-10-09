@@ -1,0 +1,45 @@
+{
+  "project_id": "KIRI_GESTION_LIQUIDEZ_INTRADIA",
+  "phase": "PILOT-01/F1/P2",
+  "auditor": "CLAUDE_CODE",
+  "audit_date": "2026-10-09",
+  "audited_repository": "scastellanost/kiri-gestion-liquidez-intradia",
+  "audited_branch": "qa/pilot-01-f1-p2-restart",
+  "audited_commit": "851bb5845708bc3b280fc2eeab11006f8cb1745c",
+  "src_equals_frozen_baseline": "archive/liquidez-baseline-liq-codex-009-20261008",
+  "regression": { "tests": 369, "pass": 369, "fail": 0, "ci_run": 37872413333, "ci_run_commit": "0144a799a1ed469a3fc39398270c4a703cbf1911", "ci_tree_identical_to_audited": true },
+  "auditor_harness": { "cases": 43, "pass": 39, "fail": 4 },
+  "scenarios": {
+    "S01_alta_cambios_controlados": "PASS",
+    "S02_anulacion_parcial_total": "FAIL",
+    "S03_stock_reemplazable": "PASS",
+    "S04_stock_retroactivo_historico": "PASS",
+    "S05_ajuste_anulacion_retroactiva": "PASS",
+    "S06_confirmado_no_disminuye": "PASS",
+    "S07_idempotencia": "PASS",
+    "S08_una_necesidad_activa_por_afectacion": "PASS_CON_EXCEPCIONES",
+    "S09_deficit_derivado": "PASS",
+    "S10_prioridad_rigidez_orden": "PASS_CON_EXCEPCIONES",
+    "S11_reclasificacion_sin_doble_impacto": "PASS",
+    "S12_monedas_heterogeneas": "PASS",
+    "S13_regresion_integra": "PASS"
+  },
+  "transversal": {
+    "regresion_p1": "PASS", "sin_ejecucion_bancaria": "PASS", "sin_datos_productivos": "PASS",
+    "errores_sin_mutacion": "PASS", "persistencia": "PASS_CON_EXCEPCIONES",
+    "permisos": "NO_DEMOSTRADO_FUERA_DE_CONTRATO", "simultaneidad": "NO_DEMOSTRADO_FUERA_DE_CONTRATO"
+  },
+  "exceptions_pending_functional_leader": [
+    { "id": "EXC-P2-01", "severity": "CRITICA", "scenario": "S02", "summary": "Anulación total tras parcial con decimales rechazada o con residuo ACTIVA (17.43% de muestreo 2 decimales)" },
+    { "id": "EXC-P2-02", "severity": "MEDIA", "scenario": "S08/persistencia", "summary": "loadNeedState no revalida afectaciones ni unicidad de necesidad activa" },
+    { "id": "EXC-P2-03", "severity": "SEMANTICA", "scenario": "S10", "summary": "Confirmar jerarquía R2_VENTANA_DIA antes que R3_FECHA_RIGIDA" }
+  ],
+  "functional_blocks_excluded": [
+    "AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED",
+    "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"
+  ],
+  "global_verdict": "FAIL",
+  "validated_for_pilot": false,
+  "p3_enabled": false,
+  "note": "Dictamen técnico del auditor; no acepta excepciones ni sustituye la decisión del Líder Funcional."
+}

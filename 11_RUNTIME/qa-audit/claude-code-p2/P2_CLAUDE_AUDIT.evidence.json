@@ -1,0 +1,490 @@
+{
+  "commit_auditado": "851bb5845708bc3b280fc2eeab11006f8cb1745c",
+  "bcv_sintetico": 36.5,
+  "ledger": [
+    {
+      "scenario": "S01",
+      "caso": "S01-a",
+      "entrada": "saldo 10000 VES; ALTA compromiso 100 USD",
+      "VES": {
+        "saldo": 10000,
+        "compromisos": 3650,
+        "reservas": 0,
+        "disponible": 6350,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 273.972602739726,
+        "compromisos": 100,
+        "reservas": 0,
+        "disponible": 173.97260273972603,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S01",
+      "caso": "S01-b",
+      "entrada": "AJUSTE 100→120 USD",
+      "VES": {
+        "saldo": 10000,
+        "compromisos": 4380,
+        "reservas": 0,
+        "disponible": 5620,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 273.972602739726,
+        "compromisos": 120,
+        "reservas": 0,
+        "disponible": 153.97260273972603,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-a",
+      "entrada": "saldo 100; compromiso 20 conf 10; anula 5 + 5",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 100,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-b",
+      "entrada": "saldo 100; reserva 15; anula 5 + 10",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 100,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-d 1250.3/250.1",
+      "entrada": "compromiso 1250.3 VES; anula 250.1; anula resto 1000.2",
+      "observado": {
+        "vigente_tras_parcial": 1000.1999999999999,
+        "resto_mostrado": 1000.2,
+        "error": "EXCESSIVE_OR_INVALID_CANCELLATION"
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-d 1.1/1",
+      "entrada": "compromiso 1.1 VES; anula 1; anula resto 0.1",
+      "observado": {
+        "vigente_tras_parcial": 0.10000000000000009,
+        "resto_mostrado": 0.1,
+        "estado": "ACTIVA",
+        "residuo": 8.326672684688674e-17,
+        "sin_clasificar": 1
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-d 0.3/0.1",
+      "entrada": "compromiso 0.3 VES; anula 0.1; anula resto 0.2",
+      "observado": {
+        "vigente_tras_parcial": 0.19999999999999998,
+        "resto_mostrado": 0.2,
+        "error": "EXCESSIVE_OR_INVALID_CANCELLATION"
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-a",
+      "entrada": "saldo 100 @07; saldo 90 @10",
+      "VES": {
+        "saldo": 90,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 90,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.4657534246575343,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.4657534246575343,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-b reflejado",
+      "entrada": "saldo 100, comp 20; saldo 90 + conf 10",
+      "VES": {
+        "saldo": 90,
+        "compromisos": 10,
+        "reservas": 0,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.4657534246575343,
+        "compromisos": 0.273972602739726,
+        "reservas": 0,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-b no inferir",
+      "entrada": "saldo 100, comp 20; saldo 80 sin conf",
+      "VES": {
+        "saldo": 80,
+        "compromisos": 20,
+        "reservas": 0,
+        "disponible": 60,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.191780821917808,
+        "compromisos": 0.547945205479452,
+        "reservas": 0,
+        "disponible": 1.643835616438356,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-c",
+      "entrada": "BNC 70 VES + BDV 30 VES + BNC 10→12 USD",
+      "VES": {
+        "saldo": 538,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 538,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 14.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 14.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S04",
+      "caso": "S04-a",
+      "entrada": "vigente 100 @12; llega 90 @10",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 100,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S05",
+      "caso": "S05-a",
+      "entrada": "comp 20 → ajuste 25 @11; intentos retroactivos @10:59Z, @09:00Z y @06:59-04:00 (=10:59Z)",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 25,
+        "reservas": 0,
+        "disponible": 75,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.684931506849315,
+        "reservas": 0,
+        "disponible": 2.0547945205479454,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S06",
+      "caso": "S06-a",
+      "entrada": "comp 20 conf 15; intento 15→10 rechazado; 15→18 aceptado",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 2,
+        "reservas": 0,
+        "disponible": 98,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.0547945205479452,
+        "reservas": 0,
+        "disponible": 2.684931506849315,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S07",
+      "caso": "S07-a",
+      "entrada": "lote-1 aplicado 2 veces",
+      "VES": {
+        "saldo": 150,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 150,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 4.109589041095891,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 4.109589041095891,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S07",
+      "caso": "S07-b",
+      "entrada": "ALTA 20, ANULACION 5 y CREATE_NEED repetidos",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 15,
+        "reservas": 0,
+        "disponible": 85,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.410958904109589,
+        "reservas": 0,
+        "disponible": 2.328767123287671,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S08",
+      "caso": "S08-a",
+      "entrada": "A1 20; N1 vinculada; N2/N3 rechazadas",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 20,
+        "reservas": 0,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.547945205479452,
+        "reservas": 0,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      },
+      "cola": {
+        "activas": 1,
+        "sin_vinculo": 1
+      }
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-08",
+      "observado": {
+        "error": null,
+        "activas": [
+          "N1",
+          "N1-BIS"
+        ],
+        "disponible": 150
+      }
+    },
+    {
+      "scenario": "S09",
+      "caso": "S09-a",
+      "entrada": "saldo 100; comp 80; reserva 50",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 80,
+        "reservas": 50,
+        "disponible": -30,
+        "deficit": 30
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 2.191780821917808,
+        "reservas": 1.36986301369863,
+        "disponible": -0.821917808219178,
+        "deficit": 0.821917808219178
+      }
+    },
+    {
+      "scenario": "S10",
+      "caso": "S10-a",
+      "orden": [
+        "NC",
+        "NH",
+        "NF",
+        "NG",
+        "NB",
+        "NE",
+        "ND",
+        "NA"
+      ],
+      "criterios": [
+        "rigidez_temporal",
+        "fecha_hora_objetivo",
+        "prioridad_economica",
+        "fecha_hora_evento",
+        "need_id"
+      ],
+      "VES": {
+        "saldo": 1000,
+        "compromisos": 80,
+        "reservas": 0,
+        "disponible": 920,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 27.397260273972602,
+        "compromisos": 2.191780821917808,
+        "reservas": 0,
+        "disponible": 25.205479452054796,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S11",
+      "caso": "S11-a C→R",
+      "entrada": "saldo 100; comp 20 → reserva",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 20,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0.547945205479452,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S11",
+      "caso": "S11-a R→C",
+      "entrada": "reserva 20 → compromiso",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 20,
+        "reservas": 0,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.547945205479452,
+        "reservas": 0,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S11",
+      "caso": "S11-b",
+      "entrada": "saldo 1000 VES; comp 10 USD → reserva",
+      "VES": {
+        "saldo": 1000,
+        "compromisos": 0,
+        "reservas": 365,
+        "disponible": 635,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 27.397260273972602,
+        "compromisos": 0,
+        "reservas": 10,
+        "disponible": 17.397260273972602,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S12",
+      "caso": "S12-a",
+      "entrada": "saldo 3650 VES + 100 USD; comp 50 USD",
+      "VES": {
+        "saldo": 7300,
+        "compromisos": 1825,
+        "reservas": 0,
+        "disponible": 5475,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 200,
+        "compromisos": 50,
+        "reservas": 0,
+        "disponible": 150,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S12",
+      "caso": "S12-b",
+      "entrada": "saldo 1000 VES; reserva 10 EUR; sin EUR_VES → no publicable; con EUR_VES=40 → 400 VES",
+      "con_tasa_EUR": {
+        "reservas": 400,
+        "disponible": 600
+      }
+    },
+    {
+      "scenario": "S13",
+      "caso": "S13",
+      "regresion": {
+        "tests": 369,
+        "pass": 369,
+        "fail": 0,
+        "skipped": 0,
+        "todo": 0,
+        "cancelled": 0
+      },
+      "exit": 0
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-X03",
+      "observado": {
+        "w1_vigente": 5,
+        "w2_vigente": 5,
+        "nota": "motor puro sin token de versión; la serialización corresponde al llamador"
+      }
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-X04",
+      "observado": {
+        "reserva_conf_bloqueado": 20,
+        "anula_15_de_20_conf_10": "INVALID_CONFIRMED_AMOUNT",
+        "alta_vigente_0_estado": "ACTIVA"
+      }
+    }
+  ]
+}
