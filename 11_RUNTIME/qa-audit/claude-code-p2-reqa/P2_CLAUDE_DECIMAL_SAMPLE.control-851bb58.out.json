@@ -1,0 +1,47 @@
+{
+  "casos": 5008,
+  "rechazados": 674,
+  "residuo_activo": 199,
+  "tasa_defecto": 0.1743,
+  "ejemplos": [
+    {
+      "T": 10.98,
+      "f": 10.01,
+      "rest": 0.97,
+      "tipo": "RESIDUO_ACTIVO",
+      "residuo": 6.661338147750939e-16
+    },
+    {
+      "T": 20.95,
+      "f": 0.1,
+      "rest": 20.85,
+      "tipo": "EXCESSIVE_OR_INVALID_CANCELLATION"
+    },
+    {
+      "T": 20.95,
+      "f": 1.1,
+      "rest": 19.85,
+      "tipo": "EXCESSIVE_OR_INVALID_CANCELLATION"
+    },
+    {
+      "T": 30.92,
+      "f": 10.01,
+      "rest": 20.91,
+      "tipo": "RESIDUO_ACTIVO",
+      "residuo": 3.552713678800501e-15
+    },
+    {
+      "T": 40.89,
+      "f": 10.01,
+      "rest": 30.88,
+      "tipo": "RESIDUO_ACTIVO",
+      "residuo": 3.552713678800501e-15
+    },
+    {
+      "T": 50.86,
+      "f": 50.5,
+      "rest": 0.36,
+      "tipo": "EXCESSIVE_OR_INVALID_CANCELLATION"
+    }
+  ]
+}

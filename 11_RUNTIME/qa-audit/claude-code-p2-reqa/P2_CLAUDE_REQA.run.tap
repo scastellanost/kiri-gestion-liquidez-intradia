@@ -1,0 +1,437 @@
+TAP version 13
+# Subtest: S01-a ALTA conserva identificador, originales y trazabilidad (USD → VES/USD)
+ok 1 - S01-a ALTA conserva identificador, originales y trazabilidad (USD → VES/USD)
+  ---
+  duration_ms: 7.498078
+  type: 'test'
+  ...
+# Subtest: S01-b AJUSTE gobernado conserva id/originales y no crea segundo registro
+ok 2 - S01-b AJUSTE gobernado conserva id/originales y no crea segundo registro
+  ---
+  duration_ms: 1.006534
+  type: 'test'
+  ...
+# Subtest: S01-c Cambios a campos inmutables se rechazan sin mutación
+ok 3 - S01-c Cambios a campos inmutables se rechazan sin mutación
+  ---
+  duration_ms: 2.299233
+  type: 'test'
+  ...
+# Subtest: S01-d Validaciones de alta/referencia: sin mutación, preview no muta
+ok 4 - S01-d Validaciones de alta/referencia: sin mutación, preview no muta
+  ---
+  duration_ms: 3.27136
+  type: 'test'
+  ...
+# Subtest: S01-e AJUSTE de vigente por debajo de lo confirmado se rechaza
+ok 5 - S01-e AJUSTE de vigente por debajo de lo confirmado se rechaza
+  ---
+  duration_ms: 0.68748
+  type: 'test'
+  ...
+# Subtest: S02-a Compromiso 20/conf 10: anula 5 → pend 5 ACTIVA; anula 5 → ANULADA; confirmado intacto
+ok 6 - S02-a Compromiso 20/conf 10: anula 5 → pend 5 ACTIVA; anula 5 → ANULADA; confirmado intacto
+  ---
+  duration_ms: 0.822621
+  type: 'test'
+  ...
+# Subtest: S02-b Reserva 15: anula 5 → 10 ACTIVA; anula 10 → 0 ANULADA
+ok 7 - S02-b Reserva 15: anula 5 → 10 ACTIVA; anula 10 → 0 ANULADA
+  ---
+  duration_ms: 0.857883
+  type: 'test'
+  ...
+# Subtest: S02-c No exceder pendiente; montos inválidos; anular ANULADA
+ok 8 - S02-c No exceder pendiente; montos inválidos; anular ANULADA
+  ---
+  duration_ms: 1.508234
+  type: 'test'
+  ...
+# Subtest: S02-d Anulación total tras parcial con decimales: 1250.3 VES, anula 250.1 y luego el resto 1000.20
+ok 9 - S02-d Anulación total tras parcial con decimales: 1250.3 VES, anula 250.1 y luego el resto 1000.20
+  ---
+  duration_ms: 1.498057
+  type: 'test'
+  ...
+# Subtest: S02-d Anulación total tras parcial con decimales: 1.1 VES, anula 1 y luego el resto 0.10
+ok 10 - S02-d Anulación total tras parcial con decimales: 1.1 VES, anula 1 y luego el resto 0.10
+  ---
+  duration_ms: 1.022193
+  type: 'test'
+  ...
+# Subtest: S02-d Anulación total tras parcial con decimales: 0.3 VES, anula 0.1 y luego el resto 0.20
+ok 11 - S02-d Anulación total tras parcial con decimales: 0.3 VES, anula 0.1 y luego el resto 0.20
+  ---
+  duration_ms: 0.805258
+  type: 'test'
+  ...
+# Subtest: S03-a Nueva observación reemplaza stock (100 → 90 = 90, no 190); historial técnico
+ok 12 - S03-a Nueva observación reemplaza stock (100 → 90 = 90, no 190); historial técnico
+  ---
+  duration_ms: 0.506081
+  type: 'test'
+  ...
+# Subtest: S03-b Ejemplo rector 002: no doble descuento y no inferir ejecución
+ok 13 - S03-b Ejemplo rector 002: no doble descuento y no inferir ejecución
+  ---
+  duration_ms: 1.132312
+  type: 'test'
+  ...
+# Subtest: S03-c Stock por moneda y por cuenta; multi-banco suma 70+30; reemplazo USD
+ok 14 - S03-c Stock por moneda y por cuenta; multi-banco suma 70+30; reemplazo USD
+  ---
+  duration_ms: 0.766005
+  type: 'test'
+  ...
+# Subtest: S03-d Duplicado conflictivo en lote se rechaza sin mutación
+ok 15 - S03-d Duplicado conflictivo en lote se rechaza sin mutación
+  ---
+  duration_ms: 0.45276
+  type: 'test'
+  ...
+# Subtest: S03-e Cuenta inexistente / de otra empresa / moneda no habilitada
+ok 16 - S03-e Cuenta inexistente / de otra empresa / moneda no habilitada
+  ---
+  duration_ms: 1.331328
+  type: 'test'
+  ...
+# Subtest: S04-a Saldo 90 de 10:00 tras vigente 100 de 12:00: vigente 100, histórico conserva 90
+ok 17 - S04-a Saldo 90 de 10:00 tras vigente 100 de 12:00: vigente 100, histórico conserva 90
+  ---
+  duration_ms: 0.371428
+  type: 'test'
+  ...
+# Subtest: S04-b Retroactividad con zona horaria explícita (-04:00) se evalúa por instante
+ok 18 - S04-b Retroactividad con zona horaria explícita (-04:00) se evalúa por instante
+  ---
+  duration_ms: 0.268425
+  type: 'test'
+  ...
+# Subtest: S04-c Mismo timestamp: monto distinto = error sin mutación; mismo monto = sin cambio
+ok 19 - S04-c Mismo timestamp: monto distinto = error sin mutación; mismo monto = sin cambio
+  ---
+  duration_ms: 0.497575
+  type: 'test'
+  ...
+# Subtest: S05-a AJUSTE y ANULACION retroactivos: RETROACTIVE_AFFECTATION_EVENT sin mutación
+ok 20 - S05-a AJUSTE y ANULACION retroactivos: RETROACTIVE_AFFECTATION_EVENT sin mutación
+  ---
+  duration_ms: 1.103812
+  type: 'test'
+  ...
+# Subtest: S05-b Lote con un registro retroactivo es atómico: nada se aplica
+ok 21 - S05-b Lote con un registro retroactivo es atómico: nada se aplica
+  ---
+  duration_ms: 0.628898
+  type: 'test'
+  ...
+# Subtest: S06-a Disminuir confirmado vía AJUSTE: CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED; aumentar permitido
+ok 22 - S06-a Disminuir confirmado vía AJUSTE: CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED; aumentar permitido
+  ---
+  duration_ms: 0.805167
+  type: 'test'
+  ...
+# Subtest: S06-b Ni ANULACION ni reclasificación COMPROMISO→RESERVA reducen confirmado
+ok 23 - S06-b Ni ANULACION ni reclasificación COMPROMISO→RESERVA reducen confirmado
+  ---
+  duration_ms: 0.567275
+  type: 'test'
+  ...
+# Subtest: S07-a batch_id repetido: misma referencia de estado, sin eventos nuevos; payload distinto: conflicto
+ok 24 - S07-a batch_id repetido: misma referencia de estado, sin eventos nuevos; payload distinto: conflicto
+  ---
+  duration_ms: 0.656839
+  type: 'test'
+  ...
+# Subtest: S07-b request_id repetido en ALTA, ANULACION y CREATE_NEED no duplica efectos
+ok 25 - S07-b request_id repetido en ALTA, ANULACION y CREATE_NEED no duplica efectos
+  ---
+  duration_ms: 1.623869
+  type: 'test'
+  ...
+# Subtest: S07-c Idempotencia se conserva tras persistir y recargar
+ok 26 - S07-c Idempotencia se conserva tras persistir y recargar
+  ---
+  duration_ms: 1.511011
+  type: 'test'
+  ...
+# Subtest: S08-a Segunda necesidad (create o link) para la misma afectación: DUPLICATE_ACTIVE_NEED
+ok 27 - S08-a Segunda necesidad (create o link) para la misma afectación: DUPLICATE_ACTIVE_NEED
+  ---
+  duration_ms: 1.668306
+  type: 'test'
+  ...
+# Subtest: S08-b Afectación anulada cierra la necesidad y no admite una nueva
+ok 28 - S08-b Afectación anulada cierra la necesidad y no admite una nueva
+  ---
+  duration_ms: 1.033823
+  type: 'test'
+  ...
+# Subtest: OBS-08 (EXC-P2-02) Persistencia: loadNeedState debe rechazar estado almacenado que viola invariantes
+ok 29 - OBS-08 (EXC-P2-02) Persistencia: loadNeedState debe rechazar estado almacenado que viola invariantes
+  ---
+  duration_ms: 0.785193
+  type: 'test'
+  ...
+# Subtest: S09-a Déficit = max(0,-disponible); no crea necesidad DEFICIT; vista USD
+ok 30 - S09-a Déficit = max(0,-disponible); no crea necesidad DEFICIT; vista USD
+  ---
+  duration_ms: 1.879994
+  type: 'test'
+  ...
+# Subtest: S10-a Orden determinístico según Regla 5, independiente del orden de alta, y explicable
+ok 31 - S10-a Orden determinístico según Regla 5, independiente del orden de alta, y explicable
+  ---
+  duration_ms: 6.367813
+  type: 'test'
+  ...
+# Subtest: S10-b R1/R3 exigen objetivo; repriorización exige motivo, no es retroactiva y no altera posición
+ok 32 - S10-b R1/R3 exigen objetivo; repriorización exige motivo, no es retroactiva y no altera posición
+  ---
+  duration_ms: 2.171622
+  type: 'test'
+  ...
+# Subtest: S11-a COMPROMISO 20 ↔ RESERVA 20 mantiene disponible 80, una afectación, una necesidad
+ok 33 - S11-a COMPROMISO 20 ↔ RESERVA 20 mantiene disponible 80, una afectación, una necesidad
+  ---
+  duration_ms: 1.281922
+  type: 'test'
+  ...
+# Subtest: S11-b Reclasificación en USD conserva equivalente VES
+ok 34 - S11-b Reclasificación en USD conserva equivalente VES
+  ---
+  duration_ms: 0.534545
+  type: 'test'
+  ...
+# Subtest: S11-c Reclasificación inválida se rechaza sin mutación
+ok 35 - S11-c Reclasificación inválida se rechaza sin mutación
+  ---
+  duration_ms: 1.458761
+  type: 'test'
+  ...
+# Subtest: S12-a VES + USD con BCV consolidan en VES; vista USD equivalente
+ok 36 - S12-a VES + USD con BCV consolidan en VES; vista USD equivalente
+  ---
+  duration_ms: 0.524588
+  type: 'test'
+  ...
+# Subtest: S12-b Moneda sin tasa: posición y cola no publicables, error controlado, originales intactos
+ok 37 - S12-b Moneda sin tasa: posición y cola no publicables, error controlado, originales intactos
+  ---
+  duration_ms: 0.925161
+  type: 'test'
+  ...
+# Subtest: S12-c position.js y needs.js no implementan conversiones paralelas a money.js
+ok 38 - S12-c position.js y needs.js no implementan conversiones paralelas a money.js
+  ---
+  duration_ms: 0.365485
+  type: 'test'
+  ...
+# Subtest: S13 Regresión íntegra `node --test` en el commit auditado: 0 fallos
+ok 39 - S13 Regresión íntegra `node --test` en el commit auditado: 0 fallos
+  ---
+  duration_ms: 2912.240418
+  type: 'test'
+  ...
+# Subtest: X-01 Sin ejecución bancaria ni E/S de red/archivo en src/
+ok 40 - X-01 Sin ejecución bancaria ni E/S de red/archivo en src/
+  ---
+  duration_ms: 2.646927
+  type: 'test'
+  ...
+# Subtest: X-02 Estados devueltos son inmutables (congelados en profundidad)
+ok 41 - X-02 Estados devueltos son inmutables (congelados en profundidad)
+  ---
+  duration_ms: 0.570148
+  type: 'test'
+  ...
+# Subtest: OBS-X03 Simultaneidad: dos escrituras sobre el mismo estado base no se detectan entre sí
+ok 42 - OBS-X03 Simultaneidad: dos escrituras sobre el mismo estado base no se detectan entre sí
+  ---
+  duration_ms: 0.611236
+  type: 'test'
+  ...
+# Subtest: OBS-X04 Semántica no regulada: RESERVA con confirmado>0 en ALTA; ALTA con vigente 0
+ok 43 - OBS-X04 Semántica no regulada: RESERVA con confirmado>0 en ALTA; ALTA con vigente 0
+  ---
+  duration_ms: 0.911004
+  type: 'test'
+  ...
+# Subtest: RQ-S02-01 Ejemplos rectores EXC-P2-01 en COMPROMISO y RESERVA: total exacto, ANULADA, sin UNCLASSIFIED ni need activa
+ok 44 - RQ-S02-01 Ejemplos rectores EXC-P2-01 en COMPROMISO y RESERVA: total exacto, ANULADA, sin UNCLASSIFIED ni need activa
+  ---
+  duration_ms: 5.353935
+  type: 'test'
+  ...
+# Subtest: RQ-S02-02 Barrido exhaustivo 0,01–2,00 × cortes (2 decimales): parcial→total siempre ANULADA y vigente intermedio exacto
+ok 45 - RQ-S02-02 Barrido exhaustivo 0,01–2,00 × cortes (2 decimales): parcial→total siempre ANULADA y vigente intermedio exacto
+  ---
+  duration_ms: 1371.116068
+  type: 'test'
+  ...
+# Subtest: RQ-S02-03 Muestreo aleatorio 3 000 casos VES/USD/EUR, 2–4 decimales, 2–5 cortes, compromiso con reflejado y reserva
+ok 46 - RQ-S02-03 Muestreo aleatorio 3 000 casos VES/USD/EUR, 2–4 decimales, 2–5 cortes, compromiso con reflejado y reserva
+  ---
+  duration_ms: 998.04082
+  type: 'test'
+  ...
+# Subtest: RQ-S02-04 Fronteras: exceso mínimo (0,01 y 0,0001) rechazado sin mutación; exacto aceptado; cero/negativo/NaN rechazados
+ok 47 - RQ-S02-04 Fronteras: exceso mínimo (0,01 y 0,0001) rechazado sin mutación; exacto aceptado; cero/negativo/NaN rechazados
+  ---
+  duration_ms: 5.796986
+  type: 'test'
+  ...
+# Subtest: RQ-S02-05 Pendiente exacto en Posición (1250,30 − 250,10 reflejado = 1000,20) y en la cola
+ok 48 - RQ-S02-05 Pendiente exacto en Posición (1250,30 − 250,10 reflejado = 1000,20) y en la cola
+  ---
+  duration_ms: 0.829857
+  type: 'test'
+  ...
+# Subtest: RQ-S02-06 Idempotencia de anulación decimal: mismo request_id = misma referencia; payload distinto = IDEMPOTENCY_CONFLICT; tras recarga persiste
+ok 49 - RQ-S02-06 Idempotencia de anulación decimal: mismo request_id = misma referencia; payload distinto = IDEMPOTENCY_CONFLICT; tras recarga persiste
+  ---
+  duration_ms: 1.96988
+  type: 'test'
+  ...
+# Subtest: RQ-S02-07 FX: USD 10,10 anula 0,10 y 10,00 con BCV sintético; equivalencias VES/USD y originales intactos
+ok 50 - RQ-S02-07 FX: USD 10,10 anula 0,10 y 10,00 con BCV sintético; equivalencias VES/USD y originales intactos
+  ---
+  duration_ms: 1.222444
+  type: 'test'
+  ...
+# Subtest: RQ-S02-08 Representación no segura: rechazo explícito MONETARY_PRECISION_UNSUPPORTED sin mutación (sin redondeo silencioso)
+ok 51 - RQ-S02-08 Representación no segura: rechazo explícito MONETARY_PRECISION_UNSUPPORTED sin mutación (sin redondeo silencioso)
+  ---
+  duration_ms: 2.236006
+  type: 'test'
+  ...
+# Subtest: RQ-S09-01 Déficit exacto: saldo 0,30 con compromisos 0,10 + 0,20 ⇒ disponible 0 y déficit 0 (Regla 6)
+not ok 52 - RQ-S09-01 Déficit exacto: saldo 0,30 con compromisos 0,10 + 0,20 ⇒ disponible 0 y déficit 0 (Regla 6)
+  ---
+  duration_ms: 2.029628
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:585:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    compromisos 0.30000000000000004
+    + actual - expected
+    
+    + 0.30000000000000004
+    - 0.3
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0.3
+  actual: 0.30000000000000004
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:590:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S09-02 Muestreo 2 000 posiciones VES (2 decimales, 2–5 compromisos/reservas, saldo = suma exacta ± 0,01): déficit = oráculo exacto
+not ok 53 - RQ-S09-02 Muestreo 2 000 posiciones VES (2 decimales, 2–5 compromisos/reservas, saldo = suma exacta ± 0,01): déficit = oráculo exacto
+  ---
+  duration_ms: 474.15714
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:595:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    déficit fantasma en 286/2000: [{"saldo":24137.25,"items":[8397.53,4512.13,2811.8,8415.79],"deficit":3.637978807091713e-12,"disponible":-3.637978807091713e-12},{"saldo":21247.21,"items":[7331.39,5846.69,8069.13],"deficit":9.094947017729282e-13,"disponible":-9.094947017729282e-13},{"saldo":2446.93,"items":[718.02,259.46,1469.45],"deficit":3.979039320256561e-13,"disponible":-3.979039320256561e-13}]
+    
+    286 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 286
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:609:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S08-01 Persistencia corrupta: 32 manipulaciones ⇒ INVALID_STORED_NEED_STATE en load y en save, sin escritura ni reparación
+ok 54 - RQ-S08-01 Persistencia corrupta: 32 manipulaciones ⇒ INVALID_STORED_NEED_STATE en load y en save, sin escritura ni reparación
+  ---
+  duration_ms: 20.62669
+  type: 'test'
+  ...
+# Subtest: RQ-S08-02 Propiedad: 400 secuencias aleatorias de operaciones válidas ⇒ todo estado alcanzable se guarda, recarga idéntico y conserva ≤1 need ACTIVA por afectación
+ok 55 - RQ-S08-02 Propiedad: 400 secuencias aleatorias de operaciones válidas ⇒ todo estado alcanzable se guarda, recarga idéntico y conserva ≤1 need ACTIVA por afectación
+  ---
+  duration_ms: 2167.484029
+  type: 'test'
+  ...
+# Subtest: RQ-S08-03 Cierre atómico: anulación total cierra la need en la misma operación, con evento trazable, sin cambio económico extra; rechazo no deja cierre parcial
+ok 56 - RQ-S08-03 Cierre atómico: anulación total cierra la need en la misma operación, con evento trazable, sin cambio económico extra; rechazo no deja cierre parcial
+  ---
+  duration_ms: 1.465359
+  type: 'test'
+  ...
+# Subtest: RQ-S08-04 Pendiente 0 por reflejado total: need sin seguimiento se cierra; con seguimiento permanece en seguimiento (Regla 12)
+ok 57 - RQ-S08-04 Pendiente 0 por reflejado total: need sin seguimiento se cierra; con seguimiento permanece en seguimiento (Regla 12)
+  ---
+  duration_ms: 1.262027
+  type: 'test'
+  ...
+# Subtest: OBS-RQ-01 Reapertura tras pendiente 0: AJUSTE posterior que eleva el vigente deja la need CERRADA y la afectación como UNCLASSIFIED (base 851bb58: need ACTIVA con su prioridad)
+ok 58 - OBS-RQ-01 Reapertura tras pendiente 0: AJUSTE posterior que eleva el vigente deja la need CERRADA y la afectación como UNCLASSIFIED (base 851bb58: need ACTIVA con su prioridad)
+  ---
+  duration_ms: 0.679141
+  type: 'test'
+  ...
+# Subtest: RQ-S10-01 Jerarquía prevalece sobre fecha objetivo y prioridad: R2 sin objetivo/P4 antes que R3 con objetivo más temprano/P1
+ok 59 - RQ-S10-01 Jerarquía prevalece sobre fecha objetivo y prioridad: R2 sin objetivo/P4 antes que R3 con objetivo más temprano/P1
+  ---
+  duration_ms: 1.246755
+  type: 'test'
+  ...
+# Subtest: RQ-S10-02 Desempates sucesivos dentro de igual rigidez: objetivo (ausente al final) → prioridad → evento → need_id; zonas horarias por instante
+ok 60 - RQ-S10-02 Desempates sucesivos dentro de igual rigidez: objetivo (ausente al final) → prioridad → evento → need_id; zonas horarias por instante
+  ---
+  duration_ms: 1.683324
+  type: 'test'
+  ...
+# Subtest: RQ-S10-03 Matriz completa 4 rigideces × 4 prioridades × objetivo{temprano,tardío,ausente} (40 needs válidas), 50 permutaciones de alta: orden = oráculo e invariante
+ok 61 - RQ-S10-03 Matriz completa 4 rigideces × 4 prioridades × objetivo{temprano,tardío,ausente} (40 needs válidas), 50 permutaciones de alta: orden = oráculo e invariante
+  ---
+  duration_ms: 1779.713655
+  type: 'test'
+  ...
+# Subtest: RQ-S10-04 Repriorización R4→R1 reubica la need sin alterar posición ni naturaleza; jerarquía no reclasifica
+ok 62 - RQ-S10-04 Repriorización R4→R1 reubica la need sin alterar posición ni naturaleza; jerarquía no reclasifica
+  ---
+  duration_ms: 1.475134
+  type: 'test'
+  ...
+# Subtest: RQ-X-01 Sin efectos secundarios: lectura (posición, cola, preview, save) no muta el estado; rechazos no mutan
+ok 63 - RQ-X-01 Sin efectos secundarios: lectura (posición, cola, preview, save) no muta el estado; rechazos no mutan
+  ---
+  duration_ms: 1.473
+  type: 'test'
+  ...
+# Subtest: RQ-X-02 Superficie de cambio acotada: archivos src/ distintos del commit auditado previo limitados a money.js, position.js, needs.js
+ok 64 - RQ-X-02 Superficie de cambio acotada: archivos src/ distintos del commit auditado previo limitados a money.js, position.js, needs.js
+  ---
+  duration_ms: 5.516055
+  type: 'test'
+  ...
+1..64
+# tests 64
+# suites 0
+# pass 62
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9957.448194

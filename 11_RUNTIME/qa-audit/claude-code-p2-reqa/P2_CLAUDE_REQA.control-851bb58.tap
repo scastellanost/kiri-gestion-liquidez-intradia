@@ -1,0 +1,817 @@
+TAP version 13
+# Subtest: S01-a ALTA conserva identificador, originales y trazabilidad (USD → VES/USD)
+ok 1 - S01-a ALTA conserva identificador, originales y trazabilidad (USD → VES/USD)
+  ---
+  duration_ms: 6.749019
+  type: 'test'
+  ...
+# Subtest: S01-b AJUSTE gobernado conserva id/originales y no crea segundo registro
+ok 2 - S01-b AJUSTE gobernado conserva id/originales y no crea segundo registro
+  ---
+  duration_ms: 0.890949
+  type: 'test'
+  ...
+# Subtest: S01-c Cambios a campos inmutables se rechazan sin mutación
+ok 3 - S01-c Cambios a campos inmutables se rechazan sin mutación
+  ---
+  duration_ms: 2.280266
+  type: 'test'
+  ...
+# Subtest: S01-d Validaciones de alta/referencia: sin mutación, preview no muta
+ok 4 - S01-d Validaciones de alta/referencia: sin mutación, preview no muta
+  ---
+  duration_ms: 3.08015
+  type: 'test'
+  ...
+# Subtest: S01-e AJUSTE de vigente por debajo de lo confirmado se rechaza
+ok 5 - S01-e AJUSTE de vigente por debajo de lo confirmado se rechaza
+  ---
+  duration_ms: 0.614676
+  type: 'test'
+  ...
+# Subtest: S02-a Compromiso 20/conf 10: anula 5 → pend 5 ACTIVA; anula 5 → ANULADA; confirmado intacto
+ok 6 - S02-a Compromiso 20/conf 10: anula 5 → pend 5 ACTIVA; anula 5 → ANULADA; confirmado intacto
+  ---
+  duration_ms: 0.806663
+  type: 'test'
+  ...
+# Subtest: S02-b Reserva 15: anula 5 → 10 ACTIVA; anula 10 → 0 ANULADA
+ok 7 - S02-b Reserva 15: anula 5 → 10 ACTIVA; anula 10 → 0 ANULADA
+  ---
+  duration_ms: 0.793125
+  type: 'test'
+  ...
+# Subtest: S02-c No exceder pendiente; montos inválidos; anular ANULADA
+ok 8 - S02-c No exceder pendiente; montos inválidos; anular ANULADA
+  ---
+  duration_ms: 1.389106
+  type: 'test'
+  ...
+# Subtest: S02-d Anulación total tras parcial con decimales: 1250.3 VES, anula 250.1 y luego el resto 1000.20
+not ok 9 - S02-d Anulación total tras parcial con decimales: 1250.3 VES, anula 250.1 y luego el resto 1000.20
+  ---
+  duration_ms: 1.9786
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:143:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    anulación del resto rechazada: {"vigente_tras_parcial":1000.1999999999999,"resto_mostrado":1000.2,"error":"EXCESSIVE_OR_INVALID_CANCELLATION"}
+    + actual - expected
+    
+    + 'EXCESSIVE_OR_INVALID_CANCELLATION'
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual: 'EXCESSIVE_OR_INVALID_CANCELLATION'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:154:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: S02-d Anulación total tras parcial con decimales: 1.1 VES, anula 1 y luego el resto 0.10
+not ok 10 - S02-d Anulación total tras parcial con decimales: 1.1 VES, anula 1 y luego el resto 0.10
+  ---
+  duration_ms: 1.388548
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:143:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    afectación queda con residuo fantasma: {"vigente_tras_parcial":0.10000000000000009,"resto_mostrado":0.1,"estado":"ACTIVA","residuo":8.326672684688674e-17,"sin_clasificar":1}
+    + actual - expected
+    
+    + 'ACTIVA'
+    - 'ANULADA'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'ANULADA'
+  actual: 'ACTIVA'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:155:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: S02-d Anulación total tras parcial con decimales: 0.3 VES, anula 0.1 y luego el resto 0.20
+not ok 11 - S02-d Anulación total tras parcial con decimales: 0.3 VES, anula 0.1 y luego el resto 0.20
+  ---
+  duration_ms: 0.700674
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:143:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    anulación del resto rechazada: {"vigente_tras_parcial":0.19999999999999998,"resto_mostrado":0.2,"error":"EXCESSIVE_OR_INVALID_CANCELLATION"}
+    + actual - expected
+    
+    + 'EXCESSIVE_OR_INVALID_CANCELLATION'
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual: 'EXCESSIVE_OR_INVALID_CANCELLATION'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:154:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: S03-a Nueva observación reemplaza stock (100 → 90 = 90, no 190); historial técnico
+ok 12 - S03-a Nueva observación reemplaza stock (100 → 90 = 90, no 190); historial técnico
+  ---
+  duration_ms: 0.717498
+  type: 'test'
+  ...
+# Subtest: S03-b Ejemplo rector 002: no doble descuento y no inferir ejecución
+ok 13 - S03-b Ejemplo rector 002: no doble descuento y no inferir ejecución
+  ---
+  duration_ms: 1.055012
+  type: 'test'
+  ...
+# Subtest: S03-c Stock por moneda y por cuenta; multi-banco suma 70+30; reemplazo USD
+ok 14 - S03-c Stock por moneda y por cuenta; multi-banco suma 70+30; reemplazo USD
+  ---
+  duration_ms: 0.663134
+  type: 'test'
+  ...
+# Subtest: S03-d Duplicado conflictivo en lote se rechaza sin mutación
+ok 15 - S03-d Duplicado conflictivo en lote se rechaza sin mutación
+  ---
+  duration_ms: 0.400324
+  type: 'test'
+  ...
+# Subtest: S03-e Cuenta inexistente / de otra empresa / moneda no habilitada
+ok 16 - S03-e Cuenta inexistente / de otra empresa / moneda no habilitada
+  ---
+  duration_ms: 0.579662
+  type: 'test'
+  ...
+# Subtest: S04-a Saldo 90 de 10:00 tras vigente 100 de 12:00: vigente 100, histórico conserva 90
+ok 17 - S04-a Saldo 90 de 10:00 tras vigente 100 de 12:00: vigente 100, histórico conserva 90
+  ---
+  duration_ms: 0.408404
+  type: 'test'
+  ...
+# Subtest: S04-b Retroactividad con zona horaria explícita (-04:00) se evalúa por instante
+ok 18 - S04-b Retroactividad con zona horaria explícita (-04:00) se evalúa por instante
+  ---
+  duration_ms: 0.284913
+  type: 'test'
+  ...
+# Subtest: S04-c Mismo timestamp: monto distinto = error sin mutación; mismo monto = sin cambio
+ok 19 - S04-c Mismo timestamp: monto distinto = error sin mutación; mismo monto = sin cambio
+  ---
+  duration_ms: 1.356617
+  type: 'test'
+  ...
+# Subtest: S05-a AJUSTE y ANULACION retroactivos: RETROACTIVE_AFFECTATION_EVENT sin mutación
+ok 20 - S05-a AJUSTE y ANULACION retroactivos: RETROACTIVE_AFFECTATION_EVENT sin mutación
+  ---
+  duration_ms: 1.012618
+  type: 'test'
+  ...
+# Subtest: S05-b Lote con un registro retroactivo es atómico: nada se aplica
+ok 21 - S05-b Lote con un registro retroactivo es atómico: nada se aplica
+  ---
+  duration_ms: 0.565786
+  type: 'test'
+  ...
+# Subtest: S06-a Disminuir confirmado vía AJUSTE: CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED; aumentar permitido
+ok 22 - S06-a Disminuir confirmado vía AJUSTE: CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED; aumentar permitido
+  ---
+  duration_ms: 0.818588
+  type: 'test'
+  ...
+# Subtest: S06-b Ni ANULACION ni reclasificación COMPROMISO→RESERVA reducen confirmado
+ok 23 - S06-b Ni ANULACION ni reclasificación COMPROMISO→RESERVA reducen confirmado
+  ---
+  duration_ms: 0.62911
+  type: 'test'
+  ...
+# Subtest: S07-a batch_id repetido: misma referencia de estado, sin eventos nuevos; payload distinto: conflicto
+ok 24 - S07-a batch_id repetido: misma referencia de estado, sin eventos nuevos; payload distinto: conflicto
+  ---
+  duration_ms: 0.497886
+  type: 'test'
+  ...
+# Subtest: S07-b request_id repetido en ALTA, ANULACION y CREATE_NEED no duplica efectos
+ok 25 - S07-b request_id repetido en ALTA, ANULACION y CREATE_NEED no duplica efectos
+  ---
+  duration_ms: 1.554523
+  type: 'test'
+  ...
+# Subtest: S07-c Idempotencia se conserva tras persistir y recargar
+ok 26 - S07-c Idempotencia se conserva tras persistir y recargar
+  ---
+  duration_ms: 0.922566
+  type: 'test'
+  ...
+# Subtest: S08-a Segunda necesidad (create o link) para la misma afectación: DUPLICATE_ACTIVE_NEED
+ok 27 - S08-a Segunda necesidad (create o link) para la misma afectación: DUPLICATE_ACTIVE_NEED
+  ---
+  duration_ms: 1.467404
+  type: 'test'
+  ...
+# Subtest: S08-b Afectación anulada cierra la necesidad y no admite una nueva
+ok 28 - S08-b Afectación anulada cierra la necesidad y no admite una nueva
+  ---
+  duration_ms: 0.893949
+  type: 'test'
+  ...
+# Subtest: OBS-08 (EXC-P2-02) Persistencia: loadNeedState debe rechazar estado almacenado que viola invariantes
+not ok 29 - OBS-08 (EXC-P2-02) Persistencia: loadNeedState debe rechazar estado almacenado que viola invariantes
+  ---
+  duration_ms: 1.096841
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:297:1'
+  failureType: 'testCodeFailure'
+  error: 'estado inconsistente aceptado: activas=N1,N1-BIS disponible=150'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: ~
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:305:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: S09-a Déficit = max(0,-disponible); no crea necesidad DEFICIT; vista USD
+ok 30 - S09-a Déficit = max(0,-disponible); no crea necesidad DEFICIT; vista USD
+  ---
+  duration_ms: 1.432963
+  type: 'test'
+  ...
+# Subtest: S10-a Orden determinístico según Regla 5, independiente del orden de alta, y explicable
+ok 31 - S10-a Orden determinístico según Regla 5, independiente del orden de alta, y explicable
+  ---
+  duration_ms: 5.997644
+  type: 'test'
+  ...
+# Subtest: S10-b R1/R3 exigen objetivo; repriorización exige motivo, no es retroactiva y no altera posición
+ok 32 - S10-b R1/R3 exigen objetivo; repriorización exige motivo, no es retroactiva y no altera posición
+  ---
+  duration_ms: 6.132446
+  type: 'test'
+  ...
+# Subtest: S11-a COMPROMISO 20 ↔ RESERVA 20 mantiene disponible 80, una afectación, una necesidad
+ok 33 - S11-a COMPROMISO 20 ↔ RESERVA 20 mantiene disponible 80, una afectación, una necesidad
+  ---
+  duration_ms: 1.311537
+  type: 'test'
+  ...
+# Subtest: S11-b Reclasificación en USD conserva equivalente VES
+ok 34 - S11-b Reclasificación en USD conserva equivalente VES
+  ---
+  duration_ms: 0.676786
+  type: 'test'
+  ...
+# Subtest: S11-c Reclasificación inválida se rechaza sin mutación
+ok 35 - S11-c Reclasificación inválida se rechaza sin mutación
+  ---
+  duration_ms: 1.244147
+  type: 'test'
+  ...
+# Subtest: S12-a VES + USD con BCV consolidan en VES; vista USD equivalente
+ok 36 - S12-a VES + USD con BCV consolidan en VES; vista USD equivalente
+  ---
+  duration_ms: 0.679328
+  type: 'test'
+  ...
+# Subtest: S12-b Moneda sin tasa: posición y cola no publicables, error controlado, originales intactos
+ok 37 - S12-b Moneda sin tasa: posición y cola no publicables, error controlado, originales intactos
+  ---
+  duration_ms: 1.001858
+  type: 'test'
+  ...
+# Subtest: S12-c position.js y needs.js no implementan conversiones paralelas a money.js
+ok 38 - S12-c position.js y needs.js no implementan conversiones paralelas a money.js
+  ---
+  duration_ms: 0.479122
+  type: 'test'
+  ...
+# Subtest: S13 Regresión íntegra `node --test` en el commit auditado: 0 fallos
+not ok 39 - S13 Regresión íntegra `node --test` en el commit auditado: 0 fallos
+  ---
+  duration_ms: 1803.049822
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:416:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(summary.tests >= 383)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:422:111)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: X-01 Sin ejecución bancaria ni E/S de red/archivo en src/
+ok 40 - X-01 Sin ejecución bancaria ni E/S de red/archivo en src/
+  ---
+  duration_ms: 1.155813
+  type: 'test'
+  ...
+# Subtest: X-02 Estados devueltos son inmutables (congelados en profundidad)
+ok 41 - X-02 Estados devueltos son inmutables (congelados en profundidad)
+  ---
+  duration_ms: 0.481243
+  type: 'test'
+  ...
+# Subtest: OBS-X03 Simultaneidad: dos escrituras sobre el mismo estado base no se detectan entre sí
+ok 42 - OBS-X03 Simultaneidad: dos escrituras sobre el mismo estado base no se detectan entre sí
+  ---
+  duration_ms: 0.630093
+  type: 'test'
+  ...
+# Subtest: OBS-X04 Semántica no regulada: RESERVA con confirmado>0 en ALTA; ALTA con vigente 0
+ok 43 - OBS-X04 Semántica no regulada: RESERVA con confirmado>0 en ALTA; ALTA con vigente 0
+  ---
+  duration_ms: 0.641071
+  type: 'test'
+  ...
+# Subtest: RQ-S02-01 Ejemplos rectores EXC-P2-01 en COMPROMISO y RESERVA: total exacto, ANULADA, sin UNCLASSIFIED ni need activa
+not ok 44 - RQ-S02-01 Ejemplos rectores EXC-P2-01 en COMPROMISO y RESERVA: total exacto, ANULADA, sin UNCLASSIFIED ni need activa
+  ---
+  duration_ms: 0.728602
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:469:1'
+  failureType: 'testCodeFailure'
+  error: 'EXCESSIVE_OR_INVALID_CANCELLATION'
+  code: 'EXCESSIVE_OR_INVALID_CANCELLATION'
+  name: 'PositionError'
+  stack: |-
+    fail (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:7:40)
+    requireValue (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:8:61)
+    applyAffectations (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:154:9)
+    prepare (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:195:58)
+    Module.registerAffectation (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:208:64)
+    file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:476:36
+    Array.forEach (<anonymous>)
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:476:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  ...
+# Subtest: RQ-S02-02 Barrido exhaustivo 0,01–2,00 × cortes (2 decimales): parcial→total siempre ANULADA y vigente intermedio exacto
+not ok 45 - RQ-S02-02 Barrido exhaustivo 0,01–2,00 × cortes (2 decimales): parcial→total siempre ANULADA y vigente intermedio exacto
+  ---
+  duration_ms: 983.527647
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:488:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    [[3,1,"INTERMEDIO",0.019999999999999997],[5,4,"INTERMEDIO",0.010000000000000002],[6,1,"INTERMEDIO",0.049999999999999996],[6,4,"INTERMEDIO",0.019999999999999997],[7,1,"INTERMEDIO",0.060000000000000005]]
+    
+    3567 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 3567
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:500:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S02-03 Muestreo aleatorio 3 000 casos VES/USD/EUR, 2–4 decimales, 2–5 cortes, compromiso con reflejado y reserva
+not ok 46 - RQ-S02-03 Muestreo aleatorio 3 000 casos VES/USD/EUR, 2–4 decimales, 2–5 cortes, compromiso con reflejado y reserva
+  ---
+  duration_ms: 502.141137
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:502:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    [{"i":0,"cur":"VES","scale":2,"T":40290.29,"conf":0,"cuts":[30676.62,9613.67],"error":"INTERMEDIO 9613.670000000002≠9613.67"},{"i":1,"cur":"USD","scale":3,"T":3472.338,"conf":0,"cuts":[88.994,3221.345,161.999],"error":"INTERMEDIO 161.99900000000025≠161.999"},{"i":3,"cur":"VES","scale":2,"T":47070.27,"conf":0,"cuts":[46777.21,266.79,19.25,4.38,2.64],"error":"INTERMEDIO 293.0599999999977≠293.06"},{"i":4,"cur":"USD","scale":3,"T":4394.55,"conf":612.683,"cuts":[2874.825,907.042],"error":"INTERMEDIO 1519.7250000000004≠1519.725"},{"i":6,"cur":"VES","scale":2,"T":45007.41,"conf":0,"cuts":[41889.73,124.68,808.37,2184.63],"error":"INTERMEDIO 3117.6800000000003≠3117.68"}]
+    
+    2587 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 2587
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:525:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S02-04 Fronteras: exceso mínimo (0,01 y 0,0001) rechazado sin mutación; exacto aceptado; cero/negativo/NaN rechazados
+not ok 47 - RQ-S02-04 Fronteras: exceso mínimo (0,01 y 0,0001) rechazado sin mutación; exacto aceptado; cero/negativo/NaN rechazados
+  ---
+  duration_ms: 1.979297
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:527:1'
+  failureType: 'testCodeFailure'
+  error: 'EXCESSIVE_OR_INVALID_CANCELLATION'
+  code: 'EXCESSIVE_OR_INVALID_CANCELLATION'
+  name: 'PositionError'
+  stack: |-
+    fail (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:7:40)
+    requireValue (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:8:61)
+    applyAffectations (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:154:9)
+    prepare (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:195:58)
+    Module.registerAffectation (file://<KIRI_P2_ROOT=checkout 851bb58>/src/position.js:208:64)
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:532:16)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  ...
+# Subtest: RQ-S02-05 Pendiente exacto en Posición (1250,30 − 250,10 reflejado = 1000,20) y en la cola
+not ok 48 - RQ-S02-05 Pendiente exacto en Posición (1250,30 − 250,10 reflejado = 1000,20) y en la cola
+  ---
+  duration_ms: 1.132855
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:543:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 1000.1999999999999
+    - 1000.2
+           ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1000.2
+  actual: 1000.1999999999999
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:547:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S02-06 Idempotencia de anulación decimal: mismo request_id = misma referencia; payload distinto = IDEMPOTENCY_CONFLICT; tras recarga persiste
+not ok 49 - RQ-S02-06 Idempotencia de anulación decimal: mismo request_id = misma referencia; payload distinto = IDEMPOTENCY_CONFLICT; tras recarga persiste
+  ---
+  duration_ms: 1.324328
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:550:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'ACTIVA'
+    - 'ANULADA'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'ANULADA'
+  actual: 'ACTIVA'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:559:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S02-07 FX: USD 10,10 anula 0,10 y 10,00 con BCV sintético; equivalencias VES/USD y originales intactos
+ok 50 - RQ-S02-07 FX: USD 10,10 anula 0,10 y 10,00 con BCV sintético; equivalencias VES/USD y originales intactos
+  ---
+  duration_ms: 0.632457
+  type: 'test'
+  ...
+# Subtest: RQ-S02-08 Representación no segura: rechazo explícito MONETARY_PRECISION_UNSUPPORTED sin mutación (sin redondeo silencioso)
+not ok 51 - RQ-S02-08 Representación no segura: rechazo explícito MONETARY_PRECISION_UNSUPPORTED sin mutación (sin redondeo silencioso)
+  ---
+  duration_ms: 0.63649
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:572:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    code: 'MONETARY_PRECISION_UNSUPPORTED'
+  operator: 'throws'
+  stack: |-
+    rejects (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:57:73)
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:574:3)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S09-01 Déficit exacto: saldo 0,30 con compromisos 0,10 + 0,20 ⇒ disponible 0 y déficit 0 (Regla 6)
+not ok 52 - RQ-S09-01 Déficit exacto: saldo 0,30 con compromisos 0,10 + 0,20 ⇒ disponible 0 y déficit 0 (Regla 6)
+  ---
+  duration_ms: 0.642395
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:585:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    compromisos 0.30000000000000004
+    + actual - expected
+    
+    + 0.30000000000000004
+    - 0.3
+         ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0.3
+  actual: 0.30000000000000004
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:590:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S09-02 Muestreo 2 000 posiciones VES (2 decimales, 2–5 compromisos/reservas, saldo = suma exacta ± 0,01): déficit = oráculo exacto
+not ok 53 - RQ-S09-02 Muestreo 2 000 posiciones VES (2 decimales, 2–5 compromisos/reservas, saldo = suma exacta ± 0,01): déficit = oráculo exacto
+  ---
+  duration_ms: 364.785503
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:595:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    déficit fantasma en 286/2000: [{"saldo":24137.25,"items":[8397.53,4512.13,2811.8,8415.79],"deficit":3.637978807091713e-12,"disponible":-3.637978807091713e-12},{"saldo":21247.21,"items":[7331.39,5846.69,8069.13],"deficit":9.094947017729282e-13,"disponible":-9.094947017729282e-13},{"saldo":2446.93,"items":[718.02,259.46,1469.45],"deficit":3.979039320256561e-13,"disponible":-3.979039320256561e-13}]
+    
+    286 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 286
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:609:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S08-01 Persistencia corrupta: 32 manipulaciones ⇒ INVALID_STORED_NEED_STATE en load y en save, sin escritura ni reparación
+not ok 54 - RQ-S08-01 Persistencia corrupta: 32 manipulaciones ⇒ INVALID_STORED_NEED_STATE en load y en save, sin escritura ni reparación
+  ---
+  duration_ms: 1.266064
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:653:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    necesidad ACTIVA duplicada por afectación: load null
+    + actual - expected
+    
+    + null
+    - 'INVALID_STORED_NEED_STATE'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'INVALID_STORED_NEED_STATE'
+  actual: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:662:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S08-02 Propiedad: 400 secuencias aleatorias de operaciones válidas ⇒ todo estado alcanzable se guarda, recarga idéntico y conserva ≤1 need ACTIVA por afectación
+not ok 55 - RQ-S08-02 Propiedad: 400 secuencias aleatorias de operaciones válidas ⇒ todo estado alcanzable se guarda, recarga idéntico y conserva ≤1 need ACTIVA por afectación
+  ---
+  duration_ms: 1202.43792
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:671:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    [{"seq":1,"step":3,"r":2,"op_error":"EXCESSIVE_OR_INVALID_CANCELLATION"},{"seq":1,"step":4,"r":2,"op_error":"EXCESSIVE_OR_INVALID_CANCELLATION"},{"seq":2,"step":9,"r":2,"op_error":"EXCESSIVE_OR_INVALID_CANCELLATION"},{"seq":2,"step":11,"r":2,"op_error":"EXCESSIVE_OR_INVALID_CANCELLATION"},{"seq":24,"step":7,"r":2,"op_error":"EXCESSIVE_OR_INVALID_CANCELLATION"}]
+    
+    46 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 46
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:700:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S08-03 Cierre atómico: anulación total cierra la need en la misma operación, con evento trazable, sin cambio económico extra; rechazo no deja cierre parcial
+not ok 56 - RQ-S08-03 Cierre atómico: anulación total cierra la need en la misma operación, con evento trazable, sin cambio económico extra; rechazo no deja cierre parcial
+  ---
+  duration_ms: 1.592571
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:702:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'AFECTACION:ANULACION',
+    -   'NEED:CLOSE_NEED_IF_RESOLVED'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'AFECTACION:ANULACION'
+    1: 'NEED:CLOSE_NEED_IF_RESOLVED'
+  actual:
+    0: 'AFECTACION:ANULACION'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:707:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S08-04 Pendiente 0 por reflejado total: need sin seguimiento se cierra; con seguimiento permanece en seguimiento (Regla 12)
+not ok 57 - RQ-S08-04 Pendiente 0 por reflejado total: need sin seguimiento se cierra; con seguimiento permanece en seguimiento (Regla 12)
+  ---
+  duration_ms: 0.967082
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:717:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'ACTIVA'
+    - 'CERRADA'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'CERRADA'
+  actual: 'ACTIVA'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:724:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: OBS-RQ-01 Reapertura tras pendiente 0: AJUSTE posterior que eleva el vigente deja la need CERRADA y la afectación como UNCLASSIFIED (base 851bb58: need ACTIVA con su prioridad)
+not ok 58 - OBS-RQ-01 Reapertura tras pendiente 0: AJUSTE posterior que eleva el vigente deja la need CERRADA y la afectación como UNCLASSIFIED (base 851bb58: need ACTIVA con su prioridad)
+  ---
+  duration_ms: 0.772195
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:728:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'ACTIVA'
+    - 'CERRADA'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'CERRADA'
+  actual: 'ACTIVA'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:736:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: RQ-S10-01 Jerarquía prevalece sobre fecha objetivo y prioridad: R2 sin objetivo/P4 antes que R3 con objetivo más temprano/P1
+ok 59 - RQ-S10-01 Jerarquía prevalece sobre fecha objetivo y prioridad: R2 sin objetivo/P4 antes que R3 con objetivo más temprano/P1
+  ---
+  duration_ms: 1.123009
+  type: 'test'
+  ...
+# Subtest: RQ-S10-02 Desempates sucesivos dentro de igual rigidez: objetivo (ausente al final) → prioridad → evento → need_id; zonas horarias por instante
+ok 60 - RQ-S10-02 Desempates sucesivos dentro de igual rigidez: objetivo (ausente al final) → prioridad → evento → need_id; zonas horarias por instante
+  ---
+  duration_ms: 1.680893
+  type: 'test'
+  ...
+# Subtest: RQ-S10-03 Matriz completa 4 rigideces × 4 prioridades × objetivo{temprano,tardío,ausente} (40 needs válidas), 50 permutaciones de alta: orden = oráculo e invariante
+ok 61 - RQ-S10-03 Matriz completa 4 rigideces × 4 prioridades × objetivo{temprano,tardío,ausente} (40 needs válidas), 50 permutaciones de alta: orden = oráculo e invariante
+  ---
+  duration_ms: 1410.314498
+  type: 'test'
+  ...
+# Subtest: RQ-S10-04 Repriorización R4→R1 reubica la need sin alterar posición ni naturaleza; jerarquía no reclasifica
+ok 62 - RQ-S10-04 Repriorización R4→R1 reubica la need sin alterar posición ni naturaleza; jerarquía no reclasifica
+  ---
+  duration_ms: 1.519802
+  type: 'test'
+  ...
+# Subtest: RQ-X-01 Sin efectos secundarios: lectura (posición, cola, preview, save) no muta el estado; rechazos no mutan
+ok 63 - RQ-X-01 Sin efectos secundarios: lectura (posición, cola, preview, save) no muta el estado; rechazos no mutan
+  ---
+  duration_ms: 1.231918
+  type: 'test'
+  ...
+# Subtest: RQ-X-02 Superficie de cambio acotada: archivos src/ distintos del commit auditado previo limitados a money.js, position.js, needs.js
+not ok 64 - RQ-X-02 Superficie de cambio acotada: archivos src/ distintos del commit auditado previo limitados a money.js, position.js, needs.js
+  ---
+  duration_ms: 6.84012
+  type: 'test'
+  location: '<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:814:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + []
+    - [
+    -   'src/money.js',
+    -   'src/needs.js',
+    -   'src/position.js',
+    -   'test/p2-candidate-regression.test.js',
+    -   'test/p2-remediation-decimal.test.js'
+    - ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'src/money.js'
+    1: 'src/needs.js'
+    2: 'src/position.js'
+    3: 'test/p2-candidate-regression.test.js'
+    4: 'test/p2-remediation-decimal.test.js'
+  actual:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file://<qa-audit/claude-code-p2-reqa>/P2_CLAUDE_REQA.harness.mjs:819:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..64
+# tests 64
+# suites 0
+# pass 44
+# fail 20
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6494.178295

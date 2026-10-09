@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: S02 decimal sweep: 5008 partial-final cancellations, no ghost or original mutation
+ok 1 - S02 decimal sweep: 5008 partial-final cancellations, no ghost or original mutation
+  ---
+  duration_ms: 904.300739
+  type: 'test'
+  ...
+# Subtest: S02 variable scales, exponents and explicit precision rejection
+ok 2 - S02 variable scales, exponents and explicit precision rejection
+  ---
+  duration_ms: 1.824888
+  type: 'test'
+  ...
+# Subtest: S02/S08 terminal linked commitments/reserves persist with closure and trace
+ok 3 - S02/S08 terminal linked commitments/reserves persist with closure and trace
+  ---
+  duration_ms: 3.435947
+  type: 'test'
+  ...
+# Subtest: S08 corrupt catalogues, stocks, links and identities reject atomically
+ok 4 - S08 corrupt catalogues, stocks, links and identities reject atomically
+  ---
+  duration_ms: 4.779832
+  type: 'test'
+  ...
+# Subtest: S10 all tie breakers and absent targets yield deterministic order
+ok 5 - S10 all tie breakers and absent targets yield deterministic order
+  ---
+  duration_ms: 1.206798
+  type: 'test'
+  ...
+# Subtest: S08 zero pending adjustment persists; explicit follow-up remains active
+ok 6 - S08 zero pending adjustment persists; explicit follow-up remains active
+  ---
+  duration_ms: 1.623763
+  type: 'test'
+  ...
+# Subtest: decimal additions/subtractions have no phantom residue
+ok 7 - decimal additions/subtractions have no phantom residue
+  ---
+  duration_ms: 2.357193
+  type: 'test'
+  ...
+# Subtest: partial then final cancellation closes commitment exactly
+ok 8 - partial then final cancellation closes commitment exactly
+  ---
+  duration_ms: 3.578872
+  type: 'test'
+  ...
+# Subtest: multiple small cancellations leave no residue for reserves
+ok 9 - multiple small cancellations leave no residue for reserves
+  ---
+  duration_ms: 1.267655
+  type: 'test'
+  ...
+# Subtest: over-cancellation rejects without mutating state
+ok 10 - over-cancellation rejects without mutating state
+  ---
+  duration_ms: 2.88739
+  type: 'test'
+  ...
+# Subtest: persisted state with duplicate active needs is rejected
+ok 11 - persisted state with duplicate active needs is rejected
+  ---
+  duration_ms: 1.813713
+  type: 'test'
+  ...
+# Subtest: S10 precedence R1 R2 R3 R4 dominates economic priority and target date
+ok 12 - S10 precedence R1 R2 R3 R4 dominates economic priority and target date
+  ---
+  duration_ms: 4.980184
+  type: 'test'
+  ...
+# Subtest: S08 rejects negative balances and invalid reflected amount
+ok 13 - S08 rejects negative balances and invalid reflected amount
+  ---
+  duration_ms: 0.993397
+  type: 'test'
+  ...
+# Subtest: S08 rejects unparseable payload with stable error
+ok 14 - S08 rejects unparseable payload with stable error
+  ---
+  duration_ms: 0.283277
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1011.851159

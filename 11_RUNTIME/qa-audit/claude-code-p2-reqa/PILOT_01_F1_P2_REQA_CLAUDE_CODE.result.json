@@ -1,0 +1,57 @@
+{
+  "project_id": "KIRI_GESTION_LIQUIDEZ_INTRADIA",
+  "phase": "PILOT-01/F1/P2",
+  "audit_type": "RE_QA_INDEPENDIENTE",
+  "auditor": "CLAUDE_CODE",
+  "audit_date": "2026-10-09",
+  "order": "PR #3 comment 6084118783 (functional approval 6082751466)",
+  "audited_repository": "scastellanost/kiri-gestion-liquidez-intradia",
+  "audited_branch": "qa/pilot-01-f1-p2-restart",
+  "audited_commit": "9146f4f4610e38ebd746fa66d9c6bcbd7d6acd5f",
+  "control_commit": "851bb5845708bc3b280fc2eeab11006f8cb1745c",
+  "auditor_environment": { "node": "v22.22.0", "os": "linux", "checkout": "detached, unmodified" },
+  "integrity": { "manifest_files": 27, "sha256_and_git_blob_match": 27, "mismatches": 0, "prior_tests_modified_or_deleted": 0 },
+  "regression": { "tests": 383, "pass": 383, "fail": 0, "p1": { "tests": 30, "pass": 30 }, "implementer_directed": { "tests": 14, "pass": 14 } },
+  "auditor_harness": { "reused_cases": 43, "new_cases": 21, "cases": 64, "pass": 62, "fail": 2, "failed": ["RQ-S09-01", "RQ-S09-02"], "control_851bb58": { "pass": 44, "fail": 20 }, "original_43_on_candidate": { "pass": 43, "fail": 0 } },
+  "decimal_samples": {
+    "original_5008": { "candidate_defects": 0, "control_defect_rate": 0.1743 },
+    "exhaustive_sweep": { "cases": 6700, "defects": 0 },
+    "random_multicurrency": { "cases": 3000, "defects": 0 },
+    "deficit_sample": { "cases": 2000, "exact_zero_cases": 1500, "phantom_deficit": 286, "inexact_deficit": 500 }
+  },
+  "scenarios": {
+    "S01_alta_cambios_controlados": "PASS",
+    "S02_anulacion_parcial_total": "PASS",
+    "S03_stock_reemplazable": "PASS",
+    "S04_stock_retroactivo_historico": "PASS",
+    "S05_ajuste_anulacion_retroactiva": "PASS",
+    "S06_confirmado_no_disminuye": "PASS",
+    "S07_idempotencia": "PASS",
+    "S08_una_necesidad_activa_por_afectacion_persistencia": "PASS",
+    "S09_deficit_derivado": "FAIL",
+    "S10_prioridad_rigidez_orden": "PASS",
+    "S11_reclasificacion_sin_doble_impacto": "PASS",
+    "S12_monedas_heterogeneas": "PASS",
+    "S13_regresion_integra": "PASS"
+  },
+  "transversal": {
+    "regresion_p1": "PASS", "sin_ejecucion_bancaria": "PASS", "errores_sin_mutacion": "PASS", "sin_efectos_secundarios_lectura": "PASS",
+    "permisos": "NO_DEMOSTRADO_FUERA_DE_CONTRATO", "simultaneidad": "NO_DEMOSTRADO_FUERA_DE_CONTRATO", "unidades_minimas_legales": "NO_DEMOSTRADO_NO_DEFINIDAS"
+  },
+  "exceptions": [
+    { "id": "EXC-P2-01", "status": "CORREGIDA_ACREDITADA", "evidence": ["S02-d", "RQ-S02-01..08", "P2_CLAUDE_DECIMAL_SAMPLE.9146f4f.out.json"] },
+    { "id": "EXC-P2-02", "status": "CORREGIDA_ACREDITADA", "evidence": ["OBS-08", "RQ-S08-01", "RQ-S08-02", "RQ-S08-03"] },
+    { "id": "EXC-P2-03", "status": "CORREGIDA_ACREDITADA", "evidence": ["S10-a", "RQ-S10-01..04"] },
+    { "id": "EXC-P2-04", "status": "ABIERTA_NUEVA_PENDIENTE_LIDER_FUNCIONAL", "severity": "ALTA", "scenario": "S09", "summary": "Deficit/brecha fantasma por agregacion binaria de pendientes en la misma moneda: saldo 0.30 con compromisos 0.10+0.20 => deficit 5.55e-17; 286/1500 posiciones exactamente equilibradas (19.1%)", "preexisting_in": "851bb5845708bc3b280fc2eeab11006f8cb1745c", "location": "src/position.js calculate() + src/money.js consolidateMoney" }
+  ],
+  "observations_for_functional_decision": [
+    { "id": "OBS-RQ-01", "summary": "Need cerrada por pendiente 0 no se reabre si un AJUSTE posterior eleva el vigente; la afectacion vuelve como UNCLASSIFIED y pierde su clasificacion (en 851bb58 reaparecia ACTIVA)" },
+    { "id": "OBS-RQ-02", "summary": "Estados v1 guardados por 851bb58 con afectacion ANULADA o pendiente 0 y need ACTIVA se rechazan al cargar en 9146f4f; formato sigue version 1" }
+  ],
+  "functional_blocks_excluded": ["AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED", "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"],
+  "global_verdict": "FAIL",
+  "validated_for_pilot": false,
+  "p3_enabled": false,
+  "next_gate": "Decision del Lider Funcional sobre EXC-P2-04 y conocimiento de OBS-RQ-01/02; correccion ChatGPT/Codex, nuevo commit congelado y re-QA Claude Code de S09/S02/S12/S08 + regresion completa con P1",
+  "note": "Dictamen tecnico del auditor; no acepta excepciones ni sustituye la decision del Lider Funcional."
+}

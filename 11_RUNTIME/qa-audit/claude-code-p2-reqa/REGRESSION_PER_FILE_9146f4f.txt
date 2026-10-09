@@ -1,0 +1,16 @@
+test/liq-codex-001.test.js # pass 15 # fail 0 
+test/liq-codex-002.test.js # pass 20 # fail 0 
+test/liq-codex-002a.test.js # pass 12 # fail 0 
+test/liq-codex-003.test.js # pass 25 # fail 0 
+test/liq-codex-004.test.js # pass 30 # fail 0 
+test/liq-codex-005.test.js # pass 40 # fail 0 
+test/liq-codex-005a.test.js # pass 16 # fail 0 
+test/liq-codex-006.test.js # pass 40 # fail 0 
+test/liq-codex-006a.test.js # pass 15 # fail 0 
+test/liq-codex-007.test.js # pass 40 # fail 0 
+test/liq-codex-008.test.js # pass 40 # fail 0 
+test/liq-codex-009.test.js # pass 40 # fail 0 
+test/p2-candidate-regression.test.js # pass 6 # fail 0 
+test/p2-independent-economic-oracles.test.js # pass 21 # fail 0 
+test/p2-remediation-decimal.test.js # pass 8 # fail 0 
+test/pilot-p1-monetary-integrity.test.js # pass 15 # fail 0 
