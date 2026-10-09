@@ -1,4 +1,4 @@
-import { createMoney, consolidateMoney, convertMoney, subtractDecimal, compareDecimal } from './money.js';
+import { createMoney, consolidateMoney, convertMoney, addDecimal, subtractDecimal, compareDecimal } from './money.js';
 import { setDisplayCurrency } from './state.js';
 
 export class PositionError extends Error {
@@ -244,10 +244,10 @@ function calculate(state, empresa, banco, monetaryState) {
       .map(a => createMoney(getAffectationPending(a), a.currency_original)));
     const reservas_bloqueadas = sum(assigned.filter(a => a.naturaleza_afectacion === 'RESERVA')
       .map(a => createMoney(getAffectationPending(a), a.currency_original)));
-    const available = saldo_bancario - compromisos_por_ejecutar - reservas_bloqueadas;
+    const available = subtractDecimal(subtractDecimal(saldo_bancario, compromisos_por_ejecutar), reservas_bloqueadas);
     createMoney(available, 'VES'); // Reject numeric overflow, without changing monetary policy.
     return freeze({ ...base, publicable: true, errors: [], saldo_bancario, compromisos_por_ejecutar, reservas_bloqueadas,
-      ...(banco === undefined ? { saldo_disponible_gestion: available, deficit: Math.max(0, -available), localizaciones: localizations }
+      ...(banco === undefined ? { saldo_disponible_gestion: available, deficit: Math.max(0, subtractDecimal(0, available)), localizaciones: localizations }
         : { disponibilidad_localizada_preliminar: available }) });
   } catch (error) {
     return freeze({ ...base, publicable: false, ...Object.fromEntries(fields.map(key => [key, null])),
