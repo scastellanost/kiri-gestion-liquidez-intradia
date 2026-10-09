@@ -84,6 +84,9 @@ Valores permitidos:
 
 La rigidez temporal es independiente de la prioridad económica.
 
+**Jerarquía contractual ratificada por el Líder Funcional el 2026-10-09:** R1_HORA_RIGIDA → R2_VENTANA_DIA → R3_FECHA_RIGIDA → R4_FLEXIBLE, en ese orden de mayor a menor exigencia. Al ordenar una cola, esta jerarquía prevalece sobre la fecha objetivo y sobre la prioridad económica; entre elementos con igual rigidez, se aplican sucesivamente fecha/hora objetivo existente (ausente al final), prioridad económica, fecha/hora del evento y need_id. No completar automáticamente una fecha objetivo ausente. La jerarquía expresa una precedencia de atención, no una reclasificación de la necesidad.
+
+
 ## Regla 4 — Fecha/hora objetivo
 Si rigidez = R1_HORA_RIGIDA o R3_FECHA_RIGIDA:
 - fecha_hora_objetivo es obligatoria.

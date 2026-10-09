@@ -1,4 +1,4 @@
-import { createMoney } from './money.js';
+import { createMoney, compareDecimal } from './money.js';
 import { calculateCompanyPosition, getAffectationPending, registerAffectation } from './position.js';
 
 export class NeedError extends Error {
@@ -188,13 +188,65 @@ export function buildNeedQueue(state, empresa, monetaryState) {
 
 const storageKey = 'kiri.liq-codex-003.state';
 function validateStoredState(state) {
-  requireValue(state && state.catalogue && ['empresas', 'bancos', 'cuentas'].every(key => Array.isArray(state.catalogue[key]))
-    && ['balances', 'affectations', 'receipts', 'events'].every(key => Array.isArray(state[key]))
-    && (state.needs === undefined || Array.isArray(state.needs)), 'INVALID_STORED_NEED_STATE');
-  for (const need of state.needs ?? []) {
-    requireValue(text(need.need_id) && ['ACTIVA', 'CERRADA'].includes(need.estado), 'INVALID_STORED_NEED_STATE');
-    createMoney(need.amount_original, need.currency_original); classification(need); timestamp(need.fecha_hora_evento);
-    if (need.affectation_id) affectation(state, need.affectation_id);
+  const invalid = () => { throw new NeedError('INVALID_STORED_NEED_STATE'); };
+  const validAmount = (value, positive = false) => typeof value === 'number' && Number.isFinite(value) && (positive ? value > 0 : value >= 0);
+  const validId = value => typeof value === 'string' && value.trim().length > 0;
+  try {
+    if (!state || typeof state !== 'object' || !state.catalogue ||
+      !['empresas', 'bancos', 'cuentas'].every(key => Array.isArray(state.catalogue[key])) ||
+      !['balances', 'affectations', 'receipts', 'events'].every(key => Array.isArray(state[key])) ||
+      (state.needs !== undefined && !Array.isArray(state.needs))) invalid();
+    const affIds = new Set();
+    for (const a of state.affectations) {
+      if (!a || !validId(a.affectation_id) || affIds.has(a.affectation_id) ||
+        !state.catalogue.empresas.includes(a.empresa) ||
+        !['COMPROMISO', 'RESERVA'].includes(a.naturaleza_afectacion) ||
+        !['ACTIVA', 'ANULADA'].includes(a.estado) ||
+        !validAmount(a.amount_original, true) || !validAmount(a.monto_vigente) ||
+        !validAmount(a.monto_reflejado_confirmado) || !validId(a.tipo_partida)) invalid();
+      affIds.add(a.affectation_id);
+      createMoney(a.amount_original, a.currency_original);
+      if (compareDecimal(a.monto_reflejado_confirmado, a.monto_vigente) > 0) invalid();
+      const pending = getAffectationPending(a);
+      if (a.estado === 'ANULADA' &&
+        (a.naturaleza_afectacion === 'COMPROMISO'
+          ? compareDecimal(a.monto_vigente, a.monto_reflejado_confirmado) !== 0
+          : compareDecimal(a.monto_vigente, 0) !== 0)) invalid();
+      if (a.estado === 'ACTIVA' && pending < 0) invalid();
+      if (a.fecha_hora_evento !== undefined) timestamp(a.fecha_hora_evento);
+    }
+    const ids = new Set(), activeLinks = new Set();
+    for (const need of state.needs ?? []) {
+      if (!need || !validId(need.need_id) || ids.has(need.need_id) ||
+        !['ACTIVA', 'CERRADA'].includes(need.estado) ||
+        !state.catalogue.empresas.includes(need.empresa) ||
+        !validAmount(need.amount_original) || !validAmount(need.monto_vigente) ||
+        !['COMPROMISO', 'RESERVA'].includes(need.naturaleza) ||
+        !validId(need.tipo_partida) ||
+        typeof need.requiere_seguimiento_adicional !== 'boolean') invalid();
+      ids.add(need.need_id);
+      createMoney(need.amount_original, need.currency_original);
+      classification(need); timestamp(need.fecha_hora_evento);
+      if (need.affectation_id !== null && need.affectation_id !== undefined) {
+        if (!validId(need.affectation_id)) invalid();
+        const a = state.affectations.find(row => row.affectation_id === need.affectation_id);
+        if (!a) invalid();
+        if (need.estado === 'ACTIVA') {
+          if (activeLinks.has(a.affectation_id) || a.estado !== 'ACTIVA') invalid();
+          activeLinks.add(a.affectation_id);
+          if (need.empresa !== a.empresa || need.tipo_partida !== a.tipo_partida ||
+            need.naturaleza !== a.naturaleza_afectacion ||
+            need.currency_original !== a.currency_original ||
+            compareDecimal(need.amount_original, a.amount_original) !== 0) invalid();
+          // A classification may predate later adjustments; current pending is always
+          // resolved from the linked affectation by buildNeedQueue.
+          if (getAffectationPending(a) === 0 && !need.requiere_seguimiento_adicional) invalid();
+        }
+      }
+    }
+  } catch (error) {
+    if (error.code === 'INVALID_STORED_NEED_STATE') throw error;
+    invalid();
   }
 }
 export function saveNeedState(storage, state) {
@@ -203,6 +255,8 @@ export function saveNeedState(storage, state) {
 }
 export function loadNeedState(storage) {
   const raw = storage.getItem(storageKey); if (raw === null) return null;
-  const saved = JSON.parse(raw); requireValue(saved?.version === 1, 'INVALID_STORED_NEED_STATE');
+  let saved;
+  try { saved = JSON.parse(raw); } catch { throw new NeedError('INVALID_STORED_NEED_STATE'); }
+  requireValue(saved?.version === 1, 'INVALID_STORED_NEED_STATE');
   validateStoredState(saved.state); return freeze(saved.state);
 }

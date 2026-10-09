@@ -1,0 +1,14 @@
+{
+  "event_id": "CONTINUE-LIQUIDEZ-20261008",
+  "date": "2026-10-08",
+  "project": "LIQUIDEZ",
+  "authority": "LEADER_FUNCTIONAL",
+  "scope": "Continue independent functional P2 QA, then P3 only when validated.",
+  "status": "CONTINUITY_AUTHORIZED",
+  "limits": [
+    "No production",
+    "No bypass independent QA",
+    "Preserve functional exceptions and baseline"
+  ],
+  "statement": "autorizado Riesgo comercial F8 y SIGRGF y Liquidez continuen su proceso"
+}

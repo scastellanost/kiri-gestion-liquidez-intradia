@@ -1,4 +1,4 @@
-import { createMoney, consolidateMoney, convertMoney } from './money.js';
+import { createMoney, consolidateMoney, convertMoney, subtractDecimal, compareDecimal } from './money.js';
 import { setDisplayCurrency } from './state.js';
 
 export class PositionError extends Error {
@@ -150,18 +150,18 @@ function applyAffectations(state, rows, identity) {
           next.monto_reflejado_confirmado = row.monto_reflejado_confirmado;
         }
       } else {
-        const pending = old.naturaleza_afectacion === 'COMPROMISO' ? old.monto_vigente - old.monto_reflejado_confirmado : old.monto_vigente;
-        requireValue(finite(row.monto_anulado) && row.monto_anulado > 0 && row.monto_anulado <= pending, 'EXCESSIVE_OR_INVALID_CANCELLATION');
-        next.monto_vigente -= row.monto_anulado;
+        const pending = old.naturaleza_afectacion === 'COMPROMISO' ? subtractDecimal(old.monto_vigente, old.monto_reflejado_confirmado) : old.monto_vigente;
+        requireValue(finite(row.monto_anulado) && row.monto_anulado > 0 && compareDecimal(row.monto_anulado, pending) <= 0, 'EXCESSIVE_OR_INVALID_CANCELLATION');
+        next.monto_vigente = subtractDecimal(next.monto_vigente, row.monto_anulado);
         const remaining = next.naturaleza_afectacion === 'COMPROMISO'
-          ? next.monto_vigente - next.monto_reflejado_confirmado : next.monto_vigente;
+          ? subtractDecimal(next.monto_vigente, next.monto_reflejado_confirmado) : next.monto_vigente;
         next.estado = remaining > 0 ? 'ACTIVA' : 'ANULADA';
       }
       if (row.estado !== undefined) requireValue(row.estado === next.estado, 'INVALID_AFFECTATION_STATUS');
     }
     requireValue(finite(next.monto_vigente) && next.monto_vigente >= 0, 'INVALID_CURRENT_AMOUNT');
     requireValue(finite(next.monto_reflejado_confirmado) && next.monto_reflejado_confirmado >= 0
-      && next.monto_reflejado_confirmado <= next.monto_vigente, 'INVALID_CONFIRMED_AMOUNT');
+      && compareDecimal(next.monto_reflejado_confirmado, next.monto_vigente) <= 0, 'INVALID_CONFIRMED_AMOUNT');
     next = { ...next, operacion: row.operacion, ...provenance,
       ...(row.observacion === undefined ? {} : { observacion: row.observacion }) };
     if (index < 0) state.affectations.push(next); else state.affectations[index] = next;
@@ -211,7 +211,7 @@ export const registerAffectation = (state, row, request_id) => prepare(state, [r
 export function getAffectationPending(affectation) {
   if (affectation.estado !== 'ACTIVA') return 0;
   return affectation.naturaleza_afectacion === 'COMPROMISO'
-    ? affectation.monto_vigente - affectation.monto_reflejado_confirmado : affectation.monto_vigente;
+    ? subtractDecimal(affectation.monto_vigente, affectation.monto_reflejado_confirmado) : affectation.monto_vigente;
 }
 
 const companyFields = ['saldo_bancario', 'compromisos_por_ejecutar', 'reservas_bloqueadas', 'saldo_disponible_gestion', 'deficit'];
