@@ -102,14 +102,16 @@ export function sumOriginals(records) {
   if (!records.length) fail('EMPTY_MONETARY_COLLECTION');
   const originals = records.map(r => createMoney(r.amount_original, r.currency_original));
   if (originals.some(r => r.currency_original !== originals[0].currency_original)) fail('MIXED_CURRENCIES');
-  return createMoney(originals.reduce((total, r) => total + r.amount_original, 0), originals[0].currency_original);
+  return createMoney(originals.reduce((total, r) => addDecimal(total, r.amount_original), 0), originals[0].currency_original);
 }
 export function consolidateMoney(records, targetCurrency, state) {
   validateState(state);
   currency(targetCurrency);
   if (targetCurrency === 'USD') rateValue(state.rates.VES_USD_BCV);
   return Object.freeze({
-    amount: amount(records.reduce((total, record) => total + convertMoney(record, targetCurrency, state).amount, 0)),
+    amount: amount(records.every(record => record.currency_original === targetCurrency)
+      ? records.reduce((total, record) => addDecimal(total, createMoney(record.amount_original, record.currency_original).amount_original), 0)
+      : records.reduce((total, record) => total + convertMoney(record, targetCurrency, state).amount, 0)),
     currency: targetCurrency
   });
 }
