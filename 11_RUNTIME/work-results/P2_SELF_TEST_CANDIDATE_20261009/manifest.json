@@ -1,0 +1,141 @@
+{
+  "baseline": "13787f73ec49a6f47017edf1816a029d8cde35be",
+  "node": "v24.19.0",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "a94f920eb55eddee5b2b227572bdfd226b8f575cfd5cc98aaa82104b3c439f79",
+      "git_blob_sha": "d5729f010131d798d68e82ded8f23e5e86a30c6d"
+    },
+    {
+      "path": "src/bank-restrictions.js",
+      "sha256": "9f14e34ce334c37494b6f220b96054e461c664a9cc36bca728839725e128bc90",
+      "git_blob_sha": "a61e5613e5ae9af56cd1470d70811978e85d16da"
+    },
+    {
+      "path": "src/coverage.js",
+      "sha256": "95f307d6f4a0f401e0515092abed42f241e0b4bf3fd012198e0e89220e5538e9",
+      "git_blob_sha": "e4f32625d2c23e4ead4da88382def8b905bcb961"
+    },
+    {
+      "path": "src/fx.js",
+      "sha256": "f102adfb1468aea7ac5c3d796fc3530c2b4e72a7f8f5b0f998d00bf9983f3807",
+      "git_blob_sha": "ba678a067d769c3d6f400448cc82c75808325962"
+    },
+    {
+      "path": "src/mandates.js",
+      "sha256": "b5a1be3ed995531f3d1b9a1b43d75b1917d0936680ab6390b6681934504495cd",
+      "git_blob_sha": "68949cdb475e037ef7b8dfa004c7961121ff283a"
+    },
+    {
+      "path": "src/money.js",
+      "sha256": "d137437d10ab90e191be2e2744f982473129a3e46b004b38d76dce0f5e5cabe9",
+      "git_blob_sha": "ed2f6db39d7e35a795643487d81d1e5d32a90fd1"
+    },
+    {
+      "path": "src/needs.js",
+      "sha256": "8d2757af750503925e915d7e9b92df0b788c92ae5099d4c9af94a65c4f5abff2",
+      "git_blob_sha": "fe0ae9dcc96396d90cb35a4f71785586becc922b"
+    },
+    {
+      "path": "src/position.js",
+      "sha256": "d94efc304b086ef86c2ee933a5d2c790f9c55e49d7a4b88cd8382a4e3cf21e4f",
+      "git_blob_sha": "ebafecf8797e3bdfb5980835dba7125b8860df42"
+    },
+    {
+      "path": "src/posture.js",
+      "sha256": "0185f3228dfa52bed85f34e9b962c64b173c4b96cbab67409e79f7d74b168ee8",
+      "git_blob_sha": "7f50c47a791d64bdfe36113eae014bf916437299"
+    },
+    {
+      "path": "src/reserves.js",
+      "sha256": "7fd7fd87dd39fec634bbb9966e100e3af72402908ba06cf97b7788f89d09f017",
+      "git_blob_sha": "e55ef697d7b62964aec102b7202b5b074fc2e542"
+    },
+    {
+      "path": "src/state.js",
+      "sha256": "83b059338b187214f53de68f1ebb1e14dbe267c0782639e078ba3faed88a776b",
+      "git_blob_sha": "a2b7e4ba273c9029e24bab91cf3284b657da4538"
+    },
+    {
+      "path": "test/liq-codex-001.test.js",
+      "sha256": "dad551dd2775d152dfa7447f9b366a36761b3c2709a83dea6e34403cab4b73ef",
+      "git_blob_sha": "0c2f9918b803589fa5f5876b79b87671dfa50c75"
+    },
+    {
+      "path": "test/liq-codex-002.test.js",
+      "sha256": "50f93fb7da0522972936dee9ee51ca481ac7bad0ccf1adb1022a6e6dedae4227",
+      "git_blob_sha": "089a5f5de80c152d849afcd16ad4c854ea80aea4"
+    },
+    {
+      "path": "test/liq-codex-002a.test.js",
+      "sha256": "f64fd86ed8c2af45b77e8469a550c98f6e21aeeacd7aa0cb57dbf51a137a4687",
+      "git_blob_sha": "5f89579b82d436797d0a0fd9fde84f03afb274cf"
+    },
+    {
+      "path": "test/liq-codex-003.test.js",
+      "sha256": "c48982173e35ce9e1711f8c0b816bac54930ee9aa647c7fb8041290e30505f55",
+      "git_blob_sha": "2118e798384c702ccddc19c81d78553831b8209a"
+    },
+    {
+      "path": "test/liq-codex-004.test.js",
+      "sha256": "d4ee28e468afddadb8b32fdc020857a70ea556d7d439759df429f99e6ec8fc3f",
+      "git_blob_sha": "638ae23c70a25b405db5c9ed0f730ab7efb70544"
+    },
+    {
+      "path": "test/liq-codex-005.test.js",
+      "sha256": "85f8616051323f56afdccbb037158df1992ae8781ef0788d9c8ff82b82a7ceeb",
+      "git_blob_sha": "e56a2c592ffd77b341cc9cce0798e656efb094ba"
+    },
+    {
+      "path": "test/liq-codex-005a.test.js",
+      "sha256": "e77354b137ef3da9e239c8c2e1f0dff58678bb67863fb0b9674441822f3552b8",
+      "git_blob_sha": "a261346973bdb742962310bdaa4b4e8ea5b6c79a"
+    },
+    {
+      "path": "test/liq-codex-006.test.js",
+      "sha256": "ee25f920712a00bc242ee0ea828526f83928b5e97d05618584a5426f57f40c31",
+      "git_blob_sha": "faaf477037123032ecd34b719246e242e5cad6c0"
+    },
+    {
+      "path": "test/liq-codex-006a.test.js",
+      "sha256": "5c764f031e05920578c2fc5e99bfac2c914006c8d95d00e4722fc8fcca07944b",
+      "git_blob_sha": "8eb06ed2695cc0ecc14b141ec0d014992f46eb53"
+    },
+    {
+      "path": "test/liq-codex-007.test.js",
+      "sha256": "246c3dd2b07152ab13ca74a86f4403df587b57a7f7572e99c1f2ea0f7c275edb",
+      "git_blob_sha": "a44d3c1af41b5e9fc551d386e8687850c69c70bb"
+    },
+    {
+      "path": "test/liq-codex-008.test.js",
+      "sha256": "f1c93e59024ce2120fd818e1e73087c0c2088fce18eb56655e1dd50be063c9e2",
+      "git_blob_sha": "9318968f63b75542aed3c2557f88614171729c98"
+    },
+    {
+      "path": "test/liq-codex-009.test.js",
+      "sha256": "8009b4f695245810b373b1c598887c24a8ef060ddd40de1f5800324bb8e725c4",
+      "git_blob_sha": "f3e8924bb53fea0aa5c531cee73fbf52bcbbd52e"
+    },
+    {
+      "path": "test/p2-candidate-regression.test.js",
+      "sha256": "b9ad515842e8aba96e9fb943312949bb7cdf8adf83365d2f386ba730f61bc2bf",
+      "git_blob_sha": "fe37cbef29ab95459ce2f7f17b50f6ea0d12b340"
+    },
+    {
+      "path": "test/p2-independent-economic-oracles.test.js",
+      "sha256": "bb67b29b0c34af4673abbcfb4f185da9fb5371935f20d035b48ba4b227efc248",
+      "git_blob_sha": "eb7e3d7e284adeff7b36708be1833bcfa51de4c9"
+    },
+    {
+      "path": "test/p2-remediation-decimal.test.js",
+      "sha256": "665fb8a14dab408bdb18a74605c12dc6dda6d77c8cde11490cda7dff43f2dbfb",
+      "git_blob_sha": "20d22ffa186c4346049576a33e938ab6826d6b87"
+    },
+    {
+      "path": "test/pilot-p1-monetary-integrity.test.js",
+      "sha256": "c54eeaf0bde187a549d7abf81be284f1831be74eee22cb1caf3d5d21c214b85a",
+      "git_blob_sha": "d59aff7465b32db95b68f8f8e498d02f3b5300b3"
+    }
+  ]
+}

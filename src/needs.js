@@ -1,5 +1,5 @@
 import { createMoney, compareDecimal } from './money.js';
-import { calculateCompanyPosition, getAffectationPending, registerAffectation } from './position.js';
+import { calculateCompanyPosition, getAffectationPending, registerAffectation, createPositionState, previewBalances } from './position.js';
 
 export class NeedError extends Error {
   constructor(code, detail = code) { super(detail); this.name = 'NeedError'; this.code = code; }
@@ -196,6 +196,14 @@ function validateStoredState(state) {
       !['empresas', 'bancos', 'cuentas'].every(key => Array.isArray(state.catalogue[key])) ||
       !['balances', 'affectations', 'receipts', 'events'].every(key => Array.isArray(state[key])) ||
       (state.needs !== undefined && !Array.isArray(state.needs))) invalid();
+    const catalogueState = createPositionState(state.catalogue);
+    const stockIds = new Set();
+    for (const balance of state.balances) {
+      if (!balance || previewBalances(catalogueState, [balance], { request_id: 'validate-stored-balance' }).status !== 'VALID') invalid();
+      const key = JSON.stringify([balance.empresa, balance.banco, balance.cuenta, balance.currency_original]);
+      if (stockIds.has(key)) invalid();
+      stockIds.add(key);
+    }
     const affIds = new Set();
     for (const a of state.affectations) {
       if (!a || !validId(a.affectation_id) || affIds.has(a.affectation_id) ||
@@ -213,7 +221,8 @@ function validateStoredState(state) {
           ? compareDecimal(a.monto_vigente, a.monto_reflejado_confirmado) !== 0
           : compareDecimal(a.monto_vigente, 0) !== 0)) invalid();
       if (a.estado === 'ACTIVA' && pending < 0) invalid();
-      if (a.fecha_hora_evento !== undefined) timestamp(a.fecha_hora_evento);
+      if (!validId(a.origen) || (a.banco_asignado && !state.catalogue.bancos.includes(a.banco_asignado))) invalid();
+      timestamp(a.fecha_hora_evento);
     }
     const ids = new Set(), activeLinks = new Set();
     for (const need of state.needs ?? []) {
@@ -222,7 +231,7 @@ function validateStoredState(state) {
         !state.catalogue.empresas.includes(need.empresa) ||
         !validAmount(need.amount_original) || !validAmount(need.monto_vigente) ||
         !['COMPROMISO', 'RESERVA'].includes(need.naturaleza) ||
-        !validId(need.tipo_partida) ||
+        !validId(need.tipo_partida) || !validId(need.origen) ||
         typeof need.requiere_seguimiento_adicional !== 'boolean') invalid();
       ids.add(need.need_id);
       createMoney(need.amount_original, need.currency_original);
@@ -231,6 +240,8 @@ function validateStoredState(state) {
         if (!validId(need.affectation_id)) invalid();
         const a = state.affectations.find(row => row.affectation_id === need.affectation_id);
         if (!a) invalid();
+        if (need.empresa !== a.empresa || need.tipo_partida !== a.tipo_partida ||
+          need.currency_original !== a.currency_original || compareDecimal(need.amount_original, a.amount_original) !== 0) invalid();
         if (need.estado === 'ACTIVA') {
           if (activeLinks.has(a.affectation_id) || a.estado !== 'ACTIVA') invalid();
           activeLinks.add(a.affectation_id);

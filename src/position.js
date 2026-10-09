@@ -166,6 +166,18 @@ function applyAffectations(state, rows, identity) {
       ...(row.observacion === undefined ? {} : { observacion: row.observacion }) };
     if (index < 0) state.affectations.push(next); else state.affectations[index] = next;
     state.events.push({ kind: 'AFECTACION', input: structuredClone(row), result: structuredClone(next), ...provenance });
+    // Cancellation resolves the linked decision record atomically with its
+    // economic record, so valid terminal snapshots remain persistable.
+    if (next.estado === 'ANULADA' || getAffectationPending(next) === 0) {
+      for (const need of (state.needs ?? []).filter(n => n.affectation_id === next.affectation_id && n.estado === 'ACTIVA'
+        && (next.estado === 'ANULADA' || !n.requiere_seguimiento_adicional))) {
+        const before = structuredClone(need);
+        Object.assign(need, { monto_vigente: next.monto_vigente, estado: 'CERRADA' });
+        state.events.push({ kind: 'NEED', operacion: 'CLOSE_NEED_IF_RESOLVED',
+          need_id: need.need_id, affectation_id: next.affectation_id,
+          anteriores: before, posteriores: structuredClone(need), ...provenance });
+      }
+    }
     if (row.operacion === 'RECLASIFICACION') {
       const linked = (state.needs ?? []).filter(n => n.affectation_id === next.affectation_id && n.estado === 'ACTIVA');
       const before = structuredClone(linked);

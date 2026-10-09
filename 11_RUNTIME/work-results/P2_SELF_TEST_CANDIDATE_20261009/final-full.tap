@@ -1,0 +1,2312 @@
+
+> test
+> node --test --test-isolation=none --test-reporter=tap
+
+TAP version 13
+# Subtest: QA 01 — 36.500.000 VES @ 36,50 = 1.000.000 USD
+ok 1 - QA 01 — 36.500.000 VES @ 36,50 = 1.000.000 USD
+  ---
+  duration_ms: 4.536463
+  type: 'test'
+  ...
+# Subtest: QA 02 — 1.000.000 USD @ 36,50 = 36.500.000 VES
+ok 2 - QA 02 — 1.000.000 USD @ 36,50 = 36.500.000 VES
+  ---
+  duration_ms: 0.195871
+  type: 'test'
+  ...
+# Subtest: QA 03 — VES→USD no cambia amount_original
+ok 3 - QA 03 — VES→USD no cambia amount_original
+  ---
+  duration_ms: 0.332164
+  type: 'test'
+  ...
+# Subtest: QA 04 — USD→VES reproduce original dentro de tolerancia
+ok 4 - QA 04 — USD→VES reproduce original dentro de tolerancia
+  ---
+  duration_ms: 0.422451
+  type: 'test'
+  ...
+# Subtest: QA 05 — BCV cero bloquea USD
+ok 5 - QA 05 — BCV cero bloquea USD
+  ---
+  duration_ms: 0.73247
+  type: 'test'
+  ...
+# Subtest: QA 06 — BCV nula bloquea USD
+ok 6 - QA 06 — BCV nula bloquea USD
+  ---
+  duration_ms: 0.285121
+  type: 'test'
+  ...
+# Subtest: QA 07 — registro USD conserva USD original
+ok 7 - QA 07 — registro USD conserva USD original
+  ---
+  duration_ms: 0.223179
+  type: 'test'
+  ...
+# Subtest: QA 08 — registro VES conserva VES original
+ok 8 - QA 08 — registro VES conserva VES original
+  ---
+  duration_ms: 13.623094
+  type: 'test'
+  ...
+# Subtest: QA 09 — EUR sin tasa => MISSING_EXCHANGE_RATE
+ok 9 - QA 09 — EUR sin tasa => MISSING_EXCHANGE_RATE
+  ---
+  duration_ms: 0.668384
+  type: 'test'
+  ...
+# Subtest: QA 10 — prohibido consolidar VES+USD por suma directa
+ok 10 - QA 10 — prohibido consolidar VES+USD por suma directa
+  ---
+  duration_ms: 0.682538
+  type: 'test'
+  ...
+# Subtest: QA 11 — vista inicial VES
+ok 11 - QA 11 — vista inicial VES
+  ---
+  duration_ms: 0.273556
+  type: 'test'
+  ...
+# Subtest: QA 12 — vista, fecha y BCV persisten al recargar
+ok 12 - QA 12 — vista, fecha y BCV persisten al recargar
+  ---
+  duration_ms: 0.299639
+  type: 'test'
+  ...
+# Subtest: QA 13 — BCV vinculada a managedDate
+ok 13 - QA 13 — BCV vinculada a managedDate
+  ---
+  duration_ms: 0.319707
+  type: 'test'
+  ...
+# Subtest: QA 14 — cambio BCV recalcula equivalentes, no originales
+ok 14 - QA 14 — cambio BCV recalcula equivalentes, no originales
+  ---
+  duration_ms: 0.255274
+  type: 'test'
+  ...
+# Subtest: QA 15 — única implementación central de conversión y formateo
+ok 15 - QA 15 — única implementación central de conversión y formateo
+  ---
+  duration_ms: 1.415467
+  type: 'test'
+  ...
+# Subtest: QA-P01 — Stock reemplazable: 100 → 90, no 190
+ok 16 - QA-P01 — Stock reemplazable: 100 → 90, no 190
+  ---
+  duration_ms: 2.436491
+  type: 'test'
+  ...
+# Subtest: QA-P02 — Compromiso 20 reduce saldo 100 a disponible 80
+ok 17 - QA-P02 — Compromiso 20 reduce saldo 100 a disponible 80
+  ---
+  duration_ms: 1.783515
+  type: 'test'
+  ...
+# Subtest: QA-P03 — Reserva 15 y compromiso 20 dejan disponible 65
+ok 18 - QA-P03 — Reserva 15 y compromiso 20 dejan disponible 65
+  ---
+  duration_ms: 1.006984
+  type: 'test'
+  ...
+# Subtest: QA-P04 — Sin banco: reduce empresa a 70 y queda NO LOCALIZADO
+ok 19 - QA-P04 — Sin banco: reduce empresa a 70 y queda NO LOCALIZADO
+  ---
+  duration_ms: 0.690673
+  type: 'test'
+  ...
+# Subtest: QA-P05 — No doble descuento: saldo 90, reflejado 10, pendiente 10, disponible 80
+ok 20 - QA-P05 — No doble descuento: saldo 90, reflejado 10, pendiente 10, disponible 80
+  ---
+  duration_ms: 0.95075
+  type: 'test'
+  ...
+# Subtest: QA-P06 — Caída bancaria sola no infiere ejecución: disponible 60
+ok 21 - QA-P06 — Caída bancaria sola no infiere ejecución: disponible 60
+  ---
+  duration_ms: 0.621995
+  type: 'test'
+  ...
+# Subtest: QA-P07 — Anular 20 devuelve disponible 100 y conserva trazabilidad
+ok 22 - QA-P07 — Anular 20 devuelve disponible 100 y conserva trazabilidad
+  ---
+  duration_ms: 0.632828
+  type: 'test'
+  ...
+# Subtest: QA-P08 — Ajuste a 25 modifica vigente sin crear segundo compromiso
+ok 23 - QA-P08 — Ajuste a 25 modifica vigente sin crear segundo compromiso
+  ---
+  duration_ms: 0.729974
+  type: 'test'
+  ...
+# Subtest: QA-P09 — Lote idéntico es idempotente; contenido distinto con mismo ID se rechaza
+ok 24 - QA-P09 — Lote idéntico es idempotente; contenido distinto con mismo ID se rechaza
+  ---
+  duration_ms: 2.092595
+  type: 'test'
+  ...
+# Subtest: QA-P10 — request_id repetido no duplica afectación
+ok 25 - QA-P10 — request_id repetido no duplica afectación
+  ---
+  duration_ms: 0.346866
+  type: 'test'
+  ...
+# Subtest: QA-P11 — Monedas explícitas y agregación incompleta sin tasa
+ok 26 - QA-P11 — Monedas explícitas y agregación incompleta sin tasa
+  ---
+  duration_ms: 1.429199
+  type: 'test'
+  ...
+# Subtest: QA-P12 — Cuenta inexistente: preview ERROR y aplicación atómica
+ok 27 - QA-P12 — Cuenta inexistente: preview ERROR y aplicación atómica
+  ---
+  duration_ms: 0.70052
+  type: 'test'
+  ...
+# Subtest: QA-P13 — Cuenta de otra empresa: ERROR sin mutación
+ok 28 - QA-P13 — Cuenta de otra empresa: ERROR sin mutación
+  ---
+  duration_ms: 0.433544
+  type: 'test'
+  ...
+# Subtest: QA-P14 — Banco opcional inválido ERROR; ausente válido y NO LOCALIZADO
+ok 29 - QA-P14 — Banco opcional inválido ERROR; ausente válido y NO LOCALIZADO
+  ---
+  duration_ms: 0.982011
+  type: 'test'
+  ...
+# Subtest: QA-P15 — No anular más del pendiente o del vigente de reserva
+ok 30 - QA-P15 — No anular más del pendiente o del vigente de reserva
+  ---
+  duration_ms: 1.351416
+  type: 'test'
+  ...
+# Subtest: QA-P16 — Posición negativa: disponible -30, déficit 30
+ok 31 - QA-P16 — Posición negativa: disponible -30, déficit 30
+  ---
+  duration_ms: 0.320558
+  type: 'test'
+  ...
+# Subtest: QA-P17 — Empresa negativa no genera remanente ni financia otra empresa
+ok 32 - QA-P17 — Empresa negativa no genera remanente ni financia otra empresa
+  ---
+  duration_ms: 0.687915
+  type: 'test'
+  ...
+# Subtest: QA-P18 — Múltiples cuentas 40 + 60 = 100
+ok 33 - QA-P18 — Múltiples cuentas 40 + 60 = 100
+  ---
+  duration_ms: 0.448901
+  type: 'test'
+  ...
+# Subtest: QA-P19 — Múltiples bancos: empresa 100, bancos 70/30
+ok 34 - QA-P19 — Múltiples bancos: empresa 100, bancos 70/30
+  ---
+  duration_ms: 0.949481
+  type: 'test'
+  ...
+# Subtest: QA-P20 — Conversión/agregación conserva todos los originales
+ok 35 - QA-P20 — Conversión/agregación conserva todos los originales
+  ---
+  duration_ms: 0.82135
+  type: 'test'
+  ...
+# Subtest: QA-2A01 — Compromiso 20, reflejado 0, anula 5: vigente/pendiente 15, ACTIVA
+ok 36 - QA-2A01 — Compromiso 20, reflejado 0, anula 5: vigente/pendiente 15, ACTIVA
+  ---
+  duration_ms: 0.786831
+  type: 'test'
+  ...
+# Subtest: QA-2A02 — Compromiso 20, reflejado 10, anula 5: vigente 15, pendiente 5, ACTIVA
+ok 37 - QA-2A02 — Compromiso 20, reflejado 10, anula 5: vigente 15, pendiente 5, ACTIVA
+  ---
+  duration_ms: 0.391705
+  type: 'test'
+  ...
+# Subtest: QA-2A03 — Compromiso 20, reflejado 10, anula 10: vigente 10, pendiente 0, ANULADA
+ok 38 - QA-2A03 — Compromiso 20, reflejado 10, anula 10: vigente 10, pendiente 0, ANULADA
+  ---
+  duration_ms: 0.316329
+  type: 'test'
+  ...
+# Subtest: QA-2A04 — Reserva 15, anula 5: vigente 10, ACTIVA
+ok 39 - QA-2A04 — Reserva 15, anula 5: vigente 10, ACTIVA
+  ---
+  duration_ms: 0.381378
+  type: 'test'
+  ...
+# Subtest: QA-2A05 — Reserva 15, anula 15: vigente 0, ANULADA
+ok 40 - QA-2A05 — Reserva 15, anula 15: vigente 0, ANULADA
+  ---
+  duration_ms: 0.402805
+  type: 'test'
+  ...
+# Subtest: QA-2A06 — Anulación excesiva: ERROR sin mutación
+ok 41 - QA-2A06 — Anulación excesiva: ERROR sin mutación
+  ---
+  duration_ms: 0.725738
+  type: 'test'
+  ...
+# Subtest: QA-2A07 — Saldo retroactivo 90 histórico; stock y posición conservan 100
+ok 42 - QA-2A07 — Saldo retroactivo 90 histórico; stock y posición conservan 100
+  ---
+  duration_ms: 0.832737
+  type: 'test'
+  ...
+# Subtest: QA-2A08 — Mismo timestamp con monto distinto: ERROR
+ok 43 - QA-2A08 — Mismo timestamp con monto distinto: ERROR
+  ---
+  duration_ms: 0.44431
+  type: 'test'
+  ...
+# Subtest: QA-2A09 — AJUSTE retroactivo: RETROACTIVE_AFFECTATION_EVENT sin mutación
+ok 44 - QA-2A09 — AJUSTE retroactivo: RETROACTIVE_AFFECTATION_EVENT sin mutación
+  ---
+  duration_ms: 0.697515
+  type: 'test'
+  ...
+# Subtest: QA-2A10 — ANULACION retroactiva: RETROACTIVE_AFFECTATION_EVENT sin mutación
+ok 45 - QA-2A10 — ANULACION retroactiva: RETROACTIVE_AFFECTATION_EVENT sin mutación
+  ---
+  duration_ms: 0.357582
+  type: 'test'
+  ...
+# Subtest: QA-2A11 — Disminuir reflejado: CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED sin mutación
+ok 46 - QA-2A11 — Disminuir reflejado: CONFIRMED_AMOUNT_REVERSAL_NOT_ALLOWED sin mutación
+  ---
+  duration_ms: 0.309238
+  type: 'test'
+  ...
+# Subtest: QA-2A12 — Aumentar reflejado sigue permitido y conserva originales
+ok 47 - QA-2A12 — Aumentar reflejado sigue permitido y conserva originales
+  ---
+  duration_ms: 0.377861
+  type: 'test'
+  ...
+# Subtest: QA-N01 — Prioridad y rigidez independientes: P1/R4 y P2/R1
+ok 48 - QA-N01 — Prioridad y rigidez independientes: P1/R4 y P2/R1
+  ---
+  duration_ms: 1.944794
+  type: 'test'
+  ...
+# Subtest: QA-N02 — R1 sin hora objetivo: ERROR
+ok 49 - QA-N02 — R1 sin hora objetivo: ERROR
+  ---
+  duration_ms: 0.605298
+  type: 'test'
+  ...
+# Subtest: QA-N03 — R3 sin fecha objetivo: ERROR; timestamp requiere zona válida
+ok 50 - QA-N03 — R3 sin fecha objetivo: ERROR; timestamp requiere zona válida
+  ---
+  duration_ms: 1.125735
+  type: 'test'
+  ...
+# Subtest: QA-N04 — R1 10:00 antes de R1 12:00
+ok 51 - QA-N04 — R1 10:00 antes de R1 12:00
+  ---
+  duration_ms: 0.868939
+  type: 'test'
+  ...
+# Subtest: QA-N05 — Misma rigidez/hora: P1 antes de P2; desempates estables
+ok 52 - QA-N05 — Misma rigidez/hora: P1 antes de P2; desempates estables
+  ---
+  duration_ms: 2.300608
+  type: 'test'
+  ...
+# Subtest: QA-N06 — Déficit 30 es derivado y no crea necesidad adicional
+ok 53 - QA-N06 — Déficit 30 es derivado y no crea necesidad adicional
+  ---
+  duration_ms: 0.753803
+  type: 'test'
+  ...
+# Subtest: QA-N07 — Una afectación, máximo una necesidad activa; vínculo explícito sin duplicación
+ok 54 - QA-N07 — Una afectación, máximo una necesidad activa; vínculo explícito sin duplicación
+  ---
+  duration_ms: 1.515059
+  type: 'test'
+  ...
+# Subtest: QA-N08 — Compromiso→Reserva conserva disponible 80 y originales
+ok 55 - QA-N08 — Compromiso→Reserva conserva disponible 80 y originales
+  ---
+  duration_ms: 0.597948
+  type: 'test'
+  ...
+# Subtest: QA-N09 — Compromiso con reflejado no se reclasifica a Reserva
+ok 56 - QA-N09 — Compromiso con reflejado no se reclasifica a Reserva
+  ---
+  duration_ms: 0.491184
+  type: 'test'
+  ...
+# Subtest: QA-N10 — Reserva→Compromiso sin duplicación y mismo disponible
+ok 57 - QA-N10 — Reserva→Compromiso sin duplicación y mismo disponible
+  ---
+  duration_ms: 0.358364
+  type: 'test'
+  ...
+# Subtest: QA-N11 — Repriorizar P3→P1 conserva naturaleza, monto, moneda y posición
+ok 58 - QA-N11 — Repriorizar P3→P1 conserva naturaleza, monto, moneda y posición
+  ---
+  duration_ms: 0.661951
+  type: 'test'
+  ...
+# Subtest: QA-N12 — Repriorización requiere motivo y valores válidos
+ok 59 - QA-N12 — Repriorización requiere motivo y valores válidos
+  ---
+  duration_ms: 0.635663
+  type: 'test'
+  ...
+# Subtest: QA-N13 — Reclasificación requiere motivo
+ok 60 - QA-N13 — Reclasificación requiere motivo
+  ---
+  duration_ms: 0.511632
+  type: 'test'
+  ...
+# Subtest: QA-N14 — Retroactividad contra última necesidad o afectación rechazada
+ok 61 - QA-N14 — Retroactividad contra última necesidad o afectación rechazada
+  ---
+  duration_ms: 1.220738
+  type: 'test'
+  ...
+# Subtest: QA-N15 — Idempotencia de operaciones y persistencia de trazabilidad
+ok 62 - QA-N15 — Idempotencia de operaciones y persistencia de trazabilidad
+  ---
+  duration_ms: 1.553944
+  type: 'test'
+  ...
+# Subtest: QA-N16 — Mismo request_id con otro payload: IDEMPOTENCY_CONFLICT
+ok 63 - QA-N16 — Mismo request_id con otro payload: IDEMPOTENCY_CONFLICT
+  ---
+  duration_ms: 0.988777
+  type: 'test'
+  ...
+# Subtest: QA-N17 — UNCLASSIFIED_NEED conserva efecto sin prioridad silenciosa
+ok 64 - QA-N17 — UNCLASSIFIED_NEED conserva efecto sin prioridad silenciosa
+  ---
+  duration_ms: 0.280071
+  type: 'test'
+  ...
+# Subtest: QA-N18 — Cola sin campos de cobertura, fuente o movilización
+ok 65 - QA-N18 — Cola sin campos de cobertura, fuente o movilización
+  ---
+  duration_ms: 0.725791
+  type: 'test'
+  ...
+# Subtest: QA-N19 — Orden explicable y estable, fechas normalizadas a instantes
+ok 66 - QA-N19 — Orden explicable y estable, fechas normalizadas a instantes
+  ---
+  duration_ms: 0.574584
+  type: 'test'
+  ...
+# Subtest: QA-N20 — Afectación anulada cierra necesidad y sale de cola activa
+ok 67 - QA-N20 — Afectación anulada cierra necesidad y sale de cola activa
+  ---
+  duration_ms: 0.682426
+  type: 'test'
+  ...
+# Subtest: QA-N21 — Pendiente cero no cuenta; seguimiento explícito separado
+ok 68 - QA-N21 — Pendiente cero no cuenta; seguimiento explícito separado
+  ---
+  duration_ms: 1.386032
+  type: 'test'
+  ...
+# Subtest: QA-N22 — Reserva vigente aparece como necesidad económica activa
+ok 69 - QA-N22 — Reserva vigente aparece como necesidad económica activa
+  ---
+  duration_ms: 0.467757
+  type: 'test'
+  ...
+# Subtest: QA-N23 — P4→P1 no cambia disponible ni moneda; total usa Posición
+ok 70 - QA-N23 — P4→P1 no cambia disponible ni moneda; total usa Posición
+  ---
+  duration_ms: 0.813807
+  type: 'test'
+  ...
+# Subtest: QA-N24 — COMPROMISO 20 ↔ RESERVA 20 mantiene disponible 80
+ok 71 - QA-N24 — COMPROMISO 20 ↔ RESERVA 20 mantiene disponible 80
+  ---
+  duration_ms: 1.09328
+  type: 'test'
+  ...
+# Subtest: QA-N25 — Todas las operaciones conservan amount_original/currency_original
+ok 72 - QA-N25 — Todas las operaciones conservan amount_original/currency_original
+  ---
+  duration_ms: 1.307039
+  type: 'test'
+  ...
+# Subtest: QA-B01 — Configuración válida conserva y persiste orden exacto
+ok 73 - QA-B01 — Configuración válida conserva y persiste orden exacto
+  ---
+  duration_ms: 1.283937
+  type: 'test'
+  ...
+# Subtest: QA-B02 — Cuenta inexistente en configuración: ERROR
+ok 74 - QA-B02 — Cuenta inexistente en configuración: ERROR
+  ---
+  duration_ms: 0.359821
+  type: 'test'
+  ...
+# Subtest: QA-B03 — Cuenta de otra empresa o banco: ERROR
+ok 75 - QA-B03 — Cuenta de otra empresa o banco: ERROR
+  ---
+  duration_ms: 2.711036
+  type: 'test'
+  ...
+# Subtest: QA-B04 — Banco duplicado: ERROR
+ok 76 - QA-B04 — Banco duplicado: ERROR
+  ---
+  duration_ms: 0.21502
+  type: 'test'
+  ...
+# Subtest: QA-B05 — Cuenta duplicada: ERROR
+ok 77 - QA-B05 — Cuenta duplicada: ERROR
+  ---
+  duration_ms: 0.306731
+  type: 'test'
+  ...
+# Subtest: QA-B06 — Banco A explícito: 16 se localiza 10+6
+ok 78 - QA-B06 — Banco A explícito: 16 se localiza 10+6
+  ---
+  duration_ms: 1.610379
+  type: 'test'
+  ...
+# Subtest: QA-B07 — Banco A explícito no usa B: localizado 15, residual 5
+ok 79 - QA-B07 — Banco A explícito no usa B: localizado 15, residual 5
+  ---
+  duration_ms: 0.852596
+  type: 'test'
+  ...
+# Subtest: QA-B08 — Sin banco usa A→B: localizado 15+5
+ok 80 - QA-B08 — Sin banco usa A→B: localizado 15+5
+  ---
+  duration_ms: 0.861131
+  type: 'test'
+  ...
+# Subtest: QA-B09 — Agota cuentas intrabanco antes del siguiente banco
+ok 81 - QA-B09 — Agota cuentas intrabanco antes del siguiente banco
+  ---
+  duration_ms: 0.795392
+  type: 'test'
+  ...
+# Subtest: QA-B10 — Dos afectaciones 12/8 comparten 15 sin doble uso
+ok 82 - QA-B10 — Dos afectaciones 12/8 comparten 15 sin doble uso
+  ---
+  duration_ms: 0.907154
+  type: 'test'
+  ...
+# Subtest: QA-B11 — Orden de CODEX-003: P1 antes que P3
+ok 83 - QA-B11 — Orden de CODEX-003: P1 antes que P3
+  ---
+  duration_ms: 1.137463
+  type: 'test'
+  ...
+# Subtest: QA-B12 — UNCLASSIFIED se procesa después de clasificadas
+ok 84 - QA-B12 — UNCLASSIFIED se procesa después de clasificadas
+  ---
+  duration_ms: 0.790801
+  type: 'test'
+  ...
+# Subtest: QA-B13 — Reserva activa se localiza sin cambiar economía
+ok 85 - QA-B13 — Reserva activa se localiza sin cambiar economía
+  ---
+  duration_ms: 0.465402
+  type: 'test'
+  ...
+# Subtest: QA-B14 — Postura deja intacta disponibilidad y estado de empresa
+ok 86 - QA-B14 — Postura deja intacta disponibilidad y estado de empresa
+  ---
+  duration_ms: 0.665784
+  type: 'test'
+  ...
+# Subtest: QA-B15 — Localizado + residual = pendiente económico
+ok 87 - QA-B15 — Localizado + residual = pendiente económico
+  ---
+  duration_ms: 0.700062
+  type: 'test'
+  ...
+# Subtest: QA-B16 — Capacidad nunca negativa; no usa cuentas no elegibles
+ok 88 - QA-B16 — Capacidad nunca negativa; no usa cuentas no elegibles
+  ---
+  duration_ms: 1.346051
+  type: 'test'
+  ...
+# Subtest: QA-B17 — Anulada no consume postura; reconstrucción libera capacidad
+ok 89 - QA-B17 — Anulada no consume postura; reconstrucción libera capacidad
+  ---
+  duration_ms: 0.792209
+  type: 'test'
+  ...
+# Subtest: QA-B18 — Pendiente cero no consume postura
+ok 90 - QA-B18 — Pendiente cero no consume postura
+  ---
+  duration_ms: 0.377189
+  type: 'test'
+  ...
+# Subtest: QA-B19 — Reconstrucción determinística, independiente del orden de saldos
+ok 91 - QA-B19 — Reconstrucción determinística, independiente del orden de saldos
+  ---
+  duration_ms: 1.149641
+  type: 'test'
+  ...
+# Subtest: QA-B20 — Nuevo saldo 10→20 reconstruye sin acumular asignaciones
+ok 92 - QA-B20 — Nuevo saldo 10→20 reconstruye sin acumular asignaciones
+  ---
+  duration_ms: 0.937824
+  type: 'test'
+  ...
+# Subtest: QA-B21 — Sin configuración o configuración vacía: NO_LOCALIZADA
+ok 93 - QA-B21 — Sin configuración o configuración vacía: NO_LOCALIZADA
+  ---
+  duration_ms: 1.127315
+  type: 'test'
+  ...
+# Subtest: QA-B22 — Banco explícito requiere orden de cuentas; no requiere orden de bancos
+ok 94 - QA-B22 — Banco explícito requiere orden de cuentas; no requiere orden de bancos
+  ---
+  duration_ms: 0.925607
+  type: 'test'
+  ...
+# Subtest: QA-B23 — Cuenta USD participa por equivalente VES con BCV
+ok 95 - QA-B23 — Cuenta USD participa por equivalente VES con BCV
+  ---
+  duration_ms: 0.731313
+  type: 'test'
+  ...
+# Subtest: QA-B24 — Sin tasa: ruta no publicable, sin asignación parcial silenciosa
+ok 96 - QA-B24 — Sin tasa: ruta no publicable, sin asignación parcial silenciosa
+  ---
+  duration_ms: 2.025493
+  type: 'test'
+  ...
+# Subtest: QA-B25 — Postura conserva originales y entradas
+ok 97 - QA-B25 — Postura conserva originales y entradas
+  ---
+  duration_ms: 0.605083
+  type: 'test'
+  ...
+# Subtest: QA-B26 — Vista cuenta: saldo 10, asignado 6, restante 4
+ok 98 - QA-B26 — Vista cuenta: saldo 10, asignado 6, restante 4
+  ---
+  duration_ms: 0.624199
+  type: 'test'
+  ...
+# Subtest: QA-B27 — Vista banco: saldo 18, asignado 16, restante 2
+ok 99 - QA-B27 — Vista banco: saldo 18, asignado 16, restante 2
+  ---
+  duration_ms: 0.4668
+  type: 'test'
+  ...
+# Subtest: QA-B28 — Residual explícito se expone únicamente en su banco
+ok 100 - QA-B28 — Residual explícito se expone únicamente en su banco
+  ---
+  duration_ms: 0.647969
+  type: 'test'
+  ...
+# Subtest: QA-B29 — Idempotencia SET y CLEAR sin duplicar eventos
+ok 101 - QA-B29 — Idempotencia SET y CLEAR sin duplicar eventos
+  ---
+  duration_ms: 0.336458
+  type: 'test'
+  ...
+# Subtest: QA-B30 — Mismo request_id y otro payload: IDEMPOTENCY_CONFLICT
+ok 102 - QA-B30 — Mismo request_id y otro payload: IDEMPOTENCY_CONFLICT
+  ---
+  duration_ms: 0.374928
+  type: 'test'
+  ...
+# Subtest: QA-R01 — Sin restricciones: VIABLE, sin alertas decorativas
+ok 103 - QA-R01 — Sin restricciones: VIABLE, sin alertas decorativas
+  ---
+  duration_ms: 5.24001
+  type: 'test'
+  ...
+# Subtest: QA-R02 — 25 / máximo 10: restricción y tres operaciones válidas
+ok 104 - QA-R02 — 25 / máximo 10: restricción y tres operaciones válidas
+  ---
+  duration_ms: 1.215405
+  type: 'test'
+  ...
+# Subtest: QA-R03 — Usado 80 + propuesto 30 > máximo diario 100: BLOQUEADA
+ok 105 - QA-R03 — Usado 80 + propuesto 30 > máximo diario 100: BLOQUEADA
+  ---
+  duration_ms: 0.982381
+  type: 'test'
+  ...
+# Subtest: QA-R04 — Dos usadas + dos requeridas > máximo tres: BLOQUEADA
+ok 106 - QA-R04 — Dos usadas + dos requeridas > máximo tres: BLOQUEADA
+  ---
+  duration_ms: 0.909464
+  type: 'test'
+  ...
+# Subtest: QA-R05 — 08:00 antes de apertura 09:00: VIABLE_CON_RESTRICCION
+ok 107 - QA-R05 — 08:00 antes de apertura 09:00: VIABLE_CON_RESTRICCION
+  ---
+  duration_ms: 12.261228
+  type: 'test'
+  ...
+# Subtest: QA-R06 — 17:01 después de cutoff 17:00 en T0: BLOQUEADA
+ok 108 - QA-R06 — 17:01 después de cutoff 17:00 en T0: BLOQUEADA
+  ---
+  duration_ms: 17.780316
+  type: 'test'
+  ...
+# Subtest: QA-R07 — ETA 10:30 cumple objetivo 11:00
+ok 109 - QA-R07 — ETA 10:30 cumple objetivo 11:00
+  ---
+  duration_ms: 0.720866
+  type: 'test'
+  ...
+# Subtest: QA-R08 — ETA 11:30 incumple objetivo 11:00: BLOQUEADA
+ok 110 - QA-R08 — ETA 11:30 incumple objetivo 11:00: BLOQUEADA
+  ---
+  duration_ms: 0.883396
+  type: 'test'
+  ...
+# Subtest: QA-R09 — Intrabanco permitido: VIABLE
+ok 111 - QA-R09 — Intrabanco permitido: VIABLE
+  ---
+  duration_ms: 0.713506
+  type: 'test'
+  ...
+# Subtest: QA-R10 — Intrabanco no permitido: BLOQUEADA
+ok 112 - QA-R10 — Intrabanco no permitido: BLOQUEADA
+  ---
+  duration_ms: 0.673875
+  type: 'test'
+  ...
+# Subtest: QA-R11 — Interbanco no permitido: BLOQUEADA
+ok 113 - QA-R11 — Interbanco no permitido: BLOQUEADA
+  ---
+  duration_ms: 0.681876
+  type: 'test'
+  ...
+# Subtest: QA-R12 — T0 permitido: VIABLE
+ok 114 - QA-R12 — T0 permitido: VIABLE
+  ---
+  duration_ms: 0.487353
+  type: 'test'
+  ...
+# Subtest: QA-R13 — Solo T1 ante necesidad T0 bloquea; T1 explícito calcula siguiente hábil
+ok 115 - QA-R13 — Solo T1 ante necesidad T0 bloquea; T1 explícito calcula siguiente hábil
+  ---
+  duration_ms: 20.569132
+  type: 'test'
+  ...
+# Subtest: QA-R14 — Moneda no permitida: BLOQUEADA
+ok 116 - QA-R14 — Moneda no permitida: BLOQUEADA
+  ---
+  duration_ms: 0.595165
+  type: 'test'
+  ...
+# Subtest: QA-R15 — Empresa no permitida: BLOQUEADA
+ok 117 - QA-R15 — Empresa no permitida: BLOQUEADA
+  ---
+  duration_ms: 0.819616
+  type: 'test'
+  ...
+# Subtest: QA-R16 — Cuenta no permitida: BLOQUEADA
+ok 118 - QA-R16 — Cuenta no permitida: BLOQUEADA
+  ---
+  duration_ms: 0.539523
+  type: 'test'
+  ...
+# Subtest: QA-R17 — Aprobación adicional restringe, no bloquea
+ok 119 - QA-R17 — Aprobación adicional restringe, no bloquea
+  ---
+  duration_ms: 0.682603
+  type: 'test'
+  ...
+# Subtest: QA-R18 — Día inhábil bloquea T0; T1 respeta siguiente hábil
+ok 120 - QA-R18 — Día inhábil bloquea T0; T1 respeta siguiente hábil
+  ---
+  duration_ms: 6.390538
+  type: 'test'
+  ...
+# Subtest: QA-R19 — Feriado bloquea T0 según fecha de zona explícita
+ok 121 - QA-R19 — Feriado bloquea T0 según fecha de zona explícita
+  ---
+  duration_ms: 0.976975
+  type: 'test'
+  ...
+# Subtest: QA-R20 — Reserva técnica consume límite diario sin mezclarse con usado
+ok 122 - QA-R20 — Reserva técnica consume límite diario sin mezclarse con usado
+  ---
+  duration_ms: 0.903707
+  type: 'test'
+  ...
+# Subtest: QA-R21 — Reserva técnica consume número de operaciones
+ok 123 - QA-R21 — Reserva técnica consume número de operaciones
+  ---
+  duration_ms: 0.630932
+  type: 'test'
+  ...
+# Subtest: QA-R22 — Liberación explícita restaura capacidad
+ok 124 - QA-R22 — Liberación explícita restaura capacidad
+  ---
+  duration_ms: 1.380748
+  type: 'test'
+  ...
+# Subtest: QA-R23 — Reserva/configuración idempotentes, incluso tras recarga
+ok 125 - QA-R23 — Reserva/configuración idempotentes, incluso tras recarga
+  ---
+  duration_ms: 0.880945
+  type: 'test'
+  ...
+# Subtest: QA-R24 — Mismo request_id distinto payload: IDEMPOTENCY_CONFLICT
+ok 126 - QA-R24 — Mismo request_id distinto payload: IDEMPOTENCY_CONFLICT
+  ---
+  duration_ms: 0.599872
+  type: 'test'
+  ...
+# Subtest: QA-R25 — Cuenta prevalece por campo; moneda específica gana en mismo nivel
+ok 127 - QA-R25 — Cuenta prevalece por campo; moneda específica gana en mismo nivel
+  ---
+  duration_ms: 1.33314
+  type: 'test'
+  ...
+# Subtest: QA-R26 — Empresa+banco prevalece; uso respeta alcance de la regla
+ok 128 - QA-R26 — Empresa+banco prevalece; uso respeta alcance de la regla
+  ---
+  duration_ms: 1.529938
+  type: 'test'
+  ...
+# Subtest: QA-R27 — Postura parcial: BLOQUEADA_POR_LOCALIZACION_INCOMPLETA
+ok 129 - QA-R27 — Postura parcial: BLOQUEADA_POR_LOCALIZACION_INCOMPLETA
+  ---
+  duration_ms: 1.71226
+  type: 'test'
+  ...
+# Subtest: QA-R28 — Dos asignaciones, una bloqueada: global BLOQUEADA; acumulación temporal
+ok 130 - QA-R28 — Dos asignaciones, una bloqueada: global BLOQUEADA; acumulación temporal
+  ---
+  duration_ms: 2.295646
+  type: 'test'
+  ...
+# Subtest: QA-R29 — Dos asignaciones, una restringida: global VIABLE_CON_RESTRICCION
+ok 131 - QA-R29 — Dos asignaciones, una restringida: global VIABLE_CON_RESTRICCION
+  ---
+  duration_ms: 1.333667
+  type: 'test'
+  ...
+# Subtest: QA-R30 — Todas las asignaciones viables: global VIABLE
+ok 132 - QA-R30 — Todas las asignaciones viables: global VIABLE
+  ---
+  duration_ms: 2.326398
+  type: 'test'
+  ...
+# Subtest: QA-R31 — Regla satisfecha genera INFO no bloqueante
+ok 133 - QA-R31 — Regla satisfecha genera INFO no bloqueante
+  ---
+  duration_ms: 0.656973
+  type: 'test'
+  ...
+# Subtest: QA-R32 — Regla restrictiva genera RESTRICCION
+ok 134 - QA-R32 — Regla restrictiva genera RESTRICCION
+  ---
+  duration_ms: 0.55609
+  type: 'test'
+  ...
+# Subtest: QA-R33 — Regla bloqueante genera BLOQUEO
+ok 135 - QA-R33 — Regla bloqueante genera BLOQUEO
+  ---
+  duration_ms: 0.575957
+  type: 'test'
+  ...
+# Subtest: QA-R34 — Cada explicación expone regla, dimensión, configurado y observado
+ok 136 - QA-R34 — Cada explicación expone regla, dimensión, configurado y observado
+  ---
+  duration_ms: 0.88738
+  type: 'test'
+  ...
+# Subtest: QA-R35 — Evaluar/reporte no mutan postura ni posición
+ok 137 - QA-R35 — Evaluar/reporte no mutan postura ni posición
+  ---
+  duration_ms: 1.892726
+  type: 'test'
+  ...
+# Subtest: QA-R36 — Originales intactos y conversión central para moneda de operación
+ok 138 - QA-R36 — Originales intactos y conversión central para moneda de operación
+  ---
+  duration_ms: 6.30984
+  type: 'test'
+  ...
+# Subtest: QA-R37 — Timestamp explícito obligatorio, sin reloj del sistema
+ok 139 - QA-R37 — Timestamp explícito obligatorio, sin reloj del sistema
+  ---
+  duration_ms: 0.317116
+  type: 'test'
+  ...
+# Subtest: QA-R38 — Cutoff inválido rechazado
+ok 140 - QA-R38 — Cutoff inválido rechazado
+  ---
+  duration_ms: 0.964375
+  type: 'test'
+  ...
+# Subtest: QA-R39 — Feriados inválidos rechazados
+ok 141 - QA-R39 — Feriados inválidos rechazados
+  ---
+  duration_ms: 0.616574
+  type: 'test'
+  ...
+# Subtest: QA-R40 — Sin fuentes alternativas/intercompany; clear e inactivas sin restricciones
+ok 142 - QA-R40 — Sin fuentes alternativas/intercompany; clear e inactivas sin restricciones
+  ---
+  duration_ms: 2.376092
+  type: 'test'
+  ...
+# Subtest: QA-5A01 - Antes de apertura nocturna espera la siguiente ventana
+ok 143 - QA-5A01 - Antes de apertura nocturna espera la siguiente ventana
+  ---
+  duration_ms: 18.291146
+  type: 'test'
+  ...
+# Subtest: QA-5A02 - 22:30 dentro del tramo inicial
+ok 144 - QA-5A02 - 22:30 dentro del tramo inicial
+  ---
+  duration_ms: 20.864319
+  type: 'test'
+  ...
+# Subtest: QA-5A03 - 23:59 dentro de ventana
+ok 145 - QA-5A03 - 23:59 dentro de ventana
+  ---
+  duration_ms: 23.807193
+  type: 'test'
+  ...
+# Subtest: QA-5A04 - Continuacion pertenece al dia de inicio
+ok 146 - QA-5A04 - Continuacion pertenece al dia de inicio
+  ---
+  duration_ms: 69.185916
+  type: 'test'
+  ...
+# Subtest: QA-5A05 - Cutoff nocturno inclusivo hasta el instante exacto
+ok 147 - QA-5A05 - Cutoff nocturno inclusivo hasta el instante exacto
+  ---
+  duration_ms: 36.92155
+  type: 'test'
+  ...
+# Subtest: QA-5A06 - Intervalo espera apertura y calcula ETA desde ella
+ok 148 - QA-5A06 - Intervalo espera apertura y calcula ETA desde ella
+  ---
+  duration_ms: 129.426493
+  type: 'test'
+  ...
+# Subtest: QA-5A06B - Deadline anterior a siguiente apertura bloquea
+ok 149 - QA-5A06B - Deadline anterior a siguiente apertura bloquea
+  ---
+  duration_ms: 46.978368
+  type: 'test'
+  ...
+# Subtest: QA-5A07 - Continuacion sabatina usa calendario del viernes
+ok 150 - QA-5A07 - Continuacion sabatina usa calendario del viernes
+  ---
+  duration_ms: 78.369963
+  type: 'test'
+  ...
+# Subtest: QA-5A08 - Inicio sabatino inhabil bloquea T0
+ok 151 - QA-5A08 - Inicio sabatino inhabil bloquea T0
+  ---
+  duration_ms: 55.140635
+  type: 'test'
+  ...
+# Subtest: QA-5A09 - Uso, reservas y propuestas comparten jornada a traves de medianoche
+ok 152 - QA-5A09 - Uso, reservas y propuestas comparten jornada a traves de medianoche
+  ---
+  duration_ms: 88.556665
+  type: 'test'
+  ...
+# Subtest: QA-5A10 - Hora inexistente avanza al primer instante valido, incluso salto de media hora
+ok 153 - QA-5A10 - Hora inexistente avanza al primer instante valido, incluso salto de media hora
+  ---
+  duration_ms: 32.374893
+  type: 'test'
+  ...
+# Subtest: QA-5A11 - Desplazamiento que incumple deadline bloquea
+ok 154 - QA-5A11 - Desplazamiento que incumple deadline bloquea
+  ---
+  duration_ms: 12.349056
+  type: 'test'
+  ...
+# Subtest: QA-5A12 - Hora repetida usa primera ocurrencia con INFO
+ok 155 - QA-5A12 - Hora repetida usa primera ocurrencia con INFO
+  ---
+  duration_ms: 29.529852
+  type: 'test'
+  ...
+# Subtest: QA-5A13 - Zona sin cambio estacional conserva comportamiento
+ok 156 - QA-5A13 - Zona sin cambio estacional conserva comportamiento
+  ---
+  duration_ms: 37.394476
+  type: 'test'
+  ...
+# Subtest: QA-5A14 - Configuracion y reservas siguen siendo idempotentes tras recarga
+ok 157 - QA-5A14 - Configuracion y reservas siguen siendo idempotentes tras recarga
+  ---
+  duration_ms: 0.903555
+  type: 'test'
+  ...
+# Subtest: QA-5A15 - Evaluacion no muta restricciones, uso, postura ni posicion
+ok 158 - QA-5A15 - Evaluacion no muta restricciones, uso, postura ni posicion
+  ---
+  duration_ms: 45.641712
+  type: 'test'
+  ...
+# Subtest: QA-C01 - Totalmente localizada y ejecutable no necesita cobertura
+ok 159 - QA-C01 - Totalmente localizada y ejecutable no necesita cobertura
+  ---
+  duration_ms: 3.379221
+  type: 'test'
+  ...
+# Subtest: QA-C02 - Nivel 1 cubre todo sin acudir a otra empresa
+ok 160 - QA-C02 - Nivel 1 cubre todo sin acudir a otra empresa
+  ---
+  duration_ms: 2.738326
+  type: 'test'
+  ...
+# Subtest: QA-C03 - Nivel 1 parcial y nivel 2 completa
+ok 161 - QA-C03 - Nivel 1 parcial y nivel 2 completa
+  ---
+  duration_ms: 3.185334
+  type: 'test'
+  ...
+# Subtest: QA-C04 - No saltar capacidad viable previa, incluso limitada por banco
+ok 162 - QA-C04 - No saltar capacidad viable previa, incluso limitada por banco
+  ---
+  duration_ms: 4.740977
+  type: 'test'
+  ...
+# Subtest: QA-C05 - Otra empresa mismo banco despues de recursos propios
+ok 163 - QA-C05 - Otra empresa mismo banco despues de recursos propios
+  ---
+  duration_ms: 1.663601
+  type: 'test'
+  ...
+# Subtest: QA-C06 - Otra empresa otro banco solo en nivel 4
+ok 164 - QA-C06 - Otra empresa otro banco solo en nivel 4
+  ---
+  duration_ms: 1.388959
+  type: 'test'
+  ...
+# Subtest: QA-C07 - Empresa negativa no es fuente
+ok 165 - QA-C07 - Empresa negativa no es fuente
+  ---
+  duration_ms: 1.488622
+  type: 'test'
+  ...
+# Subtest: QA-C08 - Buffer 30 sobre 100 permite solo 70
+ok 166 - QA-C08 - Buffer 30 sobre 100 permite solo 70
+  ---
+  duration_ms: 8.755737
+  type: 'test'
+  ...
+# Subtest: QA-C09 - Fuente 50 buffer 10 no cede mas de 40
+ok 167 - QA-C09 - Fuente 50 buffer 10 no cede mas de 40
+  ---
+  duration_ms: 3.091462
+  type: 'test'
+  ...
+# Subtest: QA-C10 - Capacidad fisica de 25 limita capacidad economica de 100
+ok 168 - QA-C10 - Capacidad fisica de 25 limita capacidad economica de 100
+  ---
+  duration_ms: 1.623321
+  type: 'test'
+  ...
+# Subtest: QA-C11 - Saldo asignado a necesidades propias no se vuelve a usar
+ok 169 - QA-C11 - Saldo asignado a necesidades propias no se vuelve a usar
+  ---
+  duration_ms: 1.823759
+  type: 'test'
+  ...
+# Subtest: QA-C12 - Orden de cuentas respeta postura y agota una antes de siguiente
+ok 170 - QA-C12 - Orden de cuentas respeta postura y agota una antes de siguiente
+  ---
+  duration_ms: 1.957375
+  type: 'test'
+  ...
+# Subtest: QA-C13 - Ruta bancaria bloqueada se descarta
+ok 171 - QA-C13 - Ruta bancaria bloqueada se descarta
+  ---
+  duration_ms: 1.767739
+  type: 'test'
+  ...
+# Subtest: QA-C14 - Ruta condicionada conserva aprobacion y espera
+ok 172 - QA-C14 - Ruta condicionada conserva aprobacion y espera
+  ---
+  duration_ms: 6.393203
+  type: 'test'
+  ...
+# Subtest: QA-C15 - Division bancaria mantiene tres operaciones y limita numero diario
+ok 173 - QA-C15 - Division bancaria mantiene tres operaciones y limita numero diario
+  ---
+  duration_ms: 2.944911
+  type: 'test'
+  ...
+# Subtest: QA-C16 - Necesidad 100 fuentes 60 conserva residual 40
+ok 174 - QA-C16 - Necesidad 100 fuentes 60 conserva residual 40
+  ---
+  duration_ms: 3.676508
+  type: 'test'
+  ...
+# Subtest: QA-C17 - Sin fuentes no inventa cobertura
+ok 175 - QA-C17 - Sin fuentes no inventa cobertura
+  ---
+  duration_ms: 1.289117
+  type: 'test'
+  ...
+# Subtest: QA-C18 - Multiples fuentes y necesidades comparten capacidad sin doble uso
+ok 176 - QA-C18 - Multiples fuentes y necesidades comparten capacidad sin doble uso
+  ---
+  duration_ms: 8.659679
+  type: 'test'
+  ...
+# Subtest: QA-C19 - Mayor capacidad cedible primero dentro del nivel
+ok 177 - QA-C19 - Mayor capacidad cedible primero dentro del nivel
+  ---
+  duration_ms: 3.135979
+  type: 'test'
+  ...
+# Subtest: QA-C20 - Desempate estable por ID
+ok 178 - QA-C20 - Desempate estable por ID
+  ---
+  duration_ms: 1.382856
+  type: 'test'
+  ...
+# Subtest: QA-C21 - Misma cuenta destino no genera autotransferencia
+ok 179 - QA-C21 - Misma cuenta destino no genera autotransferencia
+  ---
+  duration_ms: 5.678562
+  type: 'test'
+  ...
+# Subtest: QA-C22 - Cuenta USD participa en VES y valida limites en USD
+ok 180 - QA-C22 - Cuenta USD participa en VES y valida limites en USD
+  ---
+  duration_ms: 2.816802
+  type: 'test'
+  ...
+# Subtest: QA-C23 - Sin tasa no usa fuente ni suma parcialmente moneda desconocida
+ok 181 - QA-C23 - Sin tasa no usa fuente ni suma parcialmente moneda desconocida
+  ---
+  duration_ms: 1.549036
+  type: 'test'
+  ...
+# Subtest: QA-C24 - Originales intactos en saldos y afectaciones
+ok 182 - QA-C24 - Originales intactos en saldos y afectaciones
+  ---
+  duration_ms: 1.438835
+  type: 'test'
+  ...
+# Subtest: QA-C25 - Posicion de todas las empresas inalterada
+ok 183 - QA-C25 - Posicion de todas las empresas inalterada
+  ---
+  duration_ms: 2.079241
+  type: 'test'
+  ...
+# Subtest: QA-C26 - Postura y asignaciones inalteradas
+ok 184 - QA-C26 - Postura y asignaciones inalteradas
+  ---
+  duration_ms: 1.673496
+  type: 'test'
+  ...
+# Subtest: QA-C27 - Uso y reservas oficiales no se alteran y limitan la propuesta
+ok 185 - QA-C27 - Uso y reservas oficiales no se alteran y limitan la propuesta
+  ---
+  duration_ms: 2.497207
+  type: 'test'
+  ...
+# Subtest: QA-C28 - Buffer no crea afectacion ni altera posicion
+ok 186 - QA-C28 - Buffer no crea afectacion ni altera posicion
+  ---
+  duration_ms: 0.620666
+  type: 'test'
+  ...
+# Subtest: QA-C29 - Politica idempotente incluso despues de guardar y cargar
+ok 187 - QA-C29 - Politica idempotente incluso despues de guardar y cargar
+  ---
+  duration_ms: 0.75461
+  type: 'test'
+  ...
+# Subtest: QA-C30 - Mismo request_id con contenido distinto produce conflicto
+ok 188 - QA-C30 - Mismo request_id con contenido distinto produce conflicto
+  ---
+  duration_ms: 0.361425
+  type: 'test'
+  ...
+# Subtest: QA-C31 - Clear elimina buffer y conserva posicion e historial
+ok 189 - QA-C31 - Clear elimina buffer y conserva posicion e historial
+  ---
+  duration_ms: 0.641243
+  type: 'test'
+  ...
+# Subtest: QA-C32 - Empresa fuente con 30 y buffer 20 cede solo 10
+ok 190 - QA-C32 - Empresa fuente con 30 y buffer 20 cede solo 10
+  ---
+  duration_ms: 1.594978
+  type: 'test'
+  ...
+# Subtest: QA-C33 - Todas las fuentes conservan buffer y capacidad no negativa
+ok 191 - QA-C33 - Todas las fuentes conservan buffer y capacidad no negativa
+  ---
+  duration_ms: 1.901192
+  type: 'test'
+  ...
+# Subtest: QA-C34 - Parte indispensable bloqueada conserva cobertura parcial
+ok 192 - QA-C34 - Parte indispensable bloqueada conserva cobertura parcial
+  ---
+  duration_ms: 5.196865
+  type: 'test'
+  ...
+# Subtest: QA-C35 - Mismos datos producen mismo plan y reporte
+ok 193 - QA-C35 - Mismos datos producen mismo plan y reporte
+  ---
+  duration_ms: 5.401078
+  type: 'test'
+  ...
+# Subtest: QA-C36 - Fecha y zona explicitas obligatorias; destino sin banco no se inventa
+ok 194 - QA-C36 - Fecha y zona explicitas obligatorias; destino sin banco no se inventa
+  ---
+  duration_ms: 2.558829
+  type: 'test'
+  ...
+# Subtest: QA-C37 - Cada tramo explica nivel y motivo, sin saltar jerarquia
+ok 195 - QA-C37 - Cada tramo explica nivel y motivo, sin saltar jerarquia
+  ---
+  duration_ms: 2.703069
+  type: 'test'
+  ...
+# Subtest: QA-C38 - Descartes tienen empresa y motivo estable
+ok 196 - QA-C38 - Descartes tienen empresa y motivo estable
+  ---
+  duration_ms: 6.525008
+  type: 'test'
+  ...
+# Subtest: QA-C39 - No inventa modulo ni reservas de FX especifico
+ok 197 - QA-C39 - No inventa modulo ni reservas de FX especifico
+  ---
+  duration_ms: 1.68232
+  type: 'test'
+  ...
+# Subtest: QA-C40 - No crea mandatos ni ejecuta movimientos
+ok 198 - QA-C40 - No crea mandatos ni ejecuta movimientos
+  ---
+  duration_ms: 2.172364
+  type: 'test'
+  ...
+# Subtest: QA-6A01 - Nivel 1 cubre 30 y conserva disponibilidad 40
+ok 199 - QA-6A01 - Nivel 1 cubre 30 y conserva disponibilidad 40
+  ---
+  duration_ms: 2.495543
+  type: 'test'
+  ...
+# Subtest: QA-6A02 - Nivel 2 cubre 20 sin descontar saldo consolidado cero
+ok 200 - QA-6A02 - Nivel 2 cubre 20 sin descontar saldo consolidado cero
+  ---
+  duration_ms: 1.750906
+  type: 'test'
+  ...
+# Subtest: QA-6A03 - Buffer 20 no bloquea nivel 1 con disponibilidad 20
+ok 201 - QA-6A03 - Buffer 20 no bloquea nivel 1 con disponibilidad 20
+  ---
+  duration_ms: 2.52533
+  type: 'test'
+  ...
+# Subtest: QA-6A04 - Buffer mayor que disponibilidad no bloquea nivel 2
+ok 202 - QA-6A04 - Buffer mayor que disponibilidad no bloquea nivel 2
+  ---
+  duration_ms: 1.794993
+  type: 'test'
+  ...
+# Subtest: QA-6A05 - Nivel 3 reduce fuente 50 a 20 al ceder 30
+ok 203 - QA-6A05 - Nivel 3 reduce fuente 50 a 20 al ceder 30
+  ---
+  duration_ms: 1.751061
+  type: 'test'
+  ...
+# Subtest: QA-6A06 - Nivel 4 reduce fuente 50 a 20 al ceder 30
+ok 204 - QA-6A06 - Nivel 4 reduce fuente 50 a 20 al ceder 30
+  ---
+  duration_ms: 1.609697
+  type: 'test'
+  ...
+# Subtest: QA-6A07 - Dos necesidades 20+20 comparten solo 30 fisicos
+ok 205 - QA-6A07 - Dos necesidades 20+20 comparten solo 30 fisicos
+  ---
+  duration_ms: 2.222128
+  type: 'test'
+  ...
+# Subtest: QA-6A08 - Disponibilidad 10 no impone limite ficticio sobre 30 relocalizables
+ok 206 - QA-6A08 - Disponibilidad 10 no impone limite ficticio sobre 30 relocalizables
+  ---
+  duration_ms: 2.78499
+  type: 'test'
+  ...
+# Subtest: QA-6A09 - Cutoff, importe diario y numero de operaciones gobiernan niveles 1 y 2
+ok 207 - QA-6A09 - Cutoff, importe diario y numero de operaciones gobiernan niveles 1 y 2
+  ---
+  duration_ms: 22.207915
+  type: 'test'
+  ...
+# Subtest: QA-6A10 - Informe comparte limites bancarios entre necesidades y cuentas
+ok 208 - QA-6A10 - Informe comparte limites bancarios entre necesidades y cuentas
+  ---
+  duration_ms: 4.54429
+  type: 'test'
+  ...
+# Subtest: QA-6A11 - Tramos mixtos explican saldo constante propio y cesion externa
+ok 209 - QA-6A11 - Tramos mixtos explican saldo constante propio y cesion externa
+  ---
+  duration_ms: 2.708409
+  type: 'test'
+  ...
+# Subtest: QA-6A12 - Intercompany conserva buffer en ambos niveles y entre necesidades
+ok 210 - QA-6A12 - Intercompany conserva buffer en ambos niveles y entre necesidades
+  ---
+  duration_ms: 9.279558
+  type: 'test'
+  ...
+# Subtest: QA-6A13 - Posicion oficial, originales y reservas bancarias intactos
+ok 211 - QA-6A13 - Posicion oficial, originales y reservas bancarias intactos
+  ---
+  duration_ms: 3.79304
+  type: 'test'
+  ...
+# Subtest: QA-6A14 - Postura intacta y capacidad ya asignada no reutilizada
+ok 212 - QA-6A14 - Postura intacta y capacidad ya asignada no reutilizada
+  ---
+  duration_ms: 2.98062
+  type: 'test'
+  ...
+# Subtest: QA-6A15 - Plan e informe deterministas con coberturas intraempresa e intercompany
+ok 213 - QA-6A15 - Plan e informe deterministas con coberturas intraempresa e intercompany
+  ---
+  duration_ms: 5.766908
+  type: 'test'
+  ...
+# Subtest: QA-FX01 - Vinculo obligatorio, FX unico e importe completo coincidente
+ok 214 - QA-FX01 - Vinculo obligatorio, FX unico e importe completo coincidente
+  ---
+  duration_ms: 3.721255
+  type: 'test'
+  ...
+# Subtest: QA-FX02 - Afectacion inexistente rechazada sin mutacion
+ok 215 - QA-FX02 - Afectacion inexistente rechazada sin mutacion
+  ---
+  duration_ms: 1.269848
+  type: 'test'
+  ...
+# Subtest: QA-FX03 - Configurar y actualizar no crea segunda afectacion
+ok 216 - QA-FX03 - Configurar y actualizar no crea segunda afectacion
+  ---
+  duration_ms: 2.412632
+  type: 'test'
+  ...
+# Subtest: QA-FX04 - Configuracion no descuenta nuevamente la obligacion
+ok 217 - QA-FX04 - Configuracion no descuenta nuevamente la obligacion
+  ---
+  duration_ms: 2.353163
+  type: 'test'
+  ...
+# Subtest: QA-FX05 - Equivalente USD a VES deriva de CODEX-001 y se revalida
+ok 218 - QA-FX05 - Equivalente USD a VES deriva de CODEX-001 y se revalida
+  ---
+  duration_ms: 7.873053
+  type: 'test'
+  ...
+# Subtest: QA-FX06 - Falta tasa no publicable sin equivalente parcial
+ok 219 - QA-FX06 - Falta tasa no publicable sin equivalente parcial
+  ---
+  duration_ms: 1.49643
+  type: 'test'
+  ...
+# Subtest: QA-FX07 - Banco negociador debe existir
+ok 220 - QA-FX07 - Banco negociador debe existir
+  ---
+  duration_ms: 0.758746
+  type: 'test'
+  ...
+# Subtest: QA-FX08 - T1 lunes a martes, fecha manual contradictoria rechazada
+ok 221 - QA-FX08 - T1 lunes a martes, fecha manual contradictoria rechazada
+  ---
+  duration_ms: 2.352515
+  type: 'test'
+  ...
+# Subtest: QA-FX09 - Feriados y precedencia cuenta sobre empresa sobre banco
+ok 222 - QA-FX09 - Feriados y precedencia cuenta sobre empresa sobre banco
+  ---
+  duration_ms: 2.701248
+  type: 'test'
+  ...
+# Subtest: QA-FX10 - Fin de semana se salta solo con calendario configurado
+ok 223 - QA-FX10 - Fin de semana se salta solo con calendario configurado
+  ---
+  duration_ms: 3.423013
+  type: 'test'
+  ...
+# Subtest: QA-FX11 - ETA antes o en hora critica es viable
+ok 224 - QA-FX11 - ETA antes o en hora critica es viable
+  ---
+  duration_ms: 2.278143
+  type: 'test'
+  ...
+# Subtest: QA-FX12 - ETA posterior a hora critica bloquea aunque need tenga plazo posterior
+ok 225 - QA-FX12 - ETA posterior a hora critica bloquea aunque need tenga plazo posterior
+  ---
+  duration_ms: 2.19173
+  type: 'test'
+  ...
+# Subtest: QA-FX13 - Prioridad economica y rigidez se heredan separadas
+ok 226 - QA-FX13 - Prioridad economica y rigidez se heredan separadas
+  ---
+  duration_ms: 3.284112
+  type: 'test'
+  ...
+# Subtest: QA-FX14 - Mismo banco primero, sin segundo descuento intraempresa
+ok 227 - QA-FX14 - Mismo banco primero, sin segundo descuento intraempresa
+  ---
+  duration_ms: 2.23603
+  type: 'test'
+  ...
+# Subtest: QA-FX15 - Otro banco propio completa despues de banco negociador
+ok 228 - QA-FX15 - Otro banco propio completa despues de banco negociador
+  ---
+  duration_ms: 5.239336
+  type: 'test'
+  ...
+# Subtest: QA-FX16 - Intercompany mismo banco tras agotar propia empresa
+ok 229 - QA-FX16 - Intercompany mismo banco tras agotar propia empresa
+  ---
+  duration_ms: 2.696216
+  type: 'test'
+  ...
+# Subtest: QA-FX17 - Intercompany otro banco ultimo nivel
+ok 230 - QA-FX17 - Intercompany otro banco ultimo nivel
+  ---
+  duration_ms: 2.278551
+  type: 'test'
+  ...
+# Subtest: QA-FX18 - Una cuenta no financia dos rutas con el mismo saldo
+ok 231 - QA-FX18 - Una cuenta no financia dos rutas con el mismo saldo
+  ---
+  duration_ms: 2.413289
+  type: 'test'
+  ...
+# Subtest: QA-FX19 - Gap derivado no crea otra necesidad
+ok 232 - QA-FX19 - Gap derivado no crea otra necesidad
+  ---
+  duration_ms: 1.954789
+  type: 'test'
+  ...
+# Subtest: QA-FX20 - Banco sin orden de cuentas no inventa destino
+ok 233 - QA-FX20 - Banco sin orden de cuentas no inventa destino
+  ---
+  duration_ms: 2.780579
+  type: 'test'
+  ...
+# Subtest: QA-FX21 - Cuenta destino explicita validada y saldo propio no es autotransferencia
+ok 234 - QA-FX21 - Cuenta destino explicita validada y saldo propio no es autotransferencia
+  ---
+  duration_ms: 11.665643
+  type: 'test'
+  ...
+# Subtest: QA-FX22 - Cutoff bloquea rutas tardias
+ok 235 - QA-FX22 - Cutoff bloquea rutas tardias
+  ---
+  duration_ms: 15.881071
+  type: 'test'
+  ...
+# Subtest: QA-FX23 - Maximo diario permite solo capacidad bancaria restante
+ok 236 - QA-FX23 - Maximo diario permite solo capacidad bancaria restante
+  ---
+  duration_ms: 2.426098
+  type: 'test'
+  ...
+# Subtest: QA-FX24 - Aprobacion adicional se conserva en las rutas
+ok 237 - QA-FX24 - Aprobacion adicional se conserva en las rutas
+  ---
+  duration_ms: 2.166572
+  type: 'test'
+  ...
+# Subtest: QA-FX25 - Cobertura parcial con gap positivo
+ok 238 - QA-FX25 - Cobertura parcial con gap positivo
+  ---
+  duration_ms: 2.368139
+  type: 'test'
+  ...
+# Subtest: QA-FX26 - Sin fuentes queda sin cobertura
+ok 239 - QA-FX26 - Sin fuentes queda sin cobertura
+  ---
+  duration_ms: 1.697531
+  type: 'test'
+  ...
+# Subtest: QA-FX27 - Cobertura completa con gap cero
+ok 240 - QA-FX27 - Cobertura completa con gap cero
+  ---
+  duration_ms: 3.658742
+  type: 'test'
+  ...
+# Subtest: QA-FX28 - Excepcion temporal viable solo queda pendiente de aprobacion
+ok 241 - QA-FX28 - Excepcion temporal viable solo queda pendiente de aprobacion
+  ---
+  duration_ms: 19.704603
+  type: 'test'
+  ...
+# Subtest: QA-FX29 - Excepcion no altera prioridad ni rigidez
+ok 242 - QA-FX29 - Excepcion no altera prioridad ni rigidez
+  ---
+  duration_ms: 14.788472
+  type: 'test'
+  ...
+# Subtest: QA-FX30 - Excepcion identifica necesidad y monto desplazados
+ok 243 - QA-FX30 - Excepcion identifica necesidad y monto desplazados
+  ---
+  duration_ms: 13.1523
+  type: 'test'
+  ...
+# Subtest: QA-FX31 - Recomposicion ausente, parcial o sin plazo no habilita excepcion
+ok 244 - QA-FX31 - Recomposicion ausente, parcial o sin plazo no habilita excepcion
+  ---
+  duration_ms: 20.088687
+  type: 'test'
+  ...
+# Subtest: QA-FX32 - Recomposicion cubre 100% con ruta, fecha y monto sin otro desplazamiento
+ok 245 - QA-FX32 - Recomposicion cubre 100% con ruta, fecha y monto sin otro desplazamiento
+  ---
+  duration_ms: 34.142978
+  type: 'test'
+  ...
+# Subtest: QA-FX33 - Ningun plan modifica estado oficial ni postura
+ok 246 - QA-FX33 - Ningun plan modifica estado oficial ni postura
+  ---
+  duration_ms: 19.216862
+  type: 'test'
+  ...
+# Subtest: QA-FX34 - Multiples FX se ordenan por rigidez, critica, prioridad, evento e ID
+ok 247 - QA-FX34 - Multiples FX se ordenan por rigidez, critica, prioridad, evento e ID
+  ---
+  duration_ms: 3.500788
+  type: 'test'
+  ...
+# Subtest: QA-FX35 - Reporte comparte capacidad fisica y bancaria
+ok 248 - QA-FX35 - Reporte comparte capacidad fisica y bancaria
+  ---
+  duration_ms: 4.934181
+  type: 'test'
+  ...
+# Subtest: QA-FX36 - SET idempotente y persistencia mediante snapshot existente
+ok 249 - QA-FX36 - SET idempotente y persistencia mediante snapshot existente
+  ---
+  duration_ms: 1.788971
+  type: 'test'
+  ...
+# Subtest: QA-FX37 - Conflicto por identificador de solicitud repetido
+ok 250 - QA-FX37 - Conflicto por identificador de solicitud repetido
+  ---
+  duration_ms: 1.607625
+  type: 'test'
+  ...
+# Subtest: QA-FX38 - CLEAR elimina FX con trazabilidad sin alterar posicion
+ok 251 - QA-FX38 - CLEAR elimina FX con trazabilidad sin alterar posicion
+  ---
+  duration_ms: 1.344037
+  type: 'test'
+  ...
+# Subtest: QA-FX39 - Originales intactos al configurar y planificar
+ok 252 - QA-FX39 - Originales intactos al configurar y planificar
+  ---
+  duration_ms: 2.570414
+  type: 'test'
+  ...
+# Subtest: QA-FX40 - No crea ejecucion, mandato, conciliacion ni UI
+ok 253 - QA-FX40 - No crea ejecucion, mandato, conciliacion ni UI
+  ---
+  duration_ms: 1.951443
+  type: 'test'
+  ...
+# Subtest: QA-RSV01 - Reserva activa visible
+ok 254 - QA-RSV01 - Reserva activa visible
+  ---
+  duration_ms: 1.10452
+  type: 'test'
+  ...
+# Subtest: QA-RSV02 - Originales intactos
+ok 255 - QA-RSV02 - Originales intactos
+  ---
+  duration_ms: 2.78433
+  type: 'test'
+  ...
+# Subtest: QA-RSV03 - Liberacion parcial correcta
+ok 256 - QA-RSV03 - Liberacion parcial correcta
+  ---
+  duration_ms: 1.036508
+  type: 'test'
+  ...
+# Subtest: QA-RSV04 - Liberacion total correcta
+ok 257 - QA-RSV04 - Liberacion total correcta
+  ---
+  duration_ms: 1.123178
+  type: 'test'
+  ...
+# Subtest: QA-RSV05 - No liberar mas de bloqueado ni importes invalidos
+ok 258 - QA-RSV05 - No liberar mas de bloqueado ni importes invalidos
+  ---
+  duration_ms: 3.393302
+  type: 'test'
+  ...
+# Subtest: QA-RSV06 - Saldo gestion aumenta al liberar
+ok 259 - QA-RSV06 - Saldo gestion aumenta al liberar
+  ---
+  duration_ms: 0.770044
+  type: 'test'
+  ...
+# Subtest: QA-RSV07 - Liberada persiste en historia
+ok 260 - QA-RSV07 - Liberada persiste en historia
+  ---
+  duration_ms: 1.121425
+  type: 'test'
+  ...
+# Subtest: QA-RSV08 - Mantener libre no reasigna automaticamente
+ok 261 - QA-RSV08 - Mantener libre no reasigna automaticamente
+  ---
+  duration_ms: 1.332433
+  type: 'test'
+  ...
+# Subtest: QA-RSV09 - Reasignacion parcial
+ok 262 - QA-RSV09 - Reasignacion parcial
+  ---
+  duration_ms: 1.249235
+  type: 'test'
+  ...
+# Subtest: QA-RSV10 - Reasignacion total
+ok 263 - QA-RSV10 - Reasignacion total
+  ---
+  duration_ms: 1.090506
+  type: 'test'
+  ...
+# Subtest: QA-RSV11 - No reasignar mas de liberado
+ok 264 - QA-RSV11 - No reasignar mas de liberado
+  ---
+  duration_ms: 10.811231
+  type: 'test'
+  ...
+# Subtest: QA-RSV12 - Saldo gestion baja al reasignar
+ok 265 - QA-RSV12 - Saldo gestion baja al reasignar
+  ---
+  duration_ms: 1.040847
+  type: 'test'
+  ...
+# Subtest: QA-RSV13 - Conversion conserva la misma afectacion y solo bloqueado vigente
+ok 266 - QA-RSV13 - Conversion conserva la misma afectacion y solo bloqueado vigente
+  ---
+  duration_ms: 1.279704
+  type: 'test'
+  ...
+# Subtest: QA-RSV14 - Conversion no cambia disponibilidad ni aplica doble descuento
+ok 267 - QA-RSV14 - Conversion no cambia disponibilidad ni aplica doble descuento
+  ---
+  duration_ms: 1.161056
+  type: 'test'
+  ...
+# Subtest: QA-RSV15 - Confirmado impide conversion y convertido no admite reactivacion
+ok 268 - QA-RSV15 - Confirmado impide conversion y convertido no admite reactivacion
+  ---
+  duration_ms: 1.967656
+  type: 'test'
+  ...
+# Subtest: QA-RSV16 - Anulacion parcial separa acumulado anulado de liberado
+ok 269 - QA-RSV16 - Anulacion parcial separa acumulado anulado de liberado
+  ---
+  duration_ms: 1.103193
+  type: 'test'
+  ...
+# Subtest: QA-RSV17 - Anulacion total es terminal incluso con liberaciones anteriores
+ok 270 - QA-RSV17 - Anulacion total es terminal incluso con liberaciones anteriores
+  ---
+  duration_ms: 1.358432
+  type: 'test'
+  ...
+# Subtest: QA-RSV18 - Estados respetan precedencia historica y terminal
+ok 271 - QA-RSV18 - Estados respetan precedencia historica y terminal
+  ---
+  duration_ms: 7.687353
+  type: 'test'
+  ...
+# Subtest: QA-RSV19 - Idempotencia release
+ok 272 - QA-RSV19 - Idempotencia release
+  ---
+  duration_ms: 0.733179
+  type: 'test'
+  ...
+# Subtest: QA-RSV20 - Conflicto idempotencia
+ok 273 - QA-RSV20 - Conflicto idempotencia
+  ---
+  duration_ms: 0.588529
+  type: 'test'
+  ...
+# Subtest: QA-RSV21 - What If no muta estado completo
+ok 274 - QA-RSV21 - What If no muta estado completo
+  ---
+  duration_ms: 1.029843
+  type: 'test'
+  ...
+# Subtest: QA-RSV22 - Secuencia release y reassign
+ok 275 - QA-RSV22 - Secuencia release y reassign
+  ---
+  duration_ms: 1.540857
+  type: 'test'
+  ...
+# Subtest: QA-RSV23 - Secuencia invalida se detiene sin resultado parcial publicable
+ok 276 - QA-RSV23 - Secuencia invalida se detiene sin resultado parcial publicable
+  ---
+  duration_ms: 1.793274
+  type: 'test'
+  ...
+# Subtest: QA-RSV24 - Comparacion antes despues completa
+ok 277 - QA-RSV24 - Comparacion antes despues completa
+  ---
+  duration_ms: 1.26546
+  type: 'test'
+  ...
+# Subtest: QA-RSV25 - Deficit cambia correctamente
+ok 278 - QA-RSV25 - Deficit cambia correctamente
+  ---
+  duration_ms: 1.100803
+  type: 'test'
+  ...
+# Subtest: QA-RSV26 - Cobertura recalculada tras liberar
+ok 279 - QA-RSV26 - Cobertura recalculada tras liberar
+  ---
+  duration_ms: 4.338826
+  type: 'test'
+  ...
+# Subtest: QA-RSV27 - Cobertura recalculada tras reasignar
+ok 280 - QA-RSV27 - Cobertura recalculada tras reasignar
+  ---
+  duration_ms: 6.595474
+  type: 'test'
+  ...
+# Subtest: QA-RSV28 - Postura recalculada sin mutacion oficial
+ok 281 - QA-RSV28 - Postura recalculada sin mutacion oficial
+  ---
+  duration_ms: 1.480528
+  type: 'test'
+  ...
+# Subtest: QA-RSV29 - Restricciones siguen aplicando al escenario
+ok 282 - QA-RSV29 - Restricciones siguen aplicando al escenario
+  ---
+  duration_ms: 29.836436
+  type: 'test'
+  ...
+# Subtest: QA-RSV30 - FX mejora hipoteticamente sin modificar FX oficial
+ok 283 - QA-RSV30 - FX mejora hipoteticamente sin modificar FX oficial
+  ---
+  duration_ms: 4.180844
+  type: 'test'
+  ...
+# Subtest: QA-RSV31 - Multiples reservas independientes
+ok 284 - QA-RSV31 - Multiples reservas independientes
+  ---
+  duration_ms: 1.082777
+  type: 'test'
+  ...
+# Subtest: QA-RSV32 - No doble uso del monto liberado en ciclos
+ok 285 - QA-RSV32 - No doble uso del monto liberado en ciclos
+  ---
+  duration_ms: 1.930434
+  type: 'test'
+  ...
+# Subtest: QA-RSV33 - Reasignacion conserva trazabilidad
+ok 286 - QA-RSV33 - Reasignacion conserva trazabilidad
+  ---
+  duration_ms: 0.979667
+  type: 'test'
+  ...
+# Subtest: QA-RSV34 - Conversion conserva vinculo need y affectation tambien en What If
+ok 287 - QA-RSV34 - Conversion conserva vinculo need y affectation tambien en What If
+  ---
+  duration_ms: 1.813723
+  type: 'test'
+  ...
+# Subtest: QA-RSV35 - KEEP_RELEASED_FREE explicable
+ok 288 - QA-RSV35 - KEEP_RELEASED_FREE explicable
+  ---
+  duration_ms: 1.324572
+  type: 'test'
+  ...
+# Subtest: QA-RSV36 - CANCEL conserva historia y escenario cancelado no reactiva
+ok 289 - QA-RSV36 - CANCEL conserva historia y escenario cancelado no reactiva
+  ---
+  duration_ms: 3.470162
+  type: 'test'
+  ...
+# Subtest: QA-RSV37 - Escenario deterministico
+ok 290 - QA-RSV37 - Escenario deterministico
+  ---
+  duration_ms: 1.60747
+  type: 'test'
+  ...
+# Subtest: QA-RSV38 - Snapshot persistente compatible
+ok 291 - QA-RSV38 - Snapshot persistente compatible
+  ---
+  duration_ms: 4.951328
+  type: 'test'
+  ...
+# Subtest: QA-RSV39 - Sin ejecucion bancaria ni mandato
+ok 292 - QA-RSV39 - Sin ejecucion bancaria ni mandato
+  ---
+  duration_ms: 1.155268
+  type: 'test'
+  ...
+# Subtest: QA-RSV40 - Sin UI ni SIGRF y salida inmutable
+ok 293 - QA-RSV40 - Sin UI ni SIGRF y salida inmutable
+  ---
+  duration_ms: 0.866673
+  type: 'test'
+  ...
+# Subtest: QA-MND01 - Crear manual con afectacion valida
+ok 294 - QA-MND01 - Crear manual con afectacion valida
+  ---
+  duration_ms: 3.513954
+  type: 'test'
+  ...
+# Subtest: QA-MND02 - Afectacion inexistente rechazada
+ok 295 - QA-MND02 - Afectacion inexistente rechazada
+  ---
+  duration_ms: 1.022488
+  type: 'test'
+  ...
+# Subtest: QA-MND03 - No crea afectacion ni necesidad
+ok 296 - QA-MND03 - No crea afectacion ni necesidad
+  ---
+  duration_ms: 1.684447
+  type: 'test'
+  ...
+# Subtest: QA-MND04 - Uno o varios tramos validos y montos positivos
+ok 297 - QA-MND04 - Uno o varios tramos validos y montos positivos
+  ---
+  duration_ms: 3.622338
+  type: 'test'
+  ...
+# Subtest: QA-MND05 - Total no supera pendiente
+ok 298 - QA-MND05 - Total no supera pendiente
+  ---
+  duration_ms: 0.788925
+  type: 'test'
+  ...
+# Subtest: QA-MND06 - Borrador no reserva
+ok 299 - QA-MND06 - Borrador no reserva
+  ---
+  duration_ms: 1.43732
+  type: 'test'
+  ...
+# Subtest: QA-MND07 - Submit deja pendiente sin reservas
+ok 300 - QA-MND07 - Submit deja pendiente sin reservas
+  ---
+  duration_ms: 2.075385
+  type: 'test'
+  ...
+# Subtest: QA-MND08 - Aprobacion revalida activa
+ok 301 - QA-MND08 - Aprobacion revalida activa
+  ---
+  duration_ms: 2.560426
+  type: 'test'
+  ...
+# Subtest: QA-MND09 - Aprobacion revalida pendiente
+ok 302 - QA-MND09 - Aprobacion revalida pendiente
+  ---
+  duration_ms: 2.600212
+  type: 'test'
+  ...
+# Subtest: QA-MND10 - Aprobacion revalida capacidad fisica
+ok 303 - QA-MND10 - Aprobacion revalida capacidad fisica
+  ---
+  duration_ms: 2.683129
+  type: 'test'
+  ...
+# Subtest: QA-MND11 - Buffer intercompany se revalida
+ok 304 - QA-MND11 - Buffer intercompany se revalida
+  ---
+  duration_ms: 3.062575
+  type: 'test'
+  ...
+# Subtest: QA-MND12 - Restricciones vigentes se revalidan
+ok 305 - QA-MND12 - Restricciones vigentes se revalidan
+  ---
+  duration_ms: 7.451132
+  type: 'test'
+  ...
+# Subtest: QA-MND13 - ETA posterior bloquea
+ok 306 - QA-MND13 - ETA posterior bloquea
+  ---
+  duration_ms: 2.964072
+  type: 'test'
+  ...
+# Subtest: QA-MND14 - Aprobacion adicional obligatoria
+ok 307 - QA-MND14 - Aprobacion adicional obligatoria
+  ---
+  duration_ms: 7.440283
+  type: 'test'
+  ...
+# Subtest: QA-MND15 - Aprobacion adicional explicita permite aprobar
+ok 308 - QA-MND15 - Aprobacion adicional explicita permite aprobar
+  ---
+  duration_ms: 3.894901
+  type: 'test'
+  ...
+# Subtest: QA-MND16 - Aprobado reserva banco sin uso ejecutado
+ok 309 - QA-MND16 - Aprobado reserva banco sin uso ejecutado
+  ---
+  duration_ms: 2.875166
+  type: 'test'
+  ...
+# Subtest: QA-MND17 - Aprobado reserva fisicamente
+ok 310 - QA-MND17 - Aprobado reserva fisicamente
+  ---
+  duration_ms: 2.799943
+  type: 'test'
+  ...
+# Subtest: QA-MND18 - Segundo mandato no duplica saldo fisico
+ok 311 - QA-MND18 - Segundo mandato no duplica saldo fisico
+  ---
+  duration_ms: 13.653695
+  type: 'test'
+  ...
+# Subtest: QA-MND19 - Segundo mandato respeta banco reservado
+ok 312 - QA-MND19 - Segundo mandato respeta banco reservado
+  ---
+  duration_ms: 5.676872
+  type: 'test'
+  ...
+# Subtest: QA-MND20 - Cancelar aprobado libera ambas capacidades
+ok 313 - QA-MND20 - Cancelar aprobado libera ambas capacidades
+  ---
+  duration_ms: 9.56536
+  type: 'test'
+  ...
+# Subtest: QA-MND21 - Expirar aprobado libera reservas
+ok 314 - QA-MND21 - Expirar aprobado libera reservas
+  ---
+  duration_ms: 6.263661
+  type: 'test'
+  ...
+# Subtest: QA-MND22 - Rechazar no reserva capacidad
+ok 315 - QA-MND22 - Rechazar no reserva capacidad
+  ---
+  duration_ms: 5.936656
+  type: 'test'
+  ...
+# Subtest: QA-MND23 - Rechazado no reabrible
+ok 316 - QA-MND23 - Rechazado no reabrible
+  ---
+  duration_ms: 2.101123
+  type: 'test'
+  ...
+# Subtest: QA-MND24 - Cancelado no reabrible
+ok 317 - QA-MND24 - Cancelado no reabrible
+  ---
+  duration_ms: 2.09455
+  type: 'test'
+  ...
+# Subtest: QA-MND25 - Expirado no reabrible ni aprobable fuera de plazo
+ok 318 - QA-MND25 - Expirado no reabrible ni aprobable fuera de plazo
+  ---
+  duration_ms: 3.801769
+  type: 'test'
+  ...
+# Subtest: QA-MND26 - Aprobado inmutable
+ok 319 - QA-MND26 - Aprobado inmutable
+  ---
+  duration_ms: 3.405794
+  type: 'test'
+  ...
+# Subtest: QA-MND27 - Cambio exige nuevo ID
+ok 320 - QA-MND27 - Cambio exige nuevo ID
+  ---
+  duration_ms: 5.357145
+  type: 'test'
+  ...
+# Subtest: QA-MND28 - Coverage conserva instantanea de evidencia
+ok 321 - QA-MND28 - Coverage conserva instantanea de evidencia
+  ---
+  duration_ms: 2.936737
+  type: 'test'
+  ...
+# Subtest: QA-MND29 - FX conserva identidad fecha valor y hora critica
+ok 322 - QA-MND29 - FX conserva identidad fecha valor y hora critica
+  ---
+  duration_ms: 5.311553
+  type: 'test'
+  ...
+# Subtest: QA-MND30 - Excepcion FX no autorizada impide aprobar
+ok 323 - QA-MND30 - Excepcion FX no autorizada impide aprobar
+  ---
+  duration_ms: 53.069642
+  type: 'test'
+  ...
+# Subtest: QA-MND31 - No segundo descuento economico
+ok 324 - QA-MND31 - No segundo descuento economico
+  ---
+  duration_ms: 3.107846
+  type: 'test'
+  ...
+# Subtest: QA-MND32 - Posicion oficial intacta
+ok 325 - QA-MND32 - Posicion oficial intacta
+  ---
+  duration_ms: 3.133528
+  type: 'test'
+  ...
+# Subtest: QA-MND33 - Postura intacta con reserva separada
+ok 326 - QA-MND33 - Postura intacta con reserva separada
+  ---
+  duration_ms: 3.043742
+  type: 'test'
+  ...
+# Subtest: QA-MND34 - Balances intactos
+ok 327 - QA-MND34 - Balances intactos
+  ---
+  duration_ms: 3.304631
+  type: 'test'
+  ...
+# Subtest: QA-MND35 - Confirmado pendiente y necesidades intactos
+ok 328 - QA-MND35 - Confirmado pendiente y necesidades intactos
+  ---
+  duration_ms: 2.82788
+  type: 'test'
+  ...
+# Subtest: QA-MND36 - CREATE y APPROVE idempotentes
+ok 329 - QA-MND36 - CREATE y APPROVE idempotentes
+  ---
+  duration_ms: 3.117775
+  type: 'test'
+  ...
+# Subtest: QA-MND37 - Conflicto de request_id
+ok 330 - QA-MND37 - Conflicto de request_id
+  ---
+  duration_ms: 1.784825
+  type: 'test'
+  ...
+# Subtest: QA-MND38 - Reporte deterministico
+ok 331 - QA-MND38 - Reporte deterministico
+  ---
+  duration_ms: 5.783308
+  type: 'test'
+  ...
+# Subtest: QA-MND39 - Snapshot compatible
+ok 332 - QA-MND39 - Snapshot compatible
+  ---
+  duration_ms: 8.434653
+  type: 'test'
+  ...
+# Subtest: QA-MND40 - Sin ejecucion bancaria UI ni SIGRF
+ok 333 - QA-MND40 - Sin ejecucion bancaria UI ni SIGRF
+  ---
+  duration_ms: 3.488479
+  type: 'test'
+  ...
+# Subtest: S02 decimal sweep: 5008 partial-final cancellations, no ghost or original mutation
+ok 334 - S02 decimal sweep: 5008 partial-final cancellations, no ghost or original mutation
+  ---
+  duration_ms: 669.865428
+  type: 'test'
+  ...
+# Subtest: S02 variable scales, exponents and explicit precision rejection
+ok 335 - S02 variable scales, exponents and explicit precision rejection
+  ---
+  duration_ms: 0.636241
+  type: 'test'
+  ...
+# Subtest: S02/S08 terminal linked commitments/reserves persist with closure and trace
+ok 336 - S02/S08 terminal linked commitments/reserves persist with closure and trace
+  ---
+  duration_ms: 1.39153
+  type: 'test'
+  ...
+# Subtest: S08 corrupt catalogues, stocks, links and identities reject atomically
+ok 337 - S08 corrupt catalogues, stocks, links and identities reject atomically
+  ---
+  duration_ms: 3.277674
+  type: 'test'
+  ...
+# Subtest: S10 all tie breakers and absent targets yield deterministic order
+ok 338 - S10 all tie breakers and absent targets yield deterministic order
+  ---
+  duration_ms: 0.600549
+  type: 'test'
+  ...
+# Subtest: S08 zero pending adjustment persists; explicit follow-up remains active
+ok 339 - S08 zero pending adjustment persists; explicit follow-up remains active
+  ---
+  duration_ms: 0.96337
+  type: 'test'
+  ...
+# Subtest: INDEP-01: 100 saldo, compromiso 20 reflejado 10, reserva 15 => disponible 75
+ok 340 - INDEP-01: 100 saldo, compromiso 20 reflejado 10, reserva 15 => disponible 75
+  ---
+  duration_ms: 0.89518
+  type: 'test'
+  ...
+# Subtest: INDEP-02: 100 saldo, 130 compromiso => deficit 30 sin duplicar necesidad
+ok 341 - INDEP-02: 100 saldo, 130 compromiso => deficit 30 sin duplicar necesidad
+  ---
+  duration_ms: 0.534978
+  type: 'test'
+  ...
+# Subtest: INDEP-03: saldo nuevo 150 reemplaza 100, disponible con compromiso 20 es 130
+ok 342 - INDEP-03: saldo nuevo 150 reemplaza 100, disponible con compromiso 20 es 130
+  ---
+  duration_ms: 0.382682
+  type: 'test'
+  ...
+# Subtest: INDEP-04: anula pendiente 5 de compromiso 20 confirmado 10 => disponible 95
+ok 343 - INDEP-04: anula pendiente 5 de compromiso 20 confirmado 10 => disponible 95
+  ---
+  duration_ms: 0.29753
+  type: 'test'
+  ...
+# Subtest: INDEP-05: reclasificar compromiso 20 a reserva conserva disponible 80
+ok 344 - INDEP-05: reclasificar compromiso 20 a reserva conserva disponible 80
+  ---
+  duration_ms: 0.326157
+  type: 'test'
+  ...
+# Subtest: INDEP-06: saldo histórico 70 no sustituye saldo vigente 100
+ok 345 - INDEP-06: saldo histórico 70 no sustituye saldo vigente 100
+  ---
+  duration_ms: 0.190327
+  type: 'test'
+  ...
+# Subtest: INDEP-07: rechazo de anulación superior al pendiente conserva estado
+ok 346 - INDEP-07: rechazo de anulación superior al pendiente conserva estado
+  ---
+  duration_ms: 0.349806
+  type: 'test'
+  ...
+# Subtest: INDEP-08: reintento de alta idéntico conserva saldo y no duplica obligaciones
+ok 347 - INDEP-08: reintento de alta idéntico conserva saldo y no duplica obligaciones
+  ---
+  duration_ms: 0.317984
+  type: 'test'
+  ...
+# Subtest: INDEP-09: ajuste retroactivo rechazado, compromiso conserva 20 y disponible 80
+ok 348 - INDEP-09: ajuste retroactivo rechazado, compromiso conserva 20 y disponible 80
+  ---
+  duration_ms: 0.32911
+  type: 'test'
+  ...
+# Subtest: INDEP-10: necesidad duplicada rechazada y saldo disponible sigue 80
+ok 349 - INDEP-10: necesidad duplicada rechazada y saldo disponible sigue 80
+  ---
+  duration_ms: 0.490996
+  type: 'test'
+  ...
+# Subtest: INDEP-11: urgencia horaria R1 precede a prioridad económica P1 flexible sin cambiar saldo
+ok 350 - INDEP-11: urgencia horaria R1 precede a prioridad económica P1 flexible sin cambiar saldo
+  ---
+  duration_ms: 0.55373
+  type: 'test'
+  ...
+# Subtest: INDEP-12: guardar y cargar necesidades mantiene saldo, trazabilidad e identidad de operaciones
+ok 351 - INDEP-12: guardar y cargar necesidades mantiene saldo, trazabilidad e identidad de operaciones
+  ---
+  duration_ms: 0.821834
+  type: 'test'
+  ...
+# Subtest: INDEP-13: dos necesidades simultáneas no duplican exposición ni saldo
+ok 352 - INDEP-13: dos necesidades simultáneas no duplican exposición ni saldo
+  ---
+  duration_ms: 0.468208
+  type: 'test'
+  ...
+# Subtest: INDEP-14: ajuste confirmado de 10 a 15 reduce pendiente de 10 a 5, sin cambiar originales
+ok 353 - INDEP-14: ajuste confirmado de 10 a 15 reduce pendiente de 10 a 5, sin cambiar originales
+  ---
+  duration_ms: 0.272234
+  type: 'test'
+  ...
+# Subtest: INDEP-15: reserva de 15 anulada totalmente devuelve disponible de 85 a 100
+ok 354 - INDEP-15: reserva de 15 anulada totalmente devuelve disponible de 85 a 100
+  ---
+  duration_ms: 0.293144
+  type: 'test'
+  ...
+# Subtest: INDEP-16: 36.5 VES más 1 USD con BCV 36.5 VES/USD equivale a 73 VES
+ok 355 - INDEP-16: 36.5 VES más 1 USD con BCV 36.5 VES/USD equivale a 73 VES
+  ---
+  duration_ms: 0.49654
+  type: 'test'
+  ...
+# Subtest: INDEP-17: mezcla VES USD sin tasa BCV impide consolidado publicable, sin perder originales
+ok 356 - INDEP-17: mezcla VES USD sin tasa BCV impide consolidado publicable, sin perder originales
+  ---
+  duration_ms: 0.536608
+  type: 'test'
+  ...
+# Subtest: INDEP-18: disminuir ejecución confirmada 15 a 10 se rechaza y conserva posición 95
+ok 357 - INDEP-18: disminuir ejecución confirmada 15 a 10 se rechaza y conserva posición 95
+  ---
+  duration_ms: 0.631702
+  type: 'test'
+  ...
+# Subtest: INDEP-19: alta ajuste y cancelación conservan original y derivan saldos 80,75,90
+ok 358 - INDEP-19: alta ajuste y cancelación conservan original y derivan saldos 80,75,90
+  ---
+  duration_ms: 0.687885
+  type: 'test'
+  ...
+# Subtest: INDEP-20: anulación retroactiva rechazada sin cambiar el compromiso
+ok 359 - INDEP-20: anulación retroactiva rechazada sin cambiar el compromiso
+  ---
+  duration_ms: 0.663821
+  type: 'test'
+  ...
+# Subtest: INDEP-21: batch de dos nuevos saldos es idempotente con control de conflicto
+ok 360 - INDEP-21: batch de dos nuevos saldos es idempotente con control de conflicto
+  ---
+  duration_ms: 0.568484
+  type: 'test'
+  ...
+# Subtest: decimal additions/subtractions have no phantom residue
+ok 361 - decimal additions/subtractions have no phantom residue
+  ---
+  duration_ms: 0.115507
+  type: 'test'
+  ...
+# Subtest: partial then final cancellation closes commitment exactly
+ok 362 - partial then final cancellation closes commitment exactly
+  ---
+  duration_ms: 0.391164
+  type: 'test'
+  ...
+# Subtest: multiple small cancellations leave no residue for reserves
+ok 363 - multiple small cancellations leave no residue for reserves
+  ---
+  duration_ms: 0.254925
+  type: 'test'
+  ...
+# Subtest: over-cancellation rejects without mutating state
+ok 364 - over-cancellation rejects without mutating state
+  ---
+  duration_ms: 0.261677
+  type: 'test'
+  ...
+# Subtest: persisted state with duplicate active needs is rejected
+ok 365 - persisted state with duplicate active needs is rejected
+  ---
+  duration_ms: 0.322949
+  type: 'test'
+  ...
+# Subtest: S10 precedence R1 R2 R3 R4 dominates economic priority and target date
+ok 366 - S10 precedence R1 R2 R3 R4 dominates economic priority and target date
+  ---
+  duration_ms: 0.446689
+  type: 'test'
+  ...
+# Subtest: S08 rejects negative balances and invalid reflected amount
+ok 367 - S08 rejects negative balances and invalid reflected amount
+  ---
+  duration_ms: 0.354354
+  type: 'test'
+  ...
+# Subtest: S08 rejects unparseable payload with stable error
+ok 368 - S08 rejects unparseable payload with stable error
+  ---
+  duration_ms: 0.264218
+  type: 'test'
+  ...
+# Subtest: P1-01 VES/USD explícito
+ok 369 - P1-01 VES/USD explícito
+  ---
+  duration_ms: 0.130135
+  type: 'test'
+  ...
+# Subtest: P1-02 USD/VES explícito
+ok 370 - P1-02 USD/VES explícito
+  ---
+  duration_ms: 0.059313
+  type: 'test'
+  ...
+# Subtest: P1-03 conversión VES no muta original
+ok 371 - P1-03 conversión VES no muta original
+  ---
+  duration_ms: 0.067619
+  type: 'test'
+  ...
+# Subtest: P1-04 ida/vuelta aproximada
+ok 372 - P1-04 ida/vuelta aproximada
+  ---
+  duration_ms: 0.077047
+  type: 'test'
+  ...
+# Subtest: P1-05 BCV cero bloquea equivalencia USD
+ok 373 - P1-05 BCV cero bloquea equivalencia USD
+  ---
+  duration_ms: 0.179981
+  type: 'test'
+  ...
+# Subtest: P1-06 BCV nula bloquea equivalencia USD
+ok 374 - P1-06 BCV nula bloquea equivalencia USD
+  ---
+  duration_ms: 0.14853
+  type: 'test'
+  ...
+# Subtest: P1-07 USD original preservado
+ok 375 - P1-07 USD original preservado
+  ---
+  duration_ms: 0.124024
+  type: 'test'
+  ...
+# Subtest: P1-08 VES original preservado
+ok 376 - P1-08 VES original preservado
+  ---
+  duration_ms: 0.182047
+  type: 'test'
+  ...
+# Subtest: P1-09 EUR sin tasa rechazada
+ok 377 - P1-09 EUR sin tasa rechazada
+  ---
+  duration_ms: 0.169934
+  type: 'test'
+  ...
+# Subtest: P1-10 no suma directa de monedas heterogéneas
+ok 378 - P1-10 no suma directa de monedas heterogéneas
+  ---
+  duration_ms: 0.176152
+  type: 'test'
+  ...
+# Subtest: P1-11 visualización inicial VES
+ok 379 - P1-11 visualización inicial VES
+  ---
+  duration_ms: 0.08
+  type: 'test'
+  ...
+# Subtest: P1-12 visualización persiste con almacenamiento
+ok 380 - P1-12 visualización persiste con almacenamiento
+  ---
+  duration_ms: 0.287814
+  type: 'test'
+  ...
+# Subtest: P1-13 BCV vinculada a fecha administrada
+ok 381 - P1-13 BCV vinculada a fecha administrada
+  ---
+  duration_ms: 0.156081
+  type: 'test'
+  ...
+# Subtest: P1-14 cambio BCV recalcula equivalencia sin alterar original
+ok 382 - P1-14 cambio BCV recalcula equivalencia sin alterar original
+  ---
+  duration_ms: 0.102186
+  type: 'test'
+  ...
+# Subtest: P1-15 centralidad motor: state usa validación central
+ok 383 - P1-15 centralidad motor: state usa validación central
+  ---
+  duration_ms: 0.096027
+  type: 'test'
+  ...
+1..383
+# tests 383
+# suites 0
+# pass 383
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2488.076214
