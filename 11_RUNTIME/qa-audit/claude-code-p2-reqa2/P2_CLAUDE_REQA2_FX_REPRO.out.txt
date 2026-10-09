@@ -1,0 +1,8 @@
+== 9146f4f (control)
+{"entrada":{"rate":36.4721,"usd":5624.34,"ves":82075.82,"c":5792.17,"r":18.25},"publicable":true,"saldo":287207.31091400003,"comp":5792.17,"res":18.25,"disponible":281396.89091400005,"deficit":0,"err":[],"queue":{"publicable":true,"deficit":0,"total":5810.42}}
+{"entrada":{"rate":36.4721,"usd":5624.34,"ves":0,"c":5792.17,"r":0},"publicable":true,"saldo":205131.490914,"comp":5792.17,"res":0,"disponible":199339.32091399998,"deficit":0,"err":[],"queue":{"publicable":true,"deficit":0,"total":5792.17}}
+{"entrada":{"rate":191.6489,"usd":4087.82,"ves":54425.29,"cUSD":9024.27,"r":449.19},"publicable":true,"saldo":837851.496398,"comp":1729491.4188030001,"res":449.19,"disponible":-892089.112405,"deficit":892089.112405,"err":[],"queue":{"publicable":true,"deficit":892089.112405,"total":1729940.608803}}
+== 5af50fd (candidato)
+{"entrada":{"rate":36.4721,"usd":5624.34,"ves":82075.82,"c":5792.17,"r":18.25},"publicable":false,"saldo":null,"comp":null,"res":null,"disponible":null,"deficit":null,"err":["MONETARY_PRECISION_UNSUPPORTED"],"queue":{"publicable":false,"deficit":null,"total":null}}
+{"entrada":{"rate":36.4721,"usd":5624.34,"ves":0,"c":5792.17,"r":0},"publicable":true,"saldo":205131.490914,"comp":5792.17,"res":0,"disponible":199339.320914,"deficit":0,"err":[],"queue":{"publicable":true,"deficit":0,"total":5792.17}}
+{"entrada":{"rate":191.6489,"usd":4087.82,"ves":54425.29,"cUSD":9024.27,"r":449.19},"publicable":true,"saldo":837851.496398,"comp":1729491.4188030001,"res":449.19,"disponible":-892089.1124050001,"deficit":892089.1124050001,"err":[],"queue":"THROW MonetaryError MONETARY_PRECISION_UNSUPPORTED"}

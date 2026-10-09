@@ -1,0 +1,45 @@
+{
+  "project_id": "KIRI_GESTION_LIQUIDEZ_INTRADIA",
+  "phase": "PILOT-01/F1/P2",
+  "audit_type": "RE_QA_INDEPENDIENTE_2_EXC_P2_04",
+  "auditor": "CLAUDE_CODE",
+  "audit_date": "2026-10-09",
+  "order": "PR #3 comment 6084541652 (functional approval EXC-P2-04: 6084388651)",
+  "audited_branch": "qa/pilot-01-f1-p2-restart",
+  "audited_commit": "5af50fdc829e94a6b62dc909923093a393c5912b",
+  "control_commits": ["9146f4f4610e38ebd746fa66d9c6bcbd7d6acd5f", "851bb5845708bc3b280fc2eeab11006f8cb1745c"],
+  "auditor_environment": { "node": "v22.22.0", "os": "linux", "checkout": "detached, unmodified" },
+  "integrity": { "manifest_files": 29, "sha256_and_git_blob_match": 29, "mismatches": 0, "tracked_not_in_manifest": 0, "prior_tests_modified": 0 },
+  "regression": { "tests": 392, "pass": 392, "fail": 0, "p1": { "tests": 30, "pass": 30 }, "implementer_directed": { "tests": 44, "pass": 44 }, "detects_exc_p2_05": false },
+  "auditor_harness": { "reused_cases": 64, "new_cases": 9, "cases": 73, "pass": 70, "fail": 3, "failed": ["RQ2-S12-01", "RQ2-S12-02", "RQ2-S12-03"],
+    "control_9146f4f": { "pass": 64, "fail": 9, "note": "S09 FAIL, S12 PASS" }, "control_851bb58": { "pass": 48, "fail": 25 } },
+  "samples": {
+    "exc_p2_01_original_5008": { "defects": 0 },
+    "s09_balanced_company_bank_queue": { "cases": 1500, "defects": 0 },
+    "s09_real_deficit_and_surplus": { "cases": 1500, "defects": 0 },
+    "s12_heterogeneous": { "cases": 2000, "company_unpublishable": 999, "queue_throws": 91, "off_fx_oracle": 0, "control_9146f4f": { "company_unpublishable": 0, "queue_throws": 0 } }
+  },
+  "scenarios": {
+    "S01_alta_cambios_controlados": "PASS", "S02_anulacion_parcial_total": "PASS", "S03_stock_reemplazable": "PASS",
+    "S04_stock_retroactivo_historico": "PASS", "S05_ajuste_anulacion_retroactiva": "PASS", "S06_confirmado_no_disminuye": "PASS",
+    "S07_idempotencia": "PASS", "S08_una_necesidad_activa_persistencia": "PASS", "S09_deficit_derivado_igual_moneda": "PASS",
+    "S10_prioridad_rigidez_orden": "PASS", "S11_reclasificacion_sin_doble_impacto": "PASS", "S12_monedas_heterogeneas": "FAIL", "S13_regresion_integra": "PASS"
+  },
+  "transversal": { "regresion_p1": "PASS", "permisos": "NO_DEMOSTRADO_FUERA_DE_CONTRATO", "simultaneidad": "NO_DEMOSTRADO_FUERA_DE_CONTRATO", "unidades_minimas_legales": "NO_DEMOSTRADO_NO_DEFINIDAS" },
+  "exceptions": [
+    { "id": "EXC-P2-01", "status": "CORREGIDA_ACREDITADA_SE_MANTIENE" },
+    { "id": "EXC-P2-02", "status": "CORREGIDA_ACREDITADA_SE_MANTIENE" },
+    { "id": "EXC-P2-03", "status": "CORREGIDA_ACREDITADA_SE_MANTIENE" },
+    { "id": "EXC-P2-04", "status": "NO_ACREDITADA", "reason": "Deficit fantasma en igual moneda corregido, pero la correccion incumple la condicion de #6084388651 de preservar la logica de monedas heterogeneas (provoca EXC-P2-05)" },
+    { "id": "EXC-P2-05", "status": "ABIERTA_NUEVA_PENDIENTE_LIDER_FUNCIONAL", "severity": "CRITICA", "scenario": "S12", "introduced_by": "5af50fd (bac5ffb/25c9570/1c048bf)",
+      "summary": "subtractDecimal/addDecimal sobre totales FX binarios: 999/2000 posiciones heterogeneas no publicables (MONETARY_PRECISION_UNSUPPORTED) y 91/2000 buildNeedQueue lanzan MonetaryError no controlado; 0/2000 en 9146f4f",
+      "location": ["src/position.js calculate() available/deficit", "src/needs.js buildNeedQueue total_necesidad_vigente"] }
+  ],
+  "observations_for_functional_decision": ["OBS-RQ-01", "OBS-RQ-02"],
+  "functional_blocks_excluded": ["AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED", "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"],
+  "global_verdict": "FAIL",
+  "validated_for_pilot": false,
+  "p3_enabled": false,
+  "next_gate": "Decision del Lider Funcional sobre EXC-P2-05; correccion conjunta EXC-P2-04+05 por ChatGPT/Codex con nuevo commit congelado y SELF_TEST con FX de precision variable; re-QA Claude Code de S12/S09/S02/S08, regresion completa y P1 (73 casos)",
+  "note": "Dictamen tecnico del auditor; no acepta excepciones ni sustituye la decision del Lider Funcional."
+}
