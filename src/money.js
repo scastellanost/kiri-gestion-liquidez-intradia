@@ -16,7 +16,7 @@ const amount = (value) => {
 // Numbers are interpreted by their public decimal representation (not IEEE754 residues).
 function decimalParts(value) {
   amount(value);
-  const match = String(value).match(/^(-?)(\\d+)(?:\\.(\\d+))?(?:e([+-]?\\d+))?$/i);
+  const match = String(value).match(/^(-?)(\d+)(?:\.(\d+))?(?:e([+-]?\d+))?$/i);
   if (!match) fail('INVALID_AMOUNT');
   const exponent = Number(match[4] ?? 0);
   const fraction = match[3] ?? '';
@@ -44,7 +44,7 @@ function exactDecimal(left, right, operation) {
   return numeric;
 }
 function decimalPartsFromLiteral(value) {
-  const match = value.match(/^(-?)(\\d+)(?:\\.(\\d+))?$/);
+  const match = value.match(/^(-?)(\d+)(?:\.(\d+))?$/);
   const fraction = match[3] ?? '';
   return { units: BigInt(match[2] + fraction) * (match[1] ? -1n : 1n), scale: fraction.length };
 }
