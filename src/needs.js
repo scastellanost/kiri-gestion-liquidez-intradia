@@ -1,4 +1,4 @@
-import { createMoney, compareDecimal } from './money.js';
+import { createMoney, compareDecimal, addDecimal } from './money.js';
 import { calculateCompanyPosition, getAffectationPending, registerAffectation, createPositionState, previewBalances } from './position.js';
 
 export class NeedError extends Error {
@@ -183,7 +183,7 @@ export function buildNeedQueue(state, empresa, monetaryState) {
     brecha_consolidada: position.deficit, necesidades_activas: classified, necesidades_sin_clasificar: unclassified,
     necesidades_cerradas: closed, necesidades_sin_vinculo: unlinked.sort(compare), necesidades_seguimiento: followUp,
     criterios_orden: criteria.slice(), total_necesidad_vigente: position.publicable
-      ? createMoney(position.compromisos_por_ejecutar + position.reservas_bloqueadas, 'VES').amount_original : null });
+      ? createMoney(addDecimal(position.compromisos_por_ejecutar, position.reservas_bloqueadas), 'VES').amount_original : null });
 }
 
 const storageKey = 'kiri.liq-codex-003.state';
