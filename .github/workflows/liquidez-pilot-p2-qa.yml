@@ -22,3 +22,4 @@ jobs:
           test -f test/liq-codex-002.test.js
           test -f test/liq-codex-002a.test.js
           test -f test/liq-codex-003.test.js
+# P2 remediation technical regression trigger; independently audited by Claude Code separately.
