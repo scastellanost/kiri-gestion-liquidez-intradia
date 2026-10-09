@@ -236,6 +236,25 @@ export function hasNativePositionComponents(state, empresa, banco) {
       && (banco === undefined || a.banco_asignado === banco)))
     .every(record => record.currency_original === 'VES');
 }
+// Only economic components within the requested scope determine whether
+// an exact calculation in their ORIGINAL currency can be made.
+function singleOriginalCurrency(state, empresa, banco) {
+  const rows = state.balances.filter(b => b.empresa === empresa && (banco === undefined || b.banco === banco))
+    .concat(state.affectations.filter(a => a.empresa === empresa && a.estado === 'ACTIVA'
+      && (banco === undefined || a.banco_asignado === banco)));
+  const currencies = new Set(rows.map(row => row.currency_original));
+  return currencies.size === 1 ? [...currencies][0] : null;
+}
+function nativePositionAvailable(state, empresa, banco, currency) {
+  const selected = state.balances.filter(b => b.empresa === empresa && (banco === undefined || b.banco === banco));
+  const active = state.affectations.filter(a => a.empresa === empresa && a.estado === 'ACTIVA'
+    && (banco === undefined || a.banco_asignado === banco));
+  const sum = items => items.reduce((acc, amount) => addDecimal(acc, amount), 0);
+  const balance = sum(selected.map(row => row.amount_original));
+  const commitments = sum(active.filter(a => a.naturaleza_afectacion === 'COMPROMISO').map(getAffectationPending));
+  const reserves = sum(active.filter(a => a.naturaleza_afectacion === 'RESERVA').map(getAffectationPending));
+  return subtractDecimal(subtractDecimal(balance, commitments), reserves);
+}
 function calculate(state, empresa, banco, monetaryState) {
   entity(state, empresa, banco);
   const fields = banco === undefined ? companyFields : bankFields;
@@ -253,12 +272,22 @@ function calculate(state, empresa, banco, monetaryState) {
     const reservas_bloqueadas = sum(assigned.filter(a => a.naturaleza_afectacion === 'RESERVA')
       .map(a => createMoney(getAffectationPending(a), a.currency_original)));
     const native = hasNativePositionComponents(state, empresa, banco);
-    const available = native
-      ? subtractDecimal(subtractDecimal(saldo_bancario, compromisos_por_ejecutar), reservas_bloqueadas)
+    const singleCurrency = singleOriginalCurrency(state, empresa, banco);
+    const nativeAvailable = singleCurrency
+      ? nativePositionAvailable(state, empresa, banco, singleCurrency) : null;
+    const available = singleCurrency
+      ? (singleCurrency === 'VES' ? nativeAvailable
+        : convertMoney(createMoney(nativeAvailable, singleCurrency), 'VES', canonicalState).amount)
       : saldo_bancario - compromisos_por_ejecutar - reservas_bloqueadas;
     createMoney(available, 'VES'); // Reject numeric overflow, without changing monetary policy.
+    const deficit = singleCurrency
+      ? (nativeAvailable < 0
+        ? (singleCurrency === 'VES' ? subtractDecimal(0, nativeAvailable)
+          : convertMoney(createMoney(subtractDecimal(0, nativeAvailable), singleCurrency), 'VES', canonicalState).amount)
+        : 0)
+      : Math.max(0, -available);
     return freeze({ ...base, publicable: true, errors: [], saldo_bancario, compromisos_por_ejecutar, reservas_bloqueadas,
-      ...(banco === undefined ? { saldo_disponible_gestion: available, deficit: Math.max(0, native ? subtractDecimal(0, available) : -available), localizaciones: localizations }
+      ...(banco === undefined ? { saldo_disponible_gestion: available, deficit, localizaciones: localizations }
         : { disponibilidad_localizada_preliminar: available }) });
   } catch (error) {
     return freeze({ ...base, publicable: false, ...Object.fromEntries(fields.map(key => [key, null])),
