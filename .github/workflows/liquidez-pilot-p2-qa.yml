@@ -1,13 +1,13 @@
-name: Liquidez P2 Independent QA
+name: Liquidez P2 Technical Regression (SELF_TEST)
 on:
   pull_request:
     branches: [pilot/liquidez-001]
-    paths: ['.github/workflows/liquidez-pilot-p2-qa.yml']
+    paths: ['.github/workflows/liquidez-pilot-p2-qa.yml', 'src/**', 'test/**', 'docs/LIQ-CODEX-003.md']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  p2-independent-validation:
+  p2-technical-regression:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
