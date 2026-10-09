@@ -1,0 +1,51 @@
+{
+  "project_id": "KIRI_GESTION_LIQUIDEZ_INTRADIA",
+  "phase": "PILOT-01/F1/P2",
+  "audit_type": "RE_QA_INDEPENDIENTE_3_EXC_P2_04_05",
+  "auditor": "CLAUDE_CODE",
+  "audit_date": "2026-10-09",
+  "order": "PR #3 comment 6085055170 (approvals 6084388651, 6084761588)",
+  "audited_branch": "qa/pilot-01-f1-p2-restart",
+  "audited_commit": "a285519de71e983c9f836ade0dce045d8c82532c",
+  "control_commits": ["5af50fdc829e94a6b62dc909923093a393c5912b", "9146f4f4610e38ebd746fa66d9c6bcbd7d6acd5f", "851bb5845708bc3b280fc2eeab11006f8cb1745c"],
+  "auditor_environment": { "node": "v22.22.0", "os": "linux", "checkout": "detached, unmodified" },
+  "integrity": { "manifest_files": 30, "sha256_and_git_blob_match": 30, "mismatches": 0, "tracked_not_in_manifest": 0, "prior_tests_modified": 0, "src_changed_vs_5af50fd": ["src/position.js", "src/needs.js"] },
+  "regression": { "tests": 397, "pass": 397, "fail": 0, "p1": { "tests": 30, "pass": 30 }, "implementer_directed": { "tests": 49, "pass": 49 } },
+  "auditor_harness": { "reused_cases": 73, "new_cases": 8, "cases": 81, "pass": 81, "fail": 0,
+    "control_5af50fd": { "pass": 71, "fail": 10 }, "control_9146f4f": { "pass": 68, "fail": 13 }, "control_851bb58": { "pass": 52, "fail": 29 } },
+  "samples": {
+    "exc_p2_01_original_5008": { "defects": 0 },
+    "s09_ves_balanced_company_bank_queue": { "cases": 1500, "defects": 0 },
+    "s09_ves_real_deficit_surplus": { "cases": 1500, "defects": 0 },
+    "s12_heterogeneous_rq2": { "cases": 2000, "unpublishable": 0, "queue_throws": 0, "off_oracle": 0 },
+    "s12_heterogeneous_rq3_bitwise_legacy_oracle": { "cases": 2000, "heterogeneous_companies": 1832, "native_bank_views": 2312, "defects": 0 },
+    "obs_rq_03_heterogeneous_residue": { "zero_fx_component": { "cases": 1000, "phantom_deficit": 132 }, "exact_fx_product": { "cases": 1000, "phantom_deficit": 213 }, "identical_in": ["9146f4f", "851bb58"] },
+    "obs_rq_04_single_non_ves_currency": { "USD": { "cases": 1000, "phantom_deficit": 274 }, "EUR": { "cases": 1000, "phantom_deficit": 282 }, "identical_in": ["9146f4f", "851bb58"] }
+  },
+  "scenarios": {
+    "S01_alta_cambios_controlados": "PASS", "S02_anulacion_parcial_total": "PASS", "S03_stock_reemplazable": "PASS",
+    "S04_stock_retroactivo_historico": "PASS", "S05_ajuste_anulacion_retroactiva": "PASS", "S06_confirmado_no_disminuye": "PASS",
+    "S07_idempotencia": "PASS", "S08_una_necesidad_activa_persistencia": "PASS", "S09_deficit_derivado": "PASS_CON_EXCEPCIONES",
+    "S10_prioridad_rigidez_orden": "PASS", "S11_reclasificacion_sin_doble_impacto": "PASS", "S12_monedas_heterogeneas": "PASS", "S13_regresion_integra": "PASS"
+  },
+  "transversal": { "regresion_p1": "PASS", "permisos": "NO_DEMOSTRADO_FUERA_DE_CONTRATO", "simultaneidad": "NO_DEMOSTRADO_FUERA_DE_CONTRATO", "unidades_minimas_legales": "NO_DEMOSTRADO_NO_DEFINIDAS" },
+  "exceptions": [
+    { "id": "EXC-P2-01", "status": "CORREGIDA_ACREDITADA_SE_MANTIENE" },
+    { "id": "EXC-P2-02", "status": "CORREGIDA_ACREDITADA_SE_MANTIENE" },
+    { "id": "EXC-P2-03", "status": "CORREGIDA_ACREDITADA_SE_MANTIENE" },
+    { "id": "EXC-P2-04", "status": "CORREGIDA_ACREDITADA_EN_ALCANCE_APROBADO", "scope": "componentes en moneda destino VES (opcion a de #6084668117)" },
+    { "id": "EXC-P2-05", "status": "CORREGIDA_ACREDITADA" },
+    { "id": "EXC-P2-04+05", "status": "ACREDITADAS_CONJUNTAMENTE" },
+    { "id": "EXC-P2-06", "status": "ABIERTA_PROPUESTA_PENDIENTE_LIDER_FUNCIONAL", "severity": "MEDIA", "scenario": "S09", "preexisting_since": "851bb58",
+      "summary": "Deficit fantasma (1e-16..1e-10 VES) en posiciones de moneda unica distinta de VES (USD 27.4%, EUR 28.2% de equilibradas) y en la ruta heterogenea heredada (FX nulo 13.2%, producto FX exacto 21.3%); fuera del alcance 'moneda destino' implementado; la aprobacion #6084761588 dice 'misma moneda'" }
+  ],
+  "observations_for_functional_decision": ["OBS-RQ-01", "OBS-RQ-02"],
+  "informational": ["buildNeedQueue con empresa invalida devuelve publicable:false INVALID_COMPANY en vez de lanzar (coherente con #6084761588)"],
+  "functional_blocks_excluded": ["AGGREGATE_APPROVED_MANDATE_LIMIT_PER_AFFECTATION_UNDECIDED", "FX_RECOMPOSITION_RESERVATION_RULE_UNDECIDED"],
+  "global_verdict": "PASS_CON_EXCEPCIONES",
+  "exceptions_accepted_by_auditor": false,
+  "validated_for_pilot": false,
+  "p3_enabled": false,
+  "next_gate": "Decision del Lider Funcional sobre EXC-P2-06 (opciones a/b/c/d) y OBS-RQ-01/02; si ordena correccion: Codex sobre a285519 + SELF_TEST + congelamiento y re-QA Claude S09/S12 + regresion completa/P1 (81 casos); si acepta expresamente EXC-P2-06, decide la promocion de P2",
+  "note": "Dictamen tecnico del auditor; PASS_CON_EXCEPCIONES no equivale a aceptacion de excepciones ni a certificacion; la promocion es exclusiva del Lider Funcional."
+}

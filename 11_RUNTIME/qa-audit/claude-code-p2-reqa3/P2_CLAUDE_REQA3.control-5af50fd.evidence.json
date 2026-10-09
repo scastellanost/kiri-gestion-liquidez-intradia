@@ -1,0 +1,1590 @@
+{
+  "commit_auditado": "5af50fd",
+  "bcv_sintetico": 36.5,
+  "ledger": [
+    {
+      "scenario": "S01",
+      "caso": "S01-a",
+      "entrada": "saldo 10000 VES; ALTA compromiso 100 USD",
+      "VES": {
+        "saldo": 10000,
+        "compromisos": 3650,
+        "reservas": 0,
+        "disponible": 6350,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 273.972602739726,
+        "compromisos": 100,
+        "reservas": 0,
+        "disponible": 173.97260273972603,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S01",
+      "caso": "S01-b",
+      "entrada": "AJUSTE 100→120 USD",
+      "VES": {
+        "saldo": 10000,
+        "compromisos": 4380,
+        "reservas": 0,
+        "disponible": 5620,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 273.972602739726,
+        "compromisos": 120,
+        "reservas": 0,
+        "disponible": 153.97260273972603,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-a",
+      "entrada": "saldo 100; compromiso 20 conf 10; anula 5 + 5",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 100,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-b",
+      "entrada": "saldo 100; reserva 15; anula 5 + 10",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 100,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-d 1250.3/250.1",
+      "entrada": "compromiso 1250.3 VES; anula 250.1; anula resto 1000.2",
+      "observado": {
+        "vigente_tras_parcial": 1000.2,
+        "resto_mostrado": 1000.2,
+        "estado": "ANULADA",
+        "residuo": 0,
+        "sin_clasificar": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-d 1.1/1",
+      "entrada": "compromiso 1.1 VES; anula 1; anula resto 0.1",
+      "observado": {
+        "vigente_tras_parcial": 0.1,
+        "resto_mostrado": 0.1,
+        "estado": "ANULADA",
+        "residuo": 0,
+        "sin_clasificar": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "S02-d 0.3/0.1",
+      "entrada": "compromiso 0.3 VES; anula 0.1; anula resto 0.2",
+      "observado": {
+        "vigente_tras_parcial": 0.2,
+        "resto_mostrado": 0.2,
+        "estado": "ANULADA",
+        "residuo": 0,
+        "sin_clasificar": 0
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-a",
+      "entrada": "saldo 100 @07; saldo 90 @10",
+      "VES": {
+        "saldo": 90,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 90,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.4657534246575343,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.4657534246575343,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-b reflejado",
+      "entrada": "saldo 100, comp 20; saldo 90 + conf 10",
+      "VES": {
+        "saldo": 90,
+        "compromisos": 10,
+        "reservas": 0,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.4657534246575343,
+        "compromisos": 0.273972602739726,
+        "reservas": 0,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-b no inferir",
+      "entrada": "saldo 100, comp 20; saldo 80 sin conf",
+      "VES": {
+        "saldo": 80,
+        "compromisos": 20,
+        "reservas": 0,
+        "disponible": 60,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.191780821917808,
+        "compromisos": 0.547945205479452,
+        "reservas": 0,
+        "disponible": 1.643835616438356,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S03",
+      "caso": "S03-c",
+      "entrada": "BNC 70 VES + BDV 30 VES + BNC 10→12 USD",
+      "VES": {
+        "saldo": 538,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 538,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 14.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 14.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S04",
+      "caso": "S04-a",
+      "entrada": "vigente 100 @12; llega 90 @10",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 100,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 2.73972602739726,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S05",
+      "caso": "S05-a",
+      "entrada": "comp 20 → ajuste 25 @11; intentos retroactivos @10:59Z, @09:00Z y @06:59-04:00 (=10:59Z)",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 25,
+        "reservas": 0,
+        "disponible": 75,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.684931506849315,
+        "reservas": 0,
+        "disponible": 2.0547945205479454,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S06",
+      "caso": "S06-a",
+      "entrada": "comp 20 conf 15; intento 15→10 rechazado; 15→18 aceptado",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 2,
+        "reservas": 0,
+        "disponible": 98,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.0547945205479452,
+        "reservas": 0,
+        "disponible": 2.684931506849315,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S07",
+      "caso": "S07-a",
+      "entrada": "lote-1 aplicado 2 veces",
+      "VES": {
+        "saldo": 150,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 150,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 4.109589041095891,
+        "compromisos": 0,
+        "reservas": 0,
+        "disponible": 4.109589041095891,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S07",
+      "caso": "S07-b",
+      "entrada": "ALTA 20, ANULACION 5 y CREATE_NEED repetidos",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 15,
+        "reservas": 0,
+        "disponible": 85,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.410958904109589,
+        "reservas": 0,
+        "disponible": 2.328767123287671,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S08",
+      "caso": "S08-a",
+      "entrada": "A1 20; N1 vinculada; N2/N3 rechazadas",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 20,
+        "reservas": 0,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.547945205479452,
+        "reservas": 0,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      },
+      "cola": {
+        "activas": 1,
+        "sin_vinculo": 1
+      }
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-08",
+      "observado": {
+        "error": "INVALID_STORED_NEED_STATE"
+      }
+    },
+    {
+      "scenario": "S09",
+      "caso": "S09-a",
+      "entrada": "saldo 100; comp 80; reserva 50",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 80,
+        "reservas": 50,
+        "disponible": -30,
+        "deficit": 30
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 2.191780821917808,
+        "reservas": 1.36986301369863,
+        "disponible": -0.821917808219178,
+        "deficit": 0.821917808219178
+      }
+    },
+    {
+      "scenario": "S10",
+      "caso": "S10-a",
+      "orden": [
+        "NC",
+        "NH",
+        "NF",
+        "NG",
+        "NB",
+        "NE",
+        "ND",
+        "NA"
+      ],
+      "criterios": [
+        "rigidez_temporal",
+        "fecha_hora_objetivo",
+        "prioridad_economica",
+        "fecha_hora_evento",
+        "need_id"
+      ],
+      "VES": {
+        "saldo": 1000,
+        "compromisos": 80,
+        "reservas": 0,
+        "disponible": 920,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 27.397260273972602,
+        "compromisos": 2.191780821917808,
+        "reservas": 0,
+        "disponible": 25.205479452054796,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S11",
+      "caso": "S11-a C→R",
+      "entrada": "saldo 100; comp 20 → reserva",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 0,
+        "reservas": 20,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0,
+        "reservas": 0.547945205479452,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S11",
+      "caso": "S11-a R→C",
+      "entrada": "reserva 20 → compromiso",
+      "VES": {
+        "saldo": 100,
+        "compromisos": 20,
+        "reservas": 0,
+        "disponible": 80,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 2.73972602739726,
+        "compromisos": 0.547945205479452,
+        "reservas": 0,
+        "disponible": 2.191780821917808,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S11",
+      "caso": "S11-b",
+      "entrada": "saldo 1000 VES; comp 10 USD → reserva",
+      "VES": {
+        "saldo": 1000,
+        "compromisos": 0,
+        "reservas": 365,
+        "disponible": 635,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 27.397260273972602,
+        "compromisos": 0,
+        "reservas": 10,
+        "disponible": 17.397260273972602,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S12",
+      "caso": "S12-a",
+      "entrada": "saldo 3650 VES + 100 USD; comp 50 USD",
+      "VES": {
+        "saldo": 7300,
+        "compromisos": 1825,
+        "reservas": 0,
+        "disponible": 5475,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 200,
+        "compromisos": 50,
+        "reservas": 0,
+        "disponible": 150,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S12",
+      "caso": "S12-b",
+      "entrada": "saldo 1000 VES; reserva 10 EUR; sin EUR_VES → no publicable; con EUR_VES=40 → 400 VES",
+      "con_tasa_EUR": {
+        "reservas": 400,
+        "disponible": 600
+      }
+    },
+    {
+      "scenario": "S13",
+      "caso": "S13",
+      "regresion": {
+        "tests": 392,
+        "pass": 392,
+        "fail": 0,
+        "skipped": 0,
+        "todo": 0,
+        "cancelled": 0
+      },
+      "exit": 0
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-X03",
+      "observado": {
+        "w1_vigente": 5,
+        "w2_vigente": 5,
+        "nota": "motor puro sin token de versión; la serialización corresponde al llamador"
+      }
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-X04",
+      "observado": {
+        "reserva_conf_bloqueado": 20,
+        "anula_15_de_20_conf_10": "INVALID_CONFIRMED_AMOUNT",
+        "alta_vigente_0_estado": "ACTIVA"
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "RQ-S02-01",
+      "observado": [
+        {
+          "nat": "COMPROMISO",
+          "parts": [
+            1250.3,
+            250.1,
+            1000.2
+          ],
+          "trail": [
+            1000.2,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        },
+        {
+          "nat": "COMPROMISO",
+          "parts": [
+            1.1,
+            1,
+            0.1
+          ],
+          "trail": [
+            0.1,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        },
+        {
+          "nat": "COMPROMISO",
+          "parts": [
+            0.3,
+            0.1,
+            0.2
+          ],
+          "trail": [
+            0.2,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        },
+        {
+          "nat": "COMPROMISO",
+          "parts": [
+            100.01,
+            33.33,
+            33.34,
+            33.34
+          ],
+          "trail": [
+            66.68,
+            33.34,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        },
+        {
+          "nat": "RESERVA",
+          "parts": [
+            1250.3,
+            250.1,
+            1000.2
+          ],
+          "trail": [
+            1000.2,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        },
+        {
+          "nat": "RESERVA",
+          "parts": [
+            1.1,
+            1,
+            0.1
+          ],
+          "trail": [
+            0.1,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        },
+        {
+          "nat": "RESERVA",
+          "parts": [
+            0.3,
+            0.1,
+            0.2
+          ],
+          "trail": [
+            0.2,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        },
+        {
+          "nat": "RESERVA",
+          "parts": [
+            100.01,
+            33.33,
+            33.34,
+            33.34
+          ],
+          "trail": [
+            66.68,
+            33.34,
+            0
+          ],
+          "estado": "ANULADA",
+          "need": "CERRADA"
+        }
+      ]
+    },
+    {
+      "scenario": "S02",
+      "caso": "RQ-S02-02",
+      "casos": 6700,
+      "defectos": 0,
+      "ejemplos": []
+    },
+    {
+      "scenario": "S02",
+      "caso": "RQ-S02-03",
+      "casos": 3000,
+      "defectos": 0,
+      "ejemplos": []
+    },
+    {
+      "scenario": "S02",
+      "caso": "RQ-S02-04",
+      "observado": {
+        "tras_parcial": 1000.2,
+        "compromiso_reflejado_final": {
+          "affectation_id": "C1",
+          "empresa": "KIRI_A",
+          "tipo_partida": "PAGO_PROVEEDOR",
+          "naturaleza_afectacion": "COMPROMISO",
+          "amount_original": 100.1,
+          "currency_original": "VES",
+          "monto_vigente": 33.33,
+          "monto_reflejado_confirmado": 33.33,
+          "estado": "ANULADA",
+          "banco_asignado": null,
+          "operacion": "ANULACION",
+          "origen": "AUDITORIA-CLAUDE-P2",
+          "fecha_hora_evento": "2026-10-09T09:00:00Z",
+          "usuario": "auditor.claude",
+          "request_id": "k2"
+        }
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "RQ-S02-05",
+      "VES": {
+        "saldo": 1000.2,
+        "compromisos": 1000.2,
+        "reservas": 0,
+        "disponible": 0,
+        "deficit": 0
+      },
+      "USD_equiv_BCV": {
+        "saldo": 27.4027397260274,
+        "compromisos": 27.4027397260274,
+        "reservas": 0,
+        "disponible": 0,
+        "deficit": 0
+      }
+    },
+    {
+      "scenario": "S02",
+      "caso": "RQ-S02-07",
+      "intermedio_VES": 365,
+      "intermedio_USD": 10
+    },
+    {
+      "scenario": "S02",
+      "caso": "RQ-S02-08",
+      "observado": {
+        "e1_vigente": 9e-7
+      }
+    },
+    {
+      "scenario": "S09",
+      "caso": "RQ-S09-01",
+      "entrada": "saldo 0,30 VES; compromisos 0,10 y 0,20 VES",
+      "observado": {
+        "compromisos": 0.3,
+        "disponible": 0,
+        "deficit": 0,
+        "brecha_cola": 0,
+        "total_necesidad_vigente": 0.3
+      }
+    },
+    {
+      "scenario": "S09",
+      "caso": "RQ-S09-02",
+      "casos": 2000,
+      "casos_con_deficit_exacto_cero": 1500,
+      "deficit_fantasma": 0,
+      "deficit_omitido": 0,
+      "deficit_inexacto": 0,
+      "tasa_fantasma": 0,
+      "ejemplos": []
+    },
+    {
+      "scenario": "S08",
+      "caso": "RQ-S08-01",
+      "manipulaciones": {
+        "necesidad ACTIVA duplicada por afectación": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need_id duplicado": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "affectation_id duplicado": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "monto_vigente negativo": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "reflejado > vigente": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "reflejado negativo": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "amount_original 0 en afectación": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "ANULADA con pendiente": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "estado de afectación desconocido": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "naturaleza desconocida": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "empresa fuera de catálogo": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "banco asignado fuera de catálogo": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "moneda inválida en afectación": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "timestamp inválido en afectación": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need ACTIVA sobre afectación ANULADA": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need vinculada a afectación inexistente": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need con empresa distinta de su afectación": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need con moneda distinta de su afectación": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need con amount_original distinto": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need con tipo_partida distinto": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need ACTIVA con naturaleza distinta": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need con estado desconocido": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need con prioridad inválida": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "R1 sin objetivo": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need con seguimiento no booleano": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "need ACTIVA con pendiente 0 sin seguimiento": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "saldo duplicado por cuenta/moneda": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "saldo en cuenta de otra empresa": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "saldo en moneda no habilitada": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "catálogo sin cuentas": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "needs no es arreglo": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        },
+        "importe NaN serializado (null)": {
+          "load": "INVALID_STORED_NEED_STATE",
+          "save": "INVALID_STORED_NEED_STATE"
+        }
+      },
+      "malformados": 5
+    },
+    {
+      "scenario": "S08",
+      "caso": "RQ-S08-02",
+      "secuencias": 400,
+      "estados_verificados": 4633,
+      "operaciones": 4633,
+      "fallos": 0,
+      "ejemplos": []
+    },
+    {
+      "scenario": "S08",
+      "caso": "RQ-S08-03",
+      "eventos": [
+        {
+          "kind": "AFECTACION",
+          "operacion": "ANULACION",
+          "request_id": "x"
+        },
+        {
+          "kind": "NEED",
+          "operacion": "CLOSE_NEED_IF_RESOLVED",
+          "request_id": "x"
+        }
+      ]
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-RQ-01",
+      "observado": {
+        "need": "CERRADA",
+        "activas": [],
+        "sin_clasificar": [
+          [
+            "A1",
+            50
+          ]
+        ],
+        "prioridad_perdida": "P1_CRITICA/R1"
+      },
+      "nota": "Contrato (Regla 12/16) no regula la reapertura; decisión funcional requerida"
+    },
+    {
+      "scenario": "S10",
+      "caso": "RQ-S10-01",
+      "orden": [
+        "R1-P4",
+        "R2-P4",
+        "R3-P1",
+        "R4-P1"
+      ],
+      "criterios": [
+        {
+          "rigidez_temporal": 0,
+          "fecha_hora_objetivo": 1791673200000,
+          "prioridad_economica": 3,
+          "fecha_hora_evento": 1791532800000,
+          "need_id": "R1-P4"
+        },
+        {
+          "rigidez_temporal": 1,
+          "fecha_hora_objetivo": null,
+          "prioridad_economica": 3,
+          "fecha_hora_evento": 1791532800000,
+          "need_id": "R2-P4"
+        },
+        {
+          "rigidez_temporal": 2,
+          "fecha_hora_objetivo": 1791536400000,
+          "prioridad_economica": 0,
+          "fecha_hora_evento": 1791532800000,
+          "need_id": "R3-P1"
+        },
+        {
+          "rigidez_temporal": 3,
+          "fecha_hora_objetivo": 1791534600000,
+          "prioridad_economica": 0,
+          "fecha_hora_evento": 1791532800000,
+          "need_id": "R4-P1"
+        }
+      ]
+    },
+    {
+      "scenario": "S10",
+      "caso": "RQ-S10-03",
+      "needs": 40,
+      "permutaciones": 50,
+      "primeros": [
+        "n00",
+        "n02",
+        "n04",
+        "n06",
+        "n01",
+        "n03"
+      ],
+      "ultimos": [
+        "n30",
+        "n33",
+        "n36",
+        "n39"
+      ]
+    },
+    {
+      "scenario": "X",
+      "caso": "RQ-X-02",
+      "cambiados": []
+    },
+    {
+      "scenario": "S09",
+      "caso": "RQ2-S09-01",
+      "casos": 1500,
+      "defectos": 0,
+      "ejemplos": []
+    },
+    {
+      "scenario": "S09",
+      "caso": "RQ2-S09-02",
+      "casos": 1500,
+      "defectos": 0,
+      "ejemplos": []
+    },
+    {
+      "scenario": "S09",
+      "caso": "RQ2-S09-03",
+      "posicion": {
+        "publicable": false,
+        "errores": [
+          {
+            "code": "MONETARY_PRECISION_UNSUPPORTED",
+            "detail": "MONETARY_PRECISION_UNSUPPORTED"
+          }
+        ]
+      },
+      "cola": {
+        "publicable": false,
+        "errores": [
+          {
+            "code": "MONETARY_PRECISION_UNSUPPORTED",
+            "detail": "MONETARY_PRECISION_UNSUPPORTED"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "S12",
+      "caso": "RQ2-S12-01",
+      "oraculo_disponible": 281396.89091400005,
+      "observado": {
+        "publicable": false,
+        "disponible": null,
+        "errores": [
+          {
+            "code": "MONETARY_PRECISION_UNSUPPORTED",
+            "detail": "MONETARY_PRECISION_UNSUPPORTED"
+          }
+        ],
+        "cola": false
+      }
+    },
+    {
+      "scenario": "S12",
+      "caso": "RQ2-S12-02",
+      "observado": {
+        "posicion_publicable": true,
+        "deficit": 892089.1124050001,
+        "cola": "MonetaryError:MONETARY_PRECISION_UNSUPPORTED"
+      }
+    },
+    {
+      "scenario": "S12",
+      "caso": "RQ2-S12-03",
+      "casos": 2000,
+      "posicion_no_publicable": 999,
+      "cola_lanza_excepcion": 91,
+      "fuera_de_oraculo": 0,
+      "tasa_no_publicable": 0.4995,
+      "ejemplos": [
+        {
+          "bcv": 37.123456,
+          "bals": [
+            [
+              3294.8,
+              "USD"
+            ],
+            [
+              98937.83,
+              "VES"
+            ]
+          ],
+          "affs": [
+            [
+              901.56,
+              "VES",
+              "COMPROMISO"
+            ],
+            [
+              777.56,
+              "EUR",
+              "RESERVA"
+            ]
+          ],
+          "error": [
+            "MONETARY_PRECISION_UNSUPPORTED"
+          ],
+          "cola": "ok"
+        },
+        {
+          "bcv": 36.5,
+          "bals": [
+            [
+              6128.59,
+              "USD"
+            ],
+            [
+              48008.88,
+              "VES"
+            ]
+          ],
+          "affs": [
+            [
+              3035.53,
+              "USD",
+              "COMPROMISO"
+            ],
+            [
+              979.04,
+              "EUR",
+              "RESERVA"
+            ]
+          ],
+          "error": [
+            "MONETARY_PRECISION_UNSUPPORTED"
+          ],
+          "cola": "ok"
+        },
+        {
+          "bcv": 40.1234,
+          "bals": [
+            [
+              6665.31,
+              "USD"
+            ],
+            [
+              97016.74,
+              "VES"
+            ]
+          ],
+          "affs": [
+            [
+              3946.15,
+              "VES",
+              "COMPROMISO"
+            ],
+            [
+              393.24,
+              "EUR",
+              "RESERVA"
+            ]
+          ],
+          "error": [
+            "MONETARY_PRECISION_UNSUPPORTED"
+          ],
+          "cola": "ok"
+        },
+        {
+          "bcv": 36.4721,
+          "bals": [
+            [
+              6888.2,
+              "USD"
+            ],
+            [
+              78903.69,
+              "VES"
+            ]
+          ],
+          "affs": [
+            [
+              9151.2,
+              "USD",
+              "COMPROMISO"
+            ],
+            [
+              93.95,
+              "EUR",
+              "RESERVA"
+            ]
+          ],
+          "error": [
+            "MONETARY_PRECISION_UNSUPPORTED"
+          ],
+          "cola": "ok"
+        },
+        {
+          "bcv": 37.123456,
+          "bals": [
+            [
+              9622.9,
+              "USD"
+            ],
+            [
+              88203.67,
+              "VES"
+            ]
+          ],
+          "affs": [
+            [
+              5880.5,
+              "VES",
+              "COMPROMISO"
+            ],
+            [
+              705.55,
+              "VES",
+              "RESERVA"
+            ]
+          ],
+          "error": [
+            "MONETARY_PRECISION_UNSUPPORTED"
+          ],
+          "cola": "ok"
+        }
+      ]
+    },
+    {
+      "scenario": "S12",
+      "caso": "RQ3-S12-01",
+      "casos": 2000,
+      "empresas_heterogeneas": 1832,
+      "bancos_nativos_verificados": 2312,
+      "defectos": 1607,
+      "ejemplos": [
+        {
+          "i": 0,
+          "k": {
+            "bcv": 36.5,
+            "eur": 39.87,
+            "bal": [
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "VES",
+                "a": 96650.09
+              },
+              {
+                "cuenta": "A-BDV-01",
+                "banco": "BDV",
+                "c": "VES",
+                "a": 29795.71
+              }
+            ],
+            "aff": [
+              {
+                "id": "A0",
+                "c": "VES",
+                "banco": "BDV",
+                "nat": "COMPROMISO",
+                "a": 49394.66
+              },
+              {
+                "id": "A1",
+                "c": "USD",
+                "banco": null,
+                "nat": "RESERVA",
+                "a": 654.72
+              }
+            ]
+          },
+          "diffs": [
+            [
+              "empresa",
+              [
+                {
+                  "code": "MONETARY_PRECISION_UNSUPPORTED",
+                  "detail": "MONETARY_PRECISION_UNSUPPORTED"
+                }
+              ]
+            ],
+            [
+              "cola",
+              null,
+              73291.94
+            ]
+          ]
+        },
+        {
+          "i": 1,
+          "k": {
+            "bcv": 36.4721,
+            "eur": 41.12345,
+            "bal": [
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "VES",
+                "a": 19374.13
+              },
+              {
+                "cuenta": "A-BDV-01",
+                "banco": "BDV",
+                "c": "VES",
+                "a": 38275.05
+              },
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "USD",
+                "a": 4450.68
+              }
+            ],
+            "aff": [
+              {
+                "id": "A0",
+                "c": "VES",
+                "banco": "BNC",
+                "nat": "COMPROMISO",
+                "a": 4390.21
+              },
+              {
+                "id": "A1",
+                "c": "EUR",
+                "banco": null,
+                "nat": "RESERVA",
+                "a": 189.42
+              },
+              {
+                "id": "A2",
+                "c": "VES",
+                "banco": "BNC",
+                "nat": "COMPROMISO",
+                "a": 62591.05
+              }
+            ]
+          },
+          "diffs": [
+            [
+              "empresa",
+              [
+                {
+                  "code": "MONETARY_PRECISION_UNSUPPORTED",
+                  "detail": "MONETARY_PRECISION_UNSUPPORTED"
+                }
+              ]
+            ],
+            [
+              "cola",
+              null,
+              74770.86389899999
+            ]
+          ]
+        },
+        {
+          "i": 2,
+          "k": {
+            "bcv": 37.123456,
+            "eur": 40,
+            "bal": [
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "VES",
+                "a": 77482.56
+              },
+              {
+                "cuenta": "A-BDV-01",
+                "banco": "BDV",
+                "c": "VES",
+                "a": 98553.42
+              },
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "EUR",
+                "a": 3824.62
+              }
+            ],
+            "aff": [
+              {
+                "id": "A0",
+                "c": "VES",
+                "banco": null,
+                "nat": "COMPROMISO",
+                "a": 38117.94
+              },
+              {
+                "id": "A1",
+                "c": "EUR",
+                "banco": null,
+                "nat": "RESERVA",
+                "a": 687.52
+              },
+              {
+                "id": "A2",
+                "c": "VES",
+                "banco": "BDV",
+                "nat": "COMPROMISO",
+                "a": 47374.25
+              },
+              {
+                "id": "A3",
+                "c": "EUR",
+                "banco": "BNC",
+                "nat": "RESERVA",
+                "a": 596.59
+              }
+            ]
+          },
+          "diffs": [
+            [
+              "BNC",
+              null,
+              206603.75999999998,
+              [
+                {
+                  "code": "MONETARY_PRECISION_UNSUPPORTED",
+                  "detail": "MONETARY_PRECISION_UNSUPPORTED"
+                }
+              ]
+            ]
+          ]
+        },
+        {
+          "i": 3,
+          "k": {
+            "bcv": 40.1234,
+            "eur": 39.87,
+            "bal": [
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "VES",
+                "a": 78437.8
+              },
+              {
+                "cuenta": "A-BDV-01",
+                "banco": "BDV",
+                "c": "VES",
+                "a": 40888.25
+              },
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "USD",
+                "a": 7745.58
+              },
+              {
+                "cuenta": "A-BNC-01",
+                "banco": "BNC",
+                "c": "EUR",
+                "a": 8780.55
+              }
+            ],
+            "aff": [
+              {
+                "id": "A0",
+                "c": "VES",
+                "banco": "BDV",
+                "nat": "COMPROMISO",
+                "a": 66611.95
+              },
+              {
+                "id": "A1",
+                "c": "USD",
+                "banco": "BNC",
+                "nat": "RESERVA",
+                "a": 174.85
+              },
+              {
+                "id": "A2",
+                "c": "VES",
+                "banco": "BDV",
+                "nat": "COMPROMISO",
+                "a": 59472.43
+              },
+              {
+                "id": "A3",
+                "c": "VES",
+                "banco": "BDV",
+                "nat": "RESERVA",
+                "a": 15546.73
+              },
+              {
+                "id": "A4",
+                "c": "VES",
+                "banco": "BNC",
+                "nat": "COMPROMISO",
+                "a": 83413.1
+              }
+            ]
+          },
+          "diffs": [
+            [
+              "BNC",
+              null,
+              648868.656582,
+              [
+                {
+                  "code": "MONETARY_PRECISION_UNSUPPORTED",
+                  "detail": "MONETARY_PRECISION_UNSUPPORTED"
+                }
+              ]
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": "S12",
+      "caso": "RQ3-S12-02",
+      "BDV": 0,
+      "BNC": null,
+      "empresa": 205093.0709345
+    },
+    {
+      "scenario": "S12",
+      "caso": "RQ3-S12-04",
+      "nativo": [
+        0,
+        0
+      ],
+      "heterogeneo": [
+        null,
+        null
+      ],
+      "tras_anular_USD": [
+        0,
+        0,
+        0.3
+      ]
+    },
+    {
+      "scenario": "S12",
+      "caso": "RQ3-S12-05",
+      "disponible_VES": null,
+      "oraculo": -4.547473508864641e-13,
+      "disponible_USD": null,
+      "deficit": null
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-RQ-03",
+      "fx_nulo": {
+        "casos": 1000,
+        "deficit_fantasma": 132
+      },
+      "producto_exacto": {
+        "casos": 1000,
+        "deficit_fantasma": 213
+      },
+      "ejemplos": [
+        {
+          "VES": [
+            8162.99,
+            4496.86
+          ],
+          "USD": 0,
+          "compromiso": 12659.85,
+          "deficit": 1e-12
+        },
+        {
+          "VES": [
+            4524.82,
+            6370.71
+          ],
+          "USD": 0,
+          "compromiso": 10895.53,
+          "deficit": 1e-12
+        },
+        {
+          "VES": [
+            7852.2,
+            7928.08
+          ],
+          "USD": 0,
+          "compromiso": 15780.28,
+          "deficit": 1e-12
+        },
+        {
+          "USD": 6451.57,
+          "BCV": 36.5239,
+          "compromiso_VES_exacto": 235636.497523,
+          "deficit": 3e-11
+        },
+        {
+          "USD": 5864.91,
+          "BCV": 36.5545,
+          "compromiso_VES_exacto": 214388.852595,
+          "deficit": 3e-11
+        },
+        {
+          "USD": 4420.33,
+          "BCV": 36.5141,
+          "compromiso_VES_exacto": 161404.371653,
+          "deficit": 2e-11
+        }
+      ],
+      "nota": "Comportamiento conforme a la aprobación #6084761588 (ruta heterogénea heredada); no hay política de precisión FX aprobada. Decisión funcional requerida si se pretende eliminar."
+    },
+    {
+      "scenario": "X",
+      "caso": "OBS-RQ-04",
+      "USD": {
+        "casos": 1000,
+        "deficit_fantasma": 169
+      },
+      "EUR": {
+        "casos": 1000,
+        "deficit_fantasma": 176
+      },
+      "ejemplos": [
+        {
+          "moneda": "EUR",
+          "saldo": 15705.3,
+          "afectaciones": [
+            5930.7,
+            7344.41,
+            2430.19
+          ],
+          "deficit_VES": 1e-10
+        },
+        {
+          "moneda": "EUR",
+          "saldo": 21695.23,
+          "afectaciones": [
+            9231.02,
+            6953.68,
+            5510.53
+          ],
+          "deficit_VES": 1e-10
+        },
+        {
+          "moneda": "USD",
+          "saldo": 21621.94,
+          "afectaciones": [
+            5438.34,
+            6748.56,
+            9435.04
+          ],
+          "deficit_VES": 1e-10
+        },
+        {
+          "moneda": "USD",
+          "saldo": 12121.47,
+          "afectaciones": [
+            3389.43,
+            5741.36,
+            2990.68
+          ],
+          "deficit_VES": 3e-11
+        }
+      ],
+      "nota": "La implementación limita la ruta exacta a componentes VES (moneda destino), conforme al texto de la opción (a) del dictamen #6084668117; la aprobación #6084761588 la parafrasea como \"misma moneda\". Interpretación a decidir por el Líder Funcional."
+    }
+  ]
+}
