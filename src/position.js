@@ -228,6 +228,14 @@ export function getAffectationPending(affectation) {
 
 const companyFields = ['saldo_bancario', 'compromisos_por_ejecutar', 'reservas_bloqueadas', 'saldo_disponible_gestion', 'deficit'];
 const bankFields = ['saldo_bancario', 'compromisos_por_ejecutar', 'reservas_bloqueadas', 'disponibilidad_localizada_preliminar'];
+// Exact destination-currency arithmetic is safe only for original VES
+// components; converted components retain the existing FX numeric path.
+export function hasNativePositionComponents(state, empresa, banco) {
+  return state.balances.filter(b => b.empresa === empresa && (banco === undefined || b.banco === banco))
+    .concat(state.affectations.filter(a => a.empresa === empresa && a.estado === 'ACTIVA'
+      && (banco === undefined || a.banco_asignado === banco)))
+    .every(record => record.currency_original === 'VES');
+}
 function calculate(state, empresa, banco, monetaryState) {
   entity(state, empresa, banco);
   const fields = banco === undefined ? companyFields : bankFields;
@@ -244,10 +252,13 @@ function calculate(state, empresa, banco, monetaryState) {
       .map(a => createMoney(getAffectationPending(a), a.currency_original)));
     const reservas_bloqueadas = sum(assigned.filter(a => a.naturaleza_afectacion === 'RESERVA')
       .map(a => createMoney(getAffectationPending(a), a.currency_original)));
-    const available = subtractDecimal(subtractDecimal(saldo_bancario, compromisos_por_ejecutar), reservas_bloqueadas);
+    const native = hasNativePositionComponents(state, empresa, banco);
+    const available = native
+      ? subtractDecimal(subtractDecimal(saldo_bancario, compromisos_por_ejecutar), reservas_bloqueadas)
+      : saldo_bancario - compromisos_por_ejecutar - reservas_bloqueadas;
     createMoney(available, 'VES'); // Reject numeric overflow, without changing monetary policy.
     return freeze({ ...base, publicable: true, errors: [], saldo_bancario, compromisos_por_ejecutar, reservas_bloqueadas,
-      ...(banco === undefined ? { saldo_disponible_gestion: available, deficit: Math.max(0, subtractDecimal(0, available)), localizaciones: localizations }
+      ...(banco === undefined ? { saldo_disponible_gestion: available, deficit: Math.max(0, native ? subtractDecimal(0, available) : -available), localizaciones: localizations }
         : { disponibilidad_localizada_preliminar: available }) });
   } catch (error) {
     return freeze({ ...base, publicable: false, ...Object.fromEntries(fields.map(key => [key, null])),

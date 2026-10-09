@@ -1,5 +1,5 @@
 import { createMoney, compareDecimal, addDecimal } from './money.js';
-import { calculateCompanyPosition, getAffectationPending, registerAffectation, createPositionState, previewBalances } from './position.js';
+import { calculateCompanyPosition, getAffectationPending, registerAffectation, createPositionState, previewBalances, hasNativePositionComponents } from './position.js';
 
 export class NeedError extends Error {
   constructor(code, detail = code) { super(detail); this.name = 'NeedError'; this.code = code; }
@@ -152,6 +152,17 @@ function compare(a, b) {
   return 0;
 }
 export function buildNeedQueue(state, empresa, monetaryState) {
+  try { return buildNeedQueueResult(state, empresa, monetaryState); }
+  catch (error) {
+    return freeze({ empresa, currency: 'VES', publicable: false,
+      errors: [{ code: error.code ?? 'INVALID_INPUT', detail: error.message }],
+      saldo_disponible_gestion: null, deficit: null, brecha_consolidada: null,
+      total_necesidad_vigente: null, necesidades_activas: [], necesidades_sin_clasificar: [],
+      necesidades_cerradas: [], necesidades_sin_vinculo: [], necesidades_seguimiento: [],
+      criterios_orden: criteria.slice() });
+  }
+}
+function buildNeedQueueResult(state, empresa, monetaryState) {
   const position = calculateCompanyPosition(state, empresa, monetaryState);
   const classified = []; const unclassified = []; const closed = []; const unlinked = []; const followUp = [];
   for (const stored of state.needs ?? []) {
@@ -183,7 +194,9 @@ export function buildNeedQueue(state, empresa, monetaryState) {
     brecha_consolidada: position.deficit, necesidades_activas: classified, necesidades_sin_clasificar: unclassified,
     necesidades_cerradas: closed, necesidades_sin_vinculo: unlinked.sort(compare), necesidades_seguimiento: followUp,
     criterios_orden: criteria.slice(), total_necesidad_vigente: position.publicable
-      ? createMoney(addDecimal(position.compromisos_por_ejecutar, position.reservas_bloqueadas), 'VES').amount_original : null });
+      ? createMoney(hasNativePositionComponents(state, empresa)
+        ? addDecimal(position.compromisos_por_ejecutar, position.reservas_bloqueadas)
+        : position.compromisos_por_ejecutar + position.reservas_bloqueadas, 'VES').amount_original : null });
 }
 
 const storageKey = 'kiri.liq-codex-003.state';

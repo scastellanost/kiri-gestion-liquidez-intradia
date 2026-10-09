@@ -1,0 +1,31 @@
+
+> test
+> node --test
+
+✔ test/liq-codex-001.test.js (88.232201ms)
+✔ test/liq-codex-002.test.js (79.655094ms)
+✔ test/liq-codex-002a.test.js (66.686139ms)
+✔ test/liq-codex-003.test.js (86.294926ms)
+✔ test/liq-codex-004.test.js (99.825377ms)
+✔ test/liq-codex-005.test.js (188.224707ms)
+✔ test/liq-codex-005a.test.js (783.138411ms)
+✔ test/liq-codex-006.test.js (208.492488ms)
+✔ test/liq-codex-006a.test.js (162.595875ms)
+✔ test/liq-codex-007.test.js (333.589518ms)
+✔ test/liq-codex-008.test.js (217.464926ms)
+✔ test/liq-codex-009.test.js (336.760078ms)
+✔ test/p2-candidate-regression.test.js (746.283556ms)
+✔ test/p2-exc04-boundaries.test.js (417.570413ms)
+✔ test/p2-exc04-position.test.js (57.887529ms)
+✔ test/p2-exc05-fx-compatibility.test.js (986.815436ms)
+✔ test/p2-independent-economic-oracles.test.js (87.454744ms)
+✔ test/p2-remediation-decimal.test.js (75.624418ms)
+✔ test/pilot-p1-monetary-integrity.test.js (61.133002ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5122.024941

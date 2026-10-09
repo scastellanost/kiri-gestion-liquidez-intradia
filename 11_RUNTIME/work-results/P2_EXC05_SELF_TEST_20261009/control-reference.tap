@@ -1,0 +1,112 @@
+TAP version 13
+# Subtest: S12 EXC05 minimal non-publicable and queue-throw reproductions
+not ok 1 - S12 EXC05 minimal non-publicable and queue-throw reproductions
+  ---
+  duration_ms: 6.272109
+  type: 'test'
+  location: '/workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:28:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    check (file:///workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:23:10)
+    TestContext.<anonymous> (file:///workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:29:3)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.start (node:internal/test_runner/test:1242:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+  ...
+# Subtest: S12 2000 deterministic multimoneda positions retain existing FX numeric path
+not ok 2 - S12 2000 deterministic multimoneda positions retain existing FX numeric path
+  ---
+  duration_ms: 3.113913
+  type: 'test'
+  location: '/workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:32:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    check (file:///workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:23:10)
+    TestContext.<anonymous> (file:///workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:37:27)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: S09/S12 unrelated FX bank does not disable native precision in selected bank
+ok 3 - S09/S12 unrelated FX bank does not disable native precision in selected bank
+  ---
+  duration_ms: 0.928149
+  type: 'test'
+  ...
+# Subtest: S08/S12 missing rate and native precision failures return controlled queue errors
+not ok 4 - S08/S12 missing rate and native precision failures return controlled queue errors
+  ---
+  duration_ms: 1.509035
+  type: 'test'
+  location: '/workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:46:1'
+  failureType: 'testCodeFailure'
+  error: 'UNKNOWN_AFFECTATION_REFERENCE'
+  code: 'UNKNOWN_AFFECTATION_REFERENCE'
+  name: 'NeedError'
+  stack: |-
+    requireValue (file:///workspace/work/exc05-control/src/needs.js:7:61)
+    affectation (file:///workspace/work/exc05-control/src/needs.js:42:3)
+    buildNeedQueue (file:///workspace/work/exc05-control/src/needs.js:159:44)
+    TestContext.<anonymous> (file:///workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:55:11)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: S09 queue total overflow is controlled after representable native position
+not ok 5 - S09 queue total overflow is controlled after representable native position
+  ---
+  duration_ms: 0.705239
+  type: 'test'
+  location: '/workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:57:1'
+  failureType: 'testCodeFailure'
+  error: 'MONETARY_PRECISION_UNSUPPORTED'
+  code: 'MONETARY_PRECISION_UNSUPPORTED'
+  name: 'MonetaryError'
+  stack: |-
+    fail (file:///workspace/work/exc05-control/src/money.js:6:32)
+    exactDecimal (file:///workspace/work/exc05-control/src/money.js:43:120)
+    addDecimal (file:///workspace/work/exc05-control/src/money.js:51:37)
+    buildNeedQueue (file:///workspace/work/exc05-control/src/needs.js:186:21)
+    TestContext.<anonymous> (file:///workspace/work/exc05-control/test/p2-exc05-fx-compatibility.test.js:58:11)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 1
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 35.336115
